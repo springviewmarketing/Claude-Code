@@ -1,0 +1,965 @@
+<!doctype html>
+<html lang="en-GB">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Marketing for independent opticians | Spring View</title>
+<meta name="description" content="Spring View runs the marketing for one independent optician per town. Eight social posts, a blog, a patient email, weekly Google updates and every review answered, all built on photographs taken inside your practice. £750 a month, monthly rolling.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%230A0A0A'/%3E%3Crect x='11' y='19' width='10' height='9' fill='%23FF3D19'/%3E%3C/svg%3E">
+<link rel="canonical" href="https://springviewmarketing.co.uk/opticians">
+<meta property="og:title" content="Get found before they choose | Spring View">
+<meta property="og:description" content="Marketing for independent opticians. One practice per town. £750 a month, monthly rolling, first month £250 and refundable.">
+<meta property="og:type" content="website">
+<meta property="og:locale" content="en_GB">
+
+<link rel="preload" href="fonts/BricolageGrotesque.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="fonts/InstrumentSans.woff2" as="font" type="font/woff2" crossorigin>
+<style>
+/* Self-hosted so the page opens on one connection with no third-party round
+   trip. Latin subset only. Both families are OFL, see fonts/OFL.txt. */
+@font-face{
+  font-family:'Bricolage Grotesque';
+  src:url('fonts/BricolageGrotesque.woff2') format('woff2');
+  font-weight:200 800;
+  font-stretch:75% 100%;
+  font-style:normal;
+  font-display:swap;
+}
+@font-face{
+  font-family:'Instrument Sans';
+  src:url('fonts/InstrumentSans.woff2') format('woff2');
+  font-weight:400 700;
+  font-stretch:100%;
+  font-style:normal;
+  font-display:swap;
+}
+</style>
+
+<style>
+/* ============================================================
+   SPRING VIEW · The Number
+   Built to the brand guidelines locked August 2026.
+   Band sequence: ink -> bone -> vermilion. Vermilion only closes.
+   ============================================================ */
+
+:root{
+  --ink:#0A0A0A;
+  --bone:#F2F0EA;
+  --verm:#FF3D19;
+  --ash:#6E6E68;
+  --ash-soft:#9A9A93;
+
+  --body-on-bone:#33322E;
+  --lead-on-ink:#C9C7C0;
+  --rule-on-ink:rgba(255,255,255,.14);
+  --rule-on-bone:#DAD6C9;
+  --rule-on-verm:rgba(10,10,10,.22);
+  --sec-on-verm:rgba(10,10,10,.80);
+
+  --display:'Bricolage Grotesque','Arial Narrow',system-ui,sans-serif;
+  --text:'Instrument Sans',system-ui,-apple-system,'Segoe UI',sans-serif;
+
+  --pad:clamp(20px,5vw,64px);
+  --wrap:1040px;
+}
+
+*,*::before,*::after{box-sizing:border-box;}
+html{-webkit-text-size-adjust:100%;}
+body{
+  margin:0;
+  background:var(--bone);
+  color:var(--body-on-bone);
+  font-family:var(--text);
+  font-size:clamp(15px,2.4vw,17px);
+  line-height:1.65;
+  -webkit-font-smoothing:antialiased;
+  overflow-x:hidden;
+}
+
+/* ---------- bands ---------- */
+.band{padding:clamp(56px,9vw,112px) var(--pad);}
+.band > .wrap{max-width:var(--wrap);margin:0 auto;}
+.ink{background:var(--ink);color:var(--lead-on-ink);}
+.bone{background:var(--bone);color:var(--body-on-bone);}
+.verm{background:var(--verm);color:var(--ink);}
+.bone + .bone{border-top:1px solid var(--rule-on-bone);}
+
+/* ---------- type ---------- */
+.h1{
+  font-family:var(--display);
+  font-variation-settings:"wdth" 80;
+  font-weight:800;
+  font-size:clamp(40px,7.4vw,84px);
+  letter-spacing:-.03em;
+  line-height:1.16;
+  max-width:14ch;
+  margin:0;
+  color:var(--bone);
+}
+.h2{
+  font-family:var(--display);
+  font-variation-settings:"wdth" 80;
+  font-weight:800;
+  font-size:clamp(28px,4.2vw,40px);
+  letter-spacing:-.03em;
+  line-height:1.06;
+  max-width:16ch;
+  margin:0 0 28px;
+}
+.ink .h2{color:var(--bone);}
+.verm .h2{color:var(--ink);}
+
+/* on figure-led bands the headline steps down so the figure is the only shout */
+.h2--quiet{
+  font-size:clamp(18px,2.6vw,24px);
+  font-variation-settings:"wdth" 88;
+  font-weight:600;
+  letter-spacing:-.015em;
+  line-height:1.32;
+  max-width:22ch;
+  margin-bottom:20px;
+}
+
+.lead{
+  font-family:var(--display);
+  font-variation-settings:"wdth" 88;
+  font-weight:500;
+  font-size:clamp(18px,2.6vw,24px);
+  letter-spacing:-.015em;
+  line-height:1.32;
+  max-width:26ch;
+  margin:28px 0 0;
+}
+.ink .lead{color:var(--lead-on-ink);}
+
+p{max-width:44ch;margin:0 0 1.15em;}
+p:last-child{margin-bottom:0;}
+.ink p{color:var(--lead-on-ink);}
+.verm p{color:var(--ink);}
+
+.label{
+  font-family:var(--display);
+  font-variation-settings:"wdth" 88;
+  font-weight:700;
+  font-size:10.5px;
+  letter-spacing:.22em;
+  text-transform:uppercase;
+  color:var(--ash);
+  margin:0 0 20px;
+  display:block;
+}
+.ink .label{color:var(--ash-soft);}
+.verm .label{color:var(--sec-on-verm);}
+
+.micro{
+  font-size:13px;
+  line-height:1.7;
+  color:var(--ash);
+  max-width:44ch;
+}
+.ink .micro{color:var(--ash-soft);}
+.verm .micro{color:var(--sec-on-verm);}
+
+/* ---------- the highlight box ----------
+   inline-block + internal line-height .88 so the painted block hugs
+   the glyphs instead of colliding with the lines above and below.
+   Padding in em so it scales with the type. One per page, never two. */
+.h1 mark{
+  display:inline-block;
+  background:var(--verm);
+  color:var(--ink);
+  line-height:.88;
+  padding:.07em .13em .09em;
+  vertical-align:baseline;
+}
+
+/* ---------- figures ---------- */
+.figure{
+  font-family:var(--display);
+  font-weight:800;
+  font-style:italic;
+  font-size:clamp(26px,4vw,34px);
+  color:var(--verm);
+  line-height:1;
+  display:block;
+}
+.verm .figure{color:var(--ink);}
+.figure-label{
+  font-size:12.5px;
+  line-height:1.5;
+  color:var(--ash);
+  margin:10px 0 0;
+  max-width:26ch;
+  display:block;
+}
+.ink .figure-label{color:var(--ash-soft);}
+.verm .figure-label{color:var(--sec-on-verm);}
+.figure-unit{margin:0 0 40px;}
+
+/* ---------- buttons ---------- */
+.btn{
+  font-family:var(--display);
+  font-variation-settings:"wdth" 88;
+  font-weight:800;
+  font-size:15px;
+  letter-spacing:-.01em;
+  display:inline-flex;
+  align-items:center;
+  gap:10px;
+  padding:16px 24px;
+  border-radius:2px;
+  border:0;
+  text-decoration:none;
+  cursor:pointer;
+  transition:transform .15s ease;
+}
+.btn svg{transition:transform .15s ease;flex:none;}
+.btn:hover{transform:translateY(-1px);}
+.btn:hover svg{transform:translateX(3px);}
+.btn:focus-visible{outline:2px solid var(--verm);outline-offset:3px;}
+.bone .btn{background:var(--ink);color:var(--bone);}
+.ink .btn{background:var(--verm);color:var(--ink);}
+.ink .btn:focus-visible{outline-color:var(--bone);}
+.verm .btn{background:var(--ink);color:var(--bone);}
+.verm .btn:focus-visible{outline-color:var(--ink);}
+.cta-group{margin-top:40px;}
+.cta-group .micro{margin-top:16px;}
+
+/* ---------- masthead ---------- */
+.masthead{
+  background:var(--ink);
+  padding:24px var(--pad) 0;
+}
+.masthead .wrap{
+  max-width:var(--wrap);margin:0 auto;
+  display:flex;align-items:baseline;justify-content:space-between;gap:20px;
+}
+.wordmark{
+  font-family:var(--display);
+  font-variation-settings:"wdth" 82;
+  font-weight:800;
+  letter-spacing:-.02em;
+  text-transform:uppercase;
+  font-size:clamp(15px,2.2vw,17px);
+  color:var(--bone);
+  text-decoration:none;
+  white-space:nowrap;
+}
+.wordmark .dot{color:var(--verm);}
+.descriptor{
+  font-family:var(--display);
+  font-variation-settings:"wdth" 88;
+  font-weight:700;
+  font-size:10.5px;
+  letter-spacing:.22em;
+  text-transform:uppercase;
+  color:var(--ash-soft);
+  text-align:right;
+  margin:0;
+  max-width:26ch;
+}
+
+/* ---------- hero ---------- */
+.hero{padding-top:80px;}
+.hero .h1{margin-top:0;}
+.answer{
+  margin-top:56px;
+  padding-top:24px;
+  border-top:1px solid var(--rule-on-ink);
+  max-width:52ch;
+}
+.answer p{max-width:52ch;font-size:15px;}
+
+/* ---------- deliverable / bonus list ---------- */
+.stack{margin:0;padding:0;list-style:none;}
+.stack li{
+  padding:28px 0;
+  border-top:1px solid var(--rule-on-bone);
+  display:grid;
+  grid-template-columns:minmax(0,1fr);
+  gap:8px;
+}
+.ink .stack li{border-top-color:var(--rule-on-ink);}
+.stack li:last-child{border-bottom:1px solid var(--rule-on-bone);}
+.ink .stack li:last-child{border-bottom-color:var(--rule-on-ink);}
+.stack h3{
+  font-family:var(--display);
+  font-variation-settings:"wdth" 88;
+  font-weight:800;
+  font-size:clamp(17px,2.4vw,19px);
+  letter-spacing:-.015em;
+  line-height:1.25;
+  margin:0;
+  color:var(--ink);
+  display:flex;
+  flex-wrap:wrap;
+  align-items:baseline;
+  gap:12px;
+}
+.ink .stack h3{color:var(--bone);}
+.stack h3 .price{
+  font-family:var(--text);
+  font-weight:600;
+  font-size:13px;
+  letter-spacing:0;
+  color:var(--ash);
+  white-space:nowrap;
+}
+.ink .stack h3 .price{color:var(--ash-soft);}
+.stack p{margin:0;}
+.stack .idx{
+  font-family:var(--display);
+  font-weight:700;
+  font-size:10.5px;
+  letter-spacing:.22em;
+  color:var(--ash);
+  display:block;
+  margin-bottom:4px;
+}
+.ink .stack .idx{color:var(--ash-soft);}
+.total-line{
+  margin-top:28px;
+  font-family:var(--display);
+  font-variation-settings:"wdth" 88;
+  font-weight:700;
+  font-size:clamp(19px,2.6vw,22px);
+  letter-spacing:-.015em;
+  line-height:1.35;
+  max-width:30ch;
+  color:var(--ink);
+}
+.ink .total-line{color:var(--bone);}
+.total-line b{color:var(--verm);font-weight:700;}
+
+/* ---------- tables ---------- */
+.table-scroll{overflow-x:auto;margin:0 0 8px;-webkit-overflow-scrolling:touch;}
+table{
+  border-collapse:collapse;
+  width:100%;
+  min-width:560px;
+  font-size:15px;
+  text-align:left;
+}
+th,td{
+  padding:14px 16px 14px 0;
+  border-bottom:1px solid var(--rule-on-bone);
+  vertical-align:top;
+  line-height:1.5;
+}
+.ink th,.ink td{border-bottom-color:var(--rule-on-ink);}
+th{
+  font-family:var(--display);
+  font-variation-settings:"wdth" 88;
+  font-weight:700;
+  font-size:10.5px;
+  letter-spacing:.22em;
+  text-transform:uppercase;
+  color:var(--ash);
+  padding-bottom:12px;
+}
+.ink th{color:var(--ash-soft);}
+td:last-child,th:last-child{padding-right:0;}
+tr.total td{
+  font-family:var(--display);
+  font-variation-settings:"wdth" 88;
+  font-weight:800;
+  font-size:16px;
+  border-bottom:0;
+  color:var(--ink);
+}
+.ink tr.total td{color:var(--bone);}
+tr.total td.amount{color:var(--verm);}
+.col-svm{color:var(--ink);font-weight:600;}
+.ink .col-svm{color:var(--bone);}
+
+/* ---------- faq ---------- */
+.faq{margin:0;padding:0;}
+.faq > div{
+  padding:26px 0;
+  border-top:1px solid var(--rule-on-bone);
+}
+.faq > div:last-child{border-bottom:1px solid var(--rule-on-bone);}
+.faq h3{
+  font-family:var(--display);
+  font-variation-settings:"wdth" 88;
+  font-weight:800;
+  font-size:clamp(16px,2.2vw,18px);
+  letter-spacing:-.015em;
+  line-height:1.3;
+  margin:0 0 10px;
+  color:var(--ink);
+  max-width:34ch;
+}
+
+/* ---------- image slots ---------- */
+figure{margin:40px 0 0;}
+figure img{display:block;width:100%;height:auto;}
+.photo-slot{
+  width:100%;
+  aspect-ratio:3/2;
+  background:var(--rule-on-bone);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  padding:24px;
+  text-align:center;
+}
+.ink .photo-slot{background:#1A1A18;}
+.photo-slot span{
+  font-family:var(--display);
+  font-weight:700;
+  font-size:10.5px;
+  letter-spacing:.22em;
+  text-transform:uppercase;
+  color:var(--ash);
+  max-width:34ch;
+  line-height:1.8;
+}
+figcaption{
+  font-size:13px;
+  line-height:1.7;
+  color:var(--ash);
+  margin-top:12px;
+  max-width:44ch;
+}
+.ink figcaption{color:var(--ash-soft);}
+
+/* ---------- byline ---------- */
+.byline{
+  margin-top:56px;
+  padding-top:24px;
+  border-top:1px solid var(--rule-on-bone);
+  display:flex;
+  gap:20px;
+  align-items:flex-start;
+  flex-wrap:wrap;
+}
+.ink .byline{border-top-color:var(--rule-on-ink);}
+.byline .headshot{
+  width:64px;height:64px;border-radius:50%;
+  background:var(--rule-on-bone);flex:none;
+  object-fit:cover;
+}
+.byline .micro{max-width:46ch;}
+
+/* ---------- close ---------- */
+.price-pair{
+  display:flex;
+  flex-wrap:wrap;
+  gap:12px 48px;
+  margin:0 0 32px;
+  align-items:flex-start;
+}
+
+/* ---------- footer ---------- */
+.site-footer{
+  background:var(--ink);
+  color:var(--ash-soft);
+  padding:40px var(--pad);
+  font-size:13px;
+  line-height:1.7;
+}
+.site-footer .wrap{max-width:var(--wrap);margin:0 auto;}
+.site-footer .row{
+  display:flex;flex-wrap:wrap;gap:12px 32px;
+  justify-content:space-between;align-items:baseline;
+  padding-top:24px;border-top:1px solid var(--rule-on-ink);
+}
+.site-footer a{color:var(--bone);text-decoration:none;}
+.site-footer a:hover{text-decoration:underline;}
+
+/* ---------- sticky cta ----------
+   +11% in the 2026 landing-page test set, the single highest-lift
+   placement. Ink chrome so the page flow still spends its vermilion
+   only at the close. */
+.sticky{
+  position:fixed;
+  left:0;right:0;bottom:0;
+  background:var(--ink);
+  border-top:1px solid var(--rule-on-ink);
+  padding:12px var(--pad);
+  transform:translateY(110%);
+  transition:transform .25s ease;
+  z-index:50;
+}
+.sticky.on{transform:translateY(0);}
+.sticky .wrap{
+  max-width:var(--wrap);margin:0 auto;
+  display:flex;align-items:center;justify-content:space-between;gap:16px;
+}
+.sticky .line{
+  font-family:var(--display);
+  font-variation-settings:"wdth" 88;
+  font-weight:600;
+  font-size:15px;
+  letter-spacing:-.015em;
+  color:var(--bone);
+  margin:0;max-width:none;
+}
+.sticky .line b{color:var(--bone);font-weight:700;}
+.sticky .btn{background:var(--verm);color:var(--ink);padding:13px 20px;}
+.sticky .btn:focus-visible{outline-color:var(--bone);}
+@media (max-width:620px){
+  .descriptor{display:none;}
+  .sticky .line{display:none;}
+  .sticky .wrap{justify-content:stretch;}
+  .sticky .btn{width:100%;justify-content:center;}
+}
+body{padding-bottom:0;}
+
+@media (prefers-reduced-motion:reduce){
+  *{transition:none!important;animation:none!important;}
+}
+</style>
+</head>
+<body>
+
+<header class="masthead">
+  <div class="wrap">
+    <a class="wordmark" href="/">Spring View<span class="dot">.</span></a>
+    <p class="descriptor">Digital marketing for independent opticians</p>
+  </div>
+</header>
+
+<!-- ============ 1 · INK · HERO ============ -->
+<section class="band ink hero">
+  <div class="wrap">
+    <h1 class="h1">Get <mark>found</mark> before<br>they choose.</h1>
+
+    <p class="lead">I handle the marketing for one independent practice per town. I visit, I photograph it, I publish it. You approve, and get on with your day.</p>
+
+    <div class="cta-group">
+      <a class="btn" href="#book">Book a 15 minute call
+        <svg width="15" height="11" viewBox="0 0 15 11" fill="none" aria-hidden="true"><path d="M1 5.5h12M9 1.5l4 4-4 4" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </a>
+      <p class="micro">No pitch. I will have already looked at your Google listing, and I will tell you what is wrong with it whether you sign up or not.</p>
+    </div>
+
+    <!-- Answer block. Sits above the fold and carries the whole proposition
+         in 55 words so an AI answer engine can quote it whole. -->
+    <div class="answer">
+      <p>Spring View runs the marketing for independent opticians across the UK. Eight social posts, a 2,000 word blog article, a patient email, weekly Google Business Profile updates and every review answered, each month, all built on original photography shot inside your practice. £750 a month, monthly rolling. First month £250 and refundable in full. One practice per catchment area.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 2 · BONE · THE PROBLEM ============ -->
+<section class="band bone">
+  <div class="wrap">
+    <span class="label">The state of it</span>
+    <h2 class="h2">Does any of this sound familiar?</h2>
+
+    <p>It is Friday afternoon and nothing has gone out on Facebook again. The last post was a frame graphic the rep sent over. It got two likes.</p>
+    <p>There are reviews sitting on your Google profile from six months ago that nobody has replied to.</p>
+    <p>The blog on your website has not been touched since the site was built, assuming there is a blog at all.</p>
+    <p>Someone in your town typed "opticians near me" into their phone this morning. Three practices came up above everything else. You were not one of them.</p>
+    <p>None of that is because you are bad at your job. You are in the testing room all day. Marketing is the thing that happens when there is time, and there is never any time.</p>
+  </div>
+</section>
+
+<!-- ============ 3 · INK · WHAT IT COSTS TO DO NOTHING ============ -->
+<section class="band ink">
+  <div class="wrap">
+    <span class="label">The cost of doing nothing</span>
+    <p class="h2 h2--quiet">What is it actually costing you?</p>
+
+    <div class="figure-unit">
+      <span class="figure">&pound;3,878</span>
+      <span class="figure-label">what one patient spends on spectacles alone, across a lifetime</span>
+    </div>
+
+    <p>Censuswide surveyed a thousand UK adults who wear glasses or contact lenses on behalf of Optegra. Spectacles alone came to £3,878 a head across a lifetime, across 26 pairs, with a visit to an optician every 1.2 years. Contact lenses push the total past £17,000, though a good share of that goes to online retailers rather than to you.</p>
+    <p>So take the conservative number. Every patient who quietly drifts off is a four figure hole in your practice, before you count the partner they would have brought with them, or the children.</p>
+    <p>Patients leave for the same two reasons every time. Nobody contacted them again, and you were not there at the moment they were choosing.</p>
+    <p class="micro">Optegra / Censuswide, January 2019, 1,000 UK adults with existing vision correction, reported by the Association of Optometrists.</p>
+  </div>
+</section>
+
+<!-- ============ 4 · BONE · WHAT YOU GET ============ -->
+<section class="band bone">
+  <div class="wrap">
+    <span class="label">The monthly work</span>
+    <h2 class="h2">What do you actually get each month?</h2>
+
+    <p>Eight social posts, a blog article, a patient email, weekly Google updates and every review answered. All of it built on photographs I take inside your practice.</p>
+    <p>It starts with an hour on site with a real camera. Your team, your frames, your testing room, your shopfront. Twenty five to thirty usable images, which is enough to fuel three months of content. You keep every one of them, licensed, permanently, whatever happens next.</p>
+
+    <ul class="stack">
+      <li>
+        <h3>Eight social posts</h3>
+        <p>Photographs of your practice and your people. No manufacturer graphics, no stock, no AI images, ever. Carousels where they earn their place, because carousels still out-engage single images by roughly half again.</p>
+      </li>
+      <li>
+        <h3>One blog article</h3>
+        <p>Around 2,000 words, written to rank for what people in your area actually search for, and structured so that Google's AI answers and ChatGPT can lift a clean answer straight out of it.</p>
+      </li>
+      <li>
+        <h3>One patient email</h3>
+        <p>Your existing list is the cheapest revenue in the building. This is the thing that keeps it warm.</p>
+      </li>
+      <li>
+        <h3>Google Business Profile, updated weekly</h3>
+        <p>The deliverable says monthly. I do it weekly, because it takes ten minutes and freshness is a ranking signal. For a local practice the map pack is where most of the enquiries come from, not the website.</p>
+      </li>
+      <li>
+        <h3>Every review answered</h3>
+        <p>Every one, good and bad, within days, plus an ongoing push for new ones. Review velocity beats review count: a practice with fifty reviews and three this week outranks one with two hundred and nothing since spring.</p>
+      </li>
+      <li>
+        <h3>A one page report</h3>
+        <p>Five numbers against the baseline I capture before I start. Review count and rating, Google profile actions, local pack position, social reach, and the how-did-you-hear-about-us tally at your desk. Two minutes to read.</p>
+      </li>
+    </ul>
+
+    <figure>
+      <div class="photo-slot"><span>Photo slot · practice interior, shot on site</span></div>
+      <figcaption>Replace with a real practice photograph. Alt text must describe what is actually in the frame.</figcaption>
+    </figure>
+  </div>
+</section>
+
+<!-- ============ 5 · INK · THE ANCHOR ============ -->
+<section class="band ink">
+  <div class="wrap">
+    <span class="label">The same work, bought separately</span>
+    <h2 class="h2">What would this cost you assembled from parts?</h2>
+
+    <p>£2,050 a month, at published UK rates, before anyone has set foot in your practice.</p>
+
+    <div class="table-scroll">
+      <table>
+        <thead>
+          <tr><th scope="col">What</th><th scope="col">Who you would buy it from</th><th scope="col">Published UK rate</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Eight social posts from original photography</td><td>Content-led social agency</td><td>£900 to £2,000 /mo</td></tr>
+          <tr><td>One 2,000 word SEO article</td><td>Freelance SEO writer</td><td>£200 to £400</td></tr>
+          <tr><td>One patient email</td><td>Freelance email copywriter</td><td>£150</td></tr>
+          <tr><td>Google Business Profile management</td><td>Local SEO specialist</td><td>£300 to £500 /mo</td></tr>
+          <tr><td>Review management and responses</td><td>Reputation service</td><td>£200 to £500 /mo</td></tr>
+          <tr><td>Monthly reporting</td><td>Usually charged on top</td><td>£100</td></tr>
+          <tr class="total"><td>Taking the bottom of every range</td><td></td><td class="amount">£2,050 a month</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <p class="micro">Rates compiled from published UK 2026 price guides and rate cards. Sources listed at the foot of this page.</p>
+
+    <p style="margin-top:32px">That is five suppliers, five invoices, and five people who have never met you. You would still be the one supplying the photographs.</p>
+  </div>
+</section>
+
+<!-- ============ 6 · BONE · THE BONUSES ============ -->
+<section class="band bone">
+  <div class="wrap">
+    <span class="label">Month one</span>
+    <h2 class="h2">What comes with your first month?</h2>
+
+    <p>Five things I build once, that carry on working long after I have built them. They come with month one and they are yours to keep, including if you walk away at the end of it.</p>
+
+    <ul class="stack">
+      <li>
+        <span class="idx">01</span>
+        <h3>The Visibility Report <span class="price">£450</span></h3>
+        <p>Before anything else I go through the public record of your practice and write up what a patient actually finds. Not a template audit with a traffic light on it. The last one I wrote found a practice's own name returning a competitor group's booking page listing eleven other branches, an NHS record published three weeks earlier carrying the wrong phone number, and nine directories still trading under the previous owner's name. Every line checked the same day, with the URL, so you can go and look yourself.</p>
+      </li>
+      <li>
+        <span class="idx">02</span>
+        <h3>The Review Engine <span class="price">£250</span></h3>
+        <p>Your team already know they should ask. Asking is the awkward part. You get the words, for the dispense desk, the collection call and the follow-up text. A printed prompt card for the counter carrying the direct review link, the one that opens the review box rather than the listing. And the framework that gets a patient past the blank box and gets your service and your town named in the review text, which is what actually moves you up the map pack. Everybody gets asked and nobody gets filtered out. Gating reviews is against the law here now, and I will not do it.</p>
+      </li>
+      <li>
+        <span class="idx">03</span>
+        <h3>The Recall Audit <span class="price">£400</span></h3>
+        <p>I go back through your last two years and pull the list of patients who are overdue and have never been chased, then write the sequence that goes out to them. One practice ran this against 800 lapsed patients and got 11% of them back through the door inside 90 days. That is roughly 88 appointments out of records they already held. Do the same maths on your own list.</p>
+      </li>
+      <li>
+        <span class="idx">04</span>
+        <h3>The Front Desk Scripts <span class="price">£350</span></h3>
+        <p>What your receptionist says when somebody rings and asks how much an eye test is, so the call ends in a booking rather than a price comparison. What to say at the desk to pre-appoint the next visit, which is the cheapest retention there is. And how to ask whether the partner and the children are due as well, which practice owners consistently rate the easiest referral available to them.</p>
+      </li>
+      <li>
+        <span class="idx">05</span>
+        <h3>The photography visit <span class="price">£550</span></h3>
+        <p>The hour on site. Twenty five to thirty edited images across your people, your practice, your frames and your shopfront, with a full commercial licence, kept permanently. A UK half day brand shoot runs £430 to £650 before licensing.</p>
+      </li>
+    </ul>
+
+    <p class="total-line">That is <b>£2,000 of one-off work</b>, in a month that costs you £250 and is refundable in full.</p>
+
+    <div class="cta-group">
+      <a class="btn" href="#book">Book a 15 minute call
+        <svg width="15" height="11" viewBox="0 0 15 11" fill="none" aria-hidden="true"><path d="M1 5.5h12M9 1.5l4 4-4 4" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 7 · INK · COMPARISON ============ -->
+<section class="band ink">
+  <div class="wrap">
+    <span class="label">The alternatives</span>
+    <h2 class="h2">How does this compare?</h2>
+
+    <p>Cheaper than an agency, and you are not the one taking the photographs.</p>
+
+    <div class="table-scroll">
+      <table>
+        <thead>
+          <tr>
+            <th scope="col"></th>
+            <th scope="col">Doing it yourself</th>
+            <th scope="col">A general agency</th>
+            <th scope="col">Spring View</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><th scope="row">Monthly cost</th><td>Free, plus your evenings</td><td>£1,250 to £3,500</td><td class="col-svm">£750</td></tr>
+          <tr><th scope="row">Who takes the photographs</th><td>You, on a phone</td><td>You do. They ask you to send them over.</td><td class="col-svm">I visit and shoot it properly</td></tr>
+          <tr><th scope="row">Who writes it</th><td>You, on a Friday night</td><td>A junior who has never met you</td><td class="col-svm">Me. Only me.</td></tr>
+          <tr><th scope="row">Knows the optical sector</th><td>Yes</td><td>No</td><td class="col-svm">Yes</td></tr>
+          <tr><th scope="row">Works with your local competitor</th><td>Not applicable</td><td>Probably</td><td class="col-svm">Never</td></tr>
+          <tr><th scope="row">Minimum term</th><td>Not applicable</td><td>6 to 12 months</td><td class="col-svm">None</td></tr>
+          <tr><th scope="row">Time it costs you</th><td>All of it</td><td>Chasing them for content</td><td class="col-svm">Under an hour a month</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <p style="margin-top:32px">Published UK rate cards put managed social posting at £500 to £1,000 a month when you supply the images, and £1,000 to £2,000 when the agency creates the content itself. Supplying the images is the hard part. That is the part I do.</p>
+
+    <!-- PROOF BLOCK GOES HERE.
+         Reserved for named case studies with checkable numbers and a client
+         logo bar. Two practices have been live since 1 August with dated
+         baselines captured. This block ships empty rather than vague:
+         nothing goes in until a client will go on record. -->
+  </div>
+</section>
+
+<!-- ============ 8 · BONE · GUARANTEES ============ -->
+<section class="band bone">
+  <div class="wrap">
+    <span class="label">Risk</span>
+    <p class="h2 h2--quiet">What happens if it does not work?</p>
+
+    <div class="figure-unit">
+      <span class="figure">0</span>
+      <span class="figure-label">notice period, minimum term, and things to sign</span>
+    </div>
+
+    <ul class="stack">
+      <li>
+        <h3>Month one is refundable in full</h3>
+        <p>£250 covers the photography visit, all five of the one-off builds above, and a full month of content. If you get to the end of it and decide it is not for you, say so and I refund the £250. You keep every photograph and every document. Worst case, you got a month of marketing and a professional photo library of your own practice for nothing.</p>
+      </li>
+      <li>
+        <h3>If it is late, it is free</h3>
+        <p>Everything ships on the day it is due, every month. If a month's content is late because of me, that month costs you nothing. I am one person, so this is a promise I can actually keep, and it is the one that matters: the most common complaint about a marketing agency is not that the work was bad, it is that they went quiet.</p>
+      </li>
+      <li>
+        <h3>No contract and no notice period</h3>
+        <p>Monthly rolling. Cancel by text and the next invoice does not go out. There is nothing to sign and nothing to give notice on.</p>
+      </li>
+      <li>
+        <h3>What I will not promise you</h3>
+        <p>A number of new patients. Anybody putting a figure on that from month one is guessing, and the advertising rules would require them to substantiate it. What I will do is move the things that lead to patients, and show you the movement every month, against a baseline I captured before I started.</p>
+      </li>
+    </ul>
+  </div>
+</section>
+
+<!-- ============ 9 · BONE · FAQ ============ -->
+<section class="band bone">
+  <div class="wrap">
+    <span class="label">Questions</span>
+    <h2 class="h2">The things everybody asks</h2>
+
+    <div class="faq">
+      <div>
+        <h3>Will you work with the optician down the road?</h3>
+        <p>No. One independent practice per city or catchment area, and while we are working together I turn your competitors down. That is a large part of the reason the price is what it is: when I take your practice on, I stop selling to everybody else in your patch. If your area is already taken I will tell you on the first call rather than waste fifteen minutes of your time.</p>
+      </div>
+      <div>
+        <h3>Why is this £750 when I have been quoted less?</h3>
+        <p>Because most of what you have been quoted asks you to supply the photographs and the video, which is the part that takes the time. Published UK rates put content-led social media, where the agency actually creates the material, at £1,000 to £2,000 a month, and that is before the blog, the emails, the Google profile and the reviews. £750 covers all of it, from one person, with your competitors locked out.</p>
+      </div>
+      <div>
+        <h3>How much of my time does this take?</h3>
+        <p>Under an hour a month. One photography visit at the start, then a short check-in and approving the content before it goes live. If you would rather be entirely hands off, that works too.</p>
+      </div>
+      <div>
+        <h3>Who actually writes the content?</h3>
+        <p>I do. I use AI the way you use an autorefractor: it gets me a starting point quickly, and then somebody who knows the subject checks it, corrects it and makes the call. Nothing reaches you that I have not rewritten and fact-checked, every health claim is traced to a real source before it goes anywhere near your name, and there are no AI-generated images at any point. That last one is not negotiable, because authentic photography is the entire point of this.</p>
+      </div>
+      <div>
+        <h3>Will this get me more patients?</h3>
+        <p>It will move the things that lead to patients, and those are the things I report on: review count and rating, local search visibility, and engagement. Expect the first signals in two to three months and steadier movement by month six. Review count is the number most likely to move visibly in the first month.</p>
+      </div>
+      <div>
+        <h3>Am I tied into a contract?</h3>
+        <p>No. Monthly rolling, no notice period, and the first month is refundable in full.</p>
+      </div>
+      <div>
+        <h3>Do I need to be on TikTok?</h3>
+        <p>Almost certainly not. Your highest value patients, the varifocal and dry eye and cataract referrals, are on Facebook. That is where the effort goes, with Instagram second.</p>
+      </div>
+      <div>
+        <h3>What if I already have a marketing agency?</h3>
+        <p>Then you probably already know whether it is working. If you are still the one supplying the photographs and the captions, you are paying somebody to do the easy half.</p>
+      </div>
+      <div>
+        <h3>Will you use photographs of my patients?</h3>
+        <p>Only with their written consent, in writing, every time. Most of the content features your team and your practice rather than patients.</p>
+      </div>
+      <div>
+        <h3>Can you help if we have had a bad review?</h3>
+        <p>Yes. Replying well to a negative review persuades the next reader more than the original complaint deters them. What I will not do is filter who gets asked, or offer anything in exchange for a review. Both breach Google's policy and UK consumer law, and the CMA enforces it.</p>
+      </div>
+      <div>
+        <h3>Do you work outside Sheffield?</h3>
+        <p>Yes, across the UK. The photography visit means I travel to you.</p>
+      </div>
+      <div>
+        <h3>What happens on the first call?</h3>
+        <p>Fifteen minutes. I will have already been through your Google profile, your social accounts and your website, and I will tell you what is wrong with them. You get something useful out of it whether you sign up or not.</p>
+      </div>
+    </div>
+
+    <div class="byline">
+      <div class="headshot" role="img" aria-label="Photograph of Tom Bunting, founder of Spring View Marketing"></div>
+      <p class="micro">Written and run by <strong>Tom Bunting</strong>, founder of Spring View Marketing, based in Sheffield. I photograph, write and publish everything myself. There is no account manager and there is no junior. You work with me.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 10 · VERMILION · THE CLOSE ============ -->
+<section class="band verm" id="book">
+  <div class="wrap">
+    <span class="label">What it costs</span>
+    <p class="h2 h2--quiet">Two hundred and fifty pounds to find out.</p>
+
+    <div class="price-pair">
+      <div class="figure-unit" style="margin-bottom:0">
+        <span class="figure">&pound;750</span>
+        <span class="figure-label">a month, everything above included, monthly rolling</span>
+      </div>
+    </div>
+
+    <p><strong>Your first month is £250.</strong> That covers the photography visit, all five of the one-off builds, and a full month of content. If it is not for you at the end of it, I refund the £250 and you keep everything.</p>
+    <p>£750 a month after that. No contract, no notice period, cancel by text. Against £2,050 a month of the same work bought separately, and £2,000 of one-off work in your first month.</p>
+    <p>One practice per catchment area. If yours is already taken I will say so on the call rather than waste your time.</p>
+
+    <!-- CAPACITY LINE · leave commented out until Tom fills in his real number.
+         Do not invent scarcity.
+    <p><strong>I take on [N] new practices a month.</strong> When a town goes, it is gone.</p>
+    -->
+
+    <div class="cta-group">
+      <a class="btn" href="https://calendly.com/springviewmarketing/15min">Book a 15 minute call
+        <svg width="15" height="11" viewBox="0 0 15 11" fill="none" aria-hidden="true"><path d="M1 5.5h12M9 1.5l4 4-4 4" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </a>
+      <p class="micro">Or email <a href="mailto:tom@springviewmarketing.co.uk" style="color:inherit">tom@springviewmarketing.co.uk</a>. I answer everything myself.</p>
+    </div>
+  </div>
+</section>
+
+<footer class="site-footer">
+  <div class="wrap">
+    <p style="max-width:70ch">Rate comparisons on this page are compiled from published UK 2026 price guides and rate cards for social media management, content writing, Google Business Profile management, reputation management and commercial photography. Lifetime spend figures are from Optegra / Censuswide, January 2019, surveying 1,000 UK adults with existing vision correction, as reported by the Association of Optometrists.</p>
+    <div class="row">
+      <span>Spring View Marketing &middot; Sheffield &middot; <a href="mailto:tom@springviewmarketing.co.uk">tom@springviewmarketing.co.uk</a> &middot; 07846 363341</span>
+      <span>Last updated <time datetime="2026-08-20">20 August 2026</time></span>
+    </div>
+  </div>
+</footer>
+
+<div class="sticky" id="sticky">
+  <div class="wrap">
+    <p class="line"><b>£750</b> a month. First month £250, refundable.</p>
+    <a class="btn" href="#book">Book a 15 minute call
+      <svg width="15" height="11" viewBox="0 0 15 11" fill="none" aria-hidden="true"><path d="M1 5.5h12M9 1.5l4 4-4 4" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    </a>
+  </div>
+</div>
+
+<script>
+(function(){
+  var bar=document.getElementById('sticky'),close=document.getElementById('book');
+  function tick(){
+    var past=window.scrollY>window.innerHeight*0.9;
+    var atClose=close.getBoundingClientRect().top < window.innerHeight;
+    bar.classList.toggle('on', past && !atClose);
+  }
+  addEventListener('scroll',tick,{passive:true});
+  addEventListener('resize',tick,{passive:true});
+  tick();
+})();
+</script>
+
+<script type="application/ld+json">
+{
+  "@context":"https://schema.org",
+  "@graph":[
+    {
+      "@type":"ProfessionalService",
+      "@id":"https://springviewmarketing.co.uk/#org",
+      "name":"Spring View Marketing",
+      "description":"Marketing for independent opticians. Social content, blog articles, patient email, Google Business Profile management and review management, built on original photography shot at the practice.",
+      "url":"https://springviewmarketing.co.uk",
+      "email":"tom@springviewmarketing.co.uk",
+      "telephone":"+447846363341",
+      "founder":{"@type":"Person","name":"Tom Bunting"},
+      "areaServed":{"@type":"Country","name":"United Kingdom"},
+      "address":{"@type":"PostalAddress","addressLocality":"Sheffield","addressCountry":"GB"}
+    },
+    {
+      "@type":"Service",
+      "name":"Marketing for independent opticians",
+      "provider":{"@id":"https://springviewmarketing.co.uk/#org"},
+      "serviceType":"Digital marketing for independent optical practices",
+      "areaServed":{"@type":"Country","name":"United Kingdom"},
+      "offers":[
+        {
+          "@type":"Offer",
+          "name":"First month",
+          "price":"250",
+          "priceCurrency":"GBP",
+          "description":"Photography visit, Visibility Report, Review Engine, Recall Audit, Front Desk Scripts and a full month of content. Refundable in full."
+        },
+        {
+          "@type":"Offer",
+          "name":"Monthly",
+          "price":"750",
+          "priceCurrency":"GBP",
+          "description":"Eight social posts, one 2,000 word blog article, one patient email, weekly Google Business Profile updates, full review management and a monthly report. Monthly rolling, no minimum term."
+        }
+      ]
+    },
+    {
+      "@type":"FAQPage",
+      "mainEntity":[
+        {"@type":"Question","name":"Will you work with the optician down the road?","acceptedAnswer":{"@type":"Answer","text":"No. One independent practice per city or catchment area, and while we are working together I turn your competitors down. If your area is already taken I will tell you on the first call."}},
+        {"@type":"Question","name":"Why is this £750 when I have been quoted less?","acceptedAnswer":{"@type":"Answer","text":"Because most cheaper quotes ask you to supply the photographs and video, which is the part that takes the time. Published UK rates put content-led social media, where the agency creates the material, at £1,000 to £2,000 a month, before the blog, emails, Google profile and reviews."}},
+        {"@type":"Question","name":"How much of my time does this take?","acceptedAnswer":{"@type":"Answer","text":"Under an hour a month. One photography visit at the start, then a short check-in and approving content before it goes live."}},
+        {"@type":"Question","name":"Who actually writes the content?","acceptedAnswer":{"@type":"Answer","text":"Tom Bunting writes and reviews everything personally. AI is used to get to a first draft, then everything is rewritten and fact-checked by a human before it reaches the client. No AI-generated images are used at any point."}},
+        {"@type":"Question","name":"Will this get me more patients?","acceptedAnswer":{"@type":"Answer","text":"It moves the things that lead to patients: review count and rating, local search visibility and engagement. Expect first signals in two to three months and steadier movement by month six."}},
+        {"@type":"Question","name":"Am I tied into a contract?","acceptedAnswer":{"@type":"Answer","text":"No. Monthly rolling, no notice period, and the first month is refundable in full."}},
+        {"@type":"Question","name":"Do I need to be on TikTok?","acceptedAnswer":{"@type":"Answer","text":"Almost certainly not. The highest value patients for an independent optician are on Facebook, with Instagram second."}},
+        {"@type":"Question","name":"Will you use photographs of my patients?","acceptedAnswer":{"@type":"Answer","text":"Only with written consent, every time. Most content features the practice team and premises rather than patients."}},
+        {"@type":"Question","name":"Can you help if we have had a bad review?","acceptedAnswer":{"@type":"Answer","text":"Yes. Replying well to a negative review persuades the next reader more than the complaint deters them. Reviews are never filtered or incentivised, as both breach Google policy and UK consumer law."}},
+        {"@type":"Question","name":"Do you work outside Sheffield?","acceptedAnswer":{"@type":"Answer","text":"Yes, across the UK. The photography visit means travelling to the practice."}},
+        {"@type":"Question","name":"What happens on the first call?","acceptedAnswer":{"@type":"Answer","text":"Fifteen minutes. Your Google profile, social accounts and website are reviewed beforehand, and you get told what is wrong with them whether you sign up or not."}}
+      ]
+    },
+    {
+      "@type":"WebPage",
+      "name":"Marketing for independent opticians",
+      "url":"https://springviewmarketing.co.uk/opticians",
+      "dateModified":"2026-08-20",
+      "isPartOf":{"@id":"https://springviewmarketing.co.uk/#org"}
+    }
+  ]
+}
+</script>
+
+</body>
+</html>

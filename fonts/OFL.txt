@@ -1,0 +1,12 @@
+Bricolage Grotesque and Instrument Sans are both licensed under the
+SIL Open Font License, Version 1.1.
+
+Bricolage Grotesque - Copyright 2022 The Bricolage Project Authors
+  https://github.com/ateliertriay/bricolage
+Instrument Sans - Copyright 2023 The Instrument Sans Project Authors
+  https://github.com/Instrument/instrument-sans
+
+Full licence text: https://openfontlicense.org
+
+Files here are the Latin subsets served by Google Fonts, self-hosted so the
+page loads on a single connection. Re-download from Google Fonts to update.
