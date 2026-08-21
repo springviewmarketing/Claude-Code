@@ -4,8 +4,9 @@ A single-page, long-form landing page for the independent-optician offer.
 Static HTML, no build step, no dependencies.
 
 - `index.html`, the page
-- `OFFER.md`, the commercial reasoning: pricing, value stack, bonuses, guarantees
+- `OFFER.md`, the commercial reasoning: the outcome reframe, StoryBrand audit, pricing, value stack, bonuses, guarantees
 - `fonts/`, Bricolage Grotesque and Instrument Sans, self-hosted (OFL)
+- `img/`, five practice photographs, cropped and encoded to WebP at two widths each
 
 ## Deploying
 
@@ -20,22 +21,27 @@ sticky bar, no third-party requests at all.
 
 Six things, in order of how much they matter.
 
-1. **Point the CTA at the real booking link.** Every button currently goes to
-   `https://calendly.com/springviewmarketing/15min`. There are four of them.
-2. **Replace the photo slots.** There are marked placeholders. The page argues
-   for authentic photography while carrying none, which is the one place it
-   currently contradicts itself. Alt text must describe what is actually in the
-   frame, not the concept.
-3. **Add the headshot** in the byline block near the foot of the FAQ.
-4. **Decide on the capacity line.** There is a commented-out block in the closing
+1. **Swap the email CTAs for a booking link when you have one.** With no booking
+   system yet, all four primary CTAs open a prefilled email asking for practice
+   name, town and good times to call, and the transitional CTA opens a different
+   one asking for the practice and website. That is effectively a form with no
+   backend and it works today. When a calendar exists, replace the `mailto:` in
+   the four "Book a 15 minute call" links and keep the visibility-check one as
+   email.
+2. **Add the headshot** in the byline block near the foot of the FAQ. It is the
+   one image slot still empty.
+3. **Decide on the capacity line.** There is a commented-out block in the closing
    band. If you want it, fill in your real monthly number. It ships empty rather
    than invented, because fabricated scarcity is the one thing on this page that
    would be worth nothing if it were ever checked.
-5. **Confirm the AI answer in the FAQ.** "Who actually writes the content?"
+4. **Confirm the AI answer in the FAQ.** "Who actually writes the content?"
    answers honestly rather than claiming no AI is involved anywhere. See the note
    below.
-6. **Proof.** There is a marked, empty block above the comparison table. Nothing
+5. **Proof.** There is a marked, empty block above the comparison table. Nothing
    goes in it until a client will go on record.
+6. **Decide whether the free visibility check is sustainable at volume.** Each one
+   is roughly half an hour. It is email-gated so you choose who gets one, but if
+   the page starts converting it will need a cap.
 
 ## Decisions taken, and why
 
@@ -58,15 +64,20 @@ spending the headline on it. The brand guidelines settle this independently: a
 hero headline is capped at roughly 14 characters per line and must carry one
 highlight box, and a long question headline cannot do either.
 
-**One highlight box on the whole page**, on "found" in the hero, because being
-found is the entire proposition.
+**One highlight box on the whole page**, on "fill" in the hero, because filling
+the book is the entire proposition. Ligatures are disabled inside the box: the
+`fi` pair closes up at width axis 80 and the word stops reading at a glance.
 
-**Three figures on the page**, no more: `£3,878` (what doing nothing costs), `0`
+**Three figures on the page**, no more: `£149` (what an empty chair costs), `0`
 (notice period), `£750` (price). One per band, and on those three bands the
 headline steps down to lead scale so the figure is the only thing shouting.
 
-**Four CTAs, identical wording.** Hero, after the bonus stack, the closing
-vermilion band, and a sticky bottom bar. The sticky bar is the highest-lift
+**Four primary CTAs, identical wording, plus one transitional CTA.** Hero, after
+the bonus stack, the closing vermilion band, and a sticky bottom bar, all reading
+"Book a 15 minute call". The transitional CTA, "Show me what my town sees", sits
+once, at the foot of the plan, for visitors who are interested but not ready to
+talk. It has its own wording because it is a different offer, not a second attempt
+at the same one. The sticky bar is the highest-lift
 placement in the 2026 test set at +11%, well ahead of an above-fold CTA at +6%.
 It is ink chrome with a vermilion button so the page flow still spends its
 vermilion only at the close.
@@ -80,12 +91,25 @@ as the reason the price is what it is.
 substantiated before publication under the CAP Code, and a value stack collapses
 anyway if the component prices are not credible.
 
-**The lifetime-spend figure was corrected.** The earlier draft used £17,471 and
-called every lost patient "a five figure loss". The £17,471 is real, from
-Optegra/Censuswide via the Association of Optometrists, but £13,592 of it is
-daily contact lenses and much of that goes to online retailers rather than to the
-practice. The page uses £3,878, the spectacles-only figure, which is conservative,
-unambiguously in an optician's addressable market, and easier to defend.
+**The lifetime-spend figure was corrected twice.** The first draft used £17,471
+and called every lost patient "a five figure loss". That total is real, from
+Optegra/Censuswide via the Association of Optometrists, but £13,592 of it is daily
+contact lenses and much of that goes to online retailers rather than to the
+practice. The page now uses **£149**, which is the £3,878 spectacles-only figure
+divided by the 26 pairs the same survey reports. It is the most conservative
+number in the whole dataset, it is unambiguously in an optician's addressable
+market, and it is the number the ROI argument runs on.
+
+**The offer sells an outcome, not a list of inputs.** Filling the gaps in the
+appointment book, not eight social posts. The inputs are still stated in plain
+units, but they sit at the foot of the monthly section as a specification rather
+than leading it. See `OFFER.md` section 0 for the reasoning.
+
+**Photography is real and it is Tom's own.** Five images from working practices,
+cropped to fixed aspect ratios, encoded to WebP at two widths with `srcset`, and
+lazy-loaded below the fold. Alt text describes what is in the frame rather than
+what it represents. The hero image is `fetchpriority="high"` because it is the LCP
+element. Total page weight is about 265KB.
 
 ## Two things needing your ruling
 

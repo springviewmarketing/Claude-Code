@@ -5,6 +5,112 @@ The page is the expression. This is the argument.
 
 ---
 
+## 0. What the offer is actually selling
+
+**Filling the gaps in an independent optician's appointment book.**
+
+Not eight social posts. That distinction is the whole difference between a £750
+service and a £450 one.
+
+The earlier version of this offer led with its inputs: 8 posts, 1 blog, 1 email,
+1 Google update. Inputs are the wrong thing to sell for three reasons.
+
+1. **Inputs invite unit comparison.** "Eight posts" can be priced against anyone
+   on Fiverr. "A full appointment book" cannot be priced against anything.
+2. **Inputs cap the price at the cost of the labour.** Outcomes uncouple the two.
+3. **Inputs are not what the buyer wants.** No optician has ever wanted a social
+   post. They want somebody in the chair on Tuesday afternoon.
+
+So the page now runs outcome, then mechanism, then specification. The inputs are
+still there, in plain units, at the foot of the monthly section, because a buyer
+paying £750 is entitled to know exactly what arrives. They just no longer lead.
+
+### The insight the whole offer now rests on
+
+**Most independent practices have excess testing capacity, and word of mouth
+cannot fill it.**
+
+That is worth taking apart, because both halves are load-bearing.
+
+**Excess capacity changes the economics entirely.** An empty appointment slot is
+not a neutral event. Rent, rates, equipment finance and the optometrist's salary
+all run whether somebody is in the chair or not. That makes the marginal cost of
+filling an empty slot close to zero, and the marginal revenue close to the whole
+value of the test plus the dispense. Very few marketing purchases have economics
+that good, and it means the return on this service is far better than a naive
+revenue-to-cost comparison suggests.
+
+**Word of mouth is a plateau, not a strategy.** It is excellent at what it does
+and it is the reason most of these practices exist. But its rate cannot be
+increased on demand, it only reaches people who already know somebody who knows
+the practice, and it is entirely invisible to a search engine. A practice can be
+the best in the town and still lose the patient who moved in last March, because
+that patient never met anyone who could recommend it.
+
+That gives the page a villain that is true, specific, and not a named competitor,
+which matters under the CAP Code and under the house rule against naming rivals.
+
+### The ROI line
+
+This is the single most persuasive sentence on the page and it is pure arithmetic.
+
+- £750 a month is **£9,000 a year**
+- Average spend per pair of spectacles is **£149** (£3,878 across 26 pairs,
+  Optegra / Censuswide via the AOP)
+- £9,000 divided by £149 is about **60 pairs**, or **a little over one extra
+  patient a week**
+
+And that is deliberately conservative. It ignores the sight test fee, contact
+lens revenue, the second pair, the partner and children, and the fact that the
+same patient returns roughly every 1.2 years for the next twenty years. It also
+ignores the excess-capacity point above, which means most of that £149 drops
+much closer to the bottom line than it would in a business at full capacity.
+
+Price stops being a cost and becomes a hurdle rate. The hurdle is one patient a week.
+
+---
+
+## 0b. StoryBrand audit
+
+The page was reviewed against SB7 and rebuilt where it failed.
+
+| Element | Before | Now |
+|---|---|---|
+| **Character** | Tom was the hero. Lots of "I visit, I photograph, I publish". | The optician is the hero and wants a full book. Tom is the guide. |
+| **Problem (external)** | Present and strong. | Kept, and sharpened onto the diary gap. |
+| **Problem (internal)** | One line. | Given room: the guilt that marketing never gets done, being in the testing room all day. |
+| **Problem (philosophical)** | Absent. | Added: the practice giving better care should not lose to the one that was merely easier to find. |
+| **Villain** | None. | Word of mouth as a growth strategy. True, specific, and not a named competitor. |
+| **Guide: authority** | Strong. | Kept. |
+| **Guide: empathy** | Thin. | Strengthened and moved earlier. |
+| **Plan** | **Missing entirely.** | Three steps, two of them Tom's. This was the largest single gap. |
+| **Agreement plan** | Scattered. | Consolidated into the risk band. |
+| **Direct CTA** | Present, repeated. | Kept, now an email since there is no booking system yet. |
+| **Transitional CTA** | **Missing.** | The free visibility check. Second conversion path for anyone not ready to talk. |
+| **Success** | Never pictured. | "Six months in" caption under the closing photograph. |
+| **Failure** | Strong. | Rebuilt around the cost of an empty chair. |
+
+### The transitional offer
+
+**"Tell me your practice name and your town and I will send you the three things
+costing you the most patients right now."** Free, by hand, within two working days.
+
+This is the highest-leverage addition to the page. It works because:
+
+- It demonstrates competence better than any testimonial could, and there are no
+  testimonials yet
+- It costs about half an hour and it is work Tom already does before every call
+- It converts the "interested but not ready" visitor, who otherwise leaves and
+  never returns
+- It is email-gated, so Tom chooses who he does it for and it cannot be farmed
+
+It is deliberately **not** the full Visibility Report, which stays a £450 first
+month bonus. Three findings is a taster. The full report is four pages, every
+line URL-cited. Do not let the free version grow into the paid one.
+
+
+---
+
 ## 1. What changed and why
 
 The previous offer was £450 a month with a £200 refundable first month. It sold, twice.
