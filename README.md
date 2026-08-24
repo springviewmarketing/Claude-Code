@@ -146,3 +146,29 @@ Every other colour pair in the system passes AA as specified.
 - Review compliance stated explicitly: no gating, no incentivising
 - No horizontal scroll at 390px; wide tables scroll inside their own container
 - All contrast pairs pass WCAG AA
+
+## `review-scorecard.html`, the review scorecard tool
+
+A standalone, single-file interactive scorecard for independent opticians.
+Twenty-six weighted actions totalling 100 points, plus eight pass/fail
+compliance guardrails that cap the score at 45 while any of them is breached.
+Ticking an action reveals the evidence behind it.
+
+- Weights are set by yield against effort, so the in-person ask at collection
+  (26 points) and the same-day SMS (22 points) carry the engine, and the 55+
+  section (16 points) is weighted above replying because it is where an
+  optician's best patients are lost.
+- Compliance sits outside the 100 deliberately. Gating or incentivising is not
+  a lost point, it is a DMCCA exposure with CMA penalties up to 10% of global
+  turnover, so it caps the score instead of nibbling at it.
+- Answers save to `localStorage`, not to a server. One link can be sent to
+  every practice and each one keeps its own private scorecard on its own
+  device.
+- Fonts come from Google Fonts here rather than `fonts/`, so the file works
+  standalone wherever it is dropped. The landing page keeps its self-hosted
+  copies.
+- Every figure in the tool traces to the source pack. Velocity thresholds,
+  the SMS against email multipliers and the QR splits are labelled in the
+  footer as practitioner-sourced and directional.
+
+Nothing in it goes to a client without a human read first.
