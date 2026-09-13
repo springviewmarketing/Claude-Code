@@ -94,6 +94,9 @@ header.top{display:flex;align-items:center;gap:16px;flex-wrap:wrap;flex:none;
   border:1px solid var(--line);border-radius:9px;padding:10px 12px;box-shadow:var(--shadow);max-width:240px}
 .legend h4{margin:0 0 7px;font-size:10.5px;text-transform:uppercase;letter-spacing:.09em;color:var(--muted);font-family:Archivo}
 .legend .li{display:flex;align-items:center;gap:8px;font-size:12px;padding:2px 0}
+.maptop{position:absolute;left:14px;top:14px;z-index:12}
+.modeseg{background:var(--surface);box-shadow:var(--shadow);border-color:var(--line)}
+.modeseg button{padding:6px 13px;font-size:12px}
 .mapbtns{position:absolute;right:14px;top:14px;display:flex;flex-direction:column;gap:6px}
 .mapbtns button{width:32px;height:32px;border-radius:7px;border:1px solid var(--line);
   background:var(--surface);cursor:pointer;font-size:15px;line-height:1;box-shadow:var(--shadow);font-weight:600}
@@ -178,6 +181,7 @@ a{color:var(--accent)}
     <div class="kpi"><b class="num" id="k-ind">0</b><span>independent</span></div>
     <div class="kpi"><b class="num" id="k-nw">0</b><span>no website</span></div>
     <div class="kpi"><b class="num" id="k-em">0</b><span>emailable</span></div>
+    <div class="kpi"><b class="num" id="k-ver">0</b><span>verified</span></div>
   </div>
   <button class="iconbtn" id="theme" title="Switch light / dark">Theme</button>
 </header>
@@ -219,6 +223,8 @@ a{color:var(--accent)}
       </div>
       <label class="chk" style="margin-top:7px"><input type="checkbox" id="onlyemail">
         <span class="lab">Only show ones I can email</span></label>
+      <label class="chk"><input type="checkbox" id="onlyverified">
+        <span class="lab">Only verified ownership</span></label>
       <p class="hint">&#x201C;No site found&#x201D; is an unverified signal &#x2014; my search could not confidently match a website, which is often exactly the gap worth a call.</p>
     </div>
 
@@ -246,9 +252,13 @@ a{color:var(--accent)}
 
     <div class="grp">
       <h3>About this data</h3>
-      <p class="hint">6,857 NHS-registered optical practices. Ownership resolved through
-      Companies House PSC control, so Hakim Group practices are identified even though they
-      trade under their original local names.</p>
+      <p class="hint">6,857 NHS-registered optical practices. Ownership is resolved through
+      Companies House control data — both PSC shareholdings and board directorships —
+      so Hakim Group practices are identified even where they keep their original local name
+      and Hakim holds only a board seat.</p>
+      <p class="hint" style="margin-top:7px">About a fifth of practices could not be matched to a
+      Companies House record; those are marked <b>unverified</b> and their ownership rests on NHS
+      data and brand name alone. Filter them out above if you only want confirmed records.</p>
       <p class="hint" style="margin-top:7px">Coverage is England &amp; Wales; NHS Scotland and
       Northern Ireland publish no equivalent practice list, so only a handful appear.
       Companies House snapshot 1 Sep 2026, PSC 12 Sep 2026.</p>
@@ -262,8 +272,15 @@ a{color:var(--accent)}
       <button id="zout" title="Zoom out" aria-label="Zoom out">&#x2212;</button>
       <button id="zfit" title="Fit to United Kingdom" aria-label="Fit to United Kingdom">&#x2922;</button>
     </div>
+    <div class="maptop">
+      <div class="seg modeseg" id="modeseg" role="group" aria-label="Map view">
+        <button data-v="places" aria-pressed="true">Places</button>
+        <button data-v="plain" aria-pressed="false">Plain</button>
+        <button data-v="density" aria-pressed="false">Density</button>
+      </div>
+    </div>
     <div class="legend">
-      <h4>Ownership</h4>
+      <h4 id="legend-title">Ownership</h4>
       <div id="legend-items"></div>
     </div>
     <div class="tip" id="tip"></div>
@@ -296,6 +313,7 @@ a{color:var(--accent)}
 
 <script type="application/json" id="DATA">__DATA__</script>
 <script type="application/json" id="BASE">__BASEMAP__</script>
+<script type="application/json" id="PLACES">__PLACES__</script>
 <script>
 (function(){
 "use strict";
@@ -311,9 +329,11 @@ function fatal(e){
 try{
 const DATA = JSON.parse(document.getElementById('DATA').textContent);
 const BASE = JSON.parse(document.getElementById('BASE').textContent);
+const PLACES_L = JSON.parse(document.getElementById('PLACES').textContent);
 const D = DATA.d, ROWS = DATA.rows, CATS = DATA.cats, PLACES = DATA.places;
 // row indices
-const N=0,ADDR=1,TOWN=2,PC=3,LAT=4,LON=5,CAT=6,GRP=7,OWN=8,OUT=9,WEB=10,EMAIL=11,REG=12,DIS=13,CNUM=14,LEG=15,HQ=16;
+const N=0,ADDR=1,TOWN=2,PC=3,LAT=4,LON=5,CAT=6,GRP=7,OWN=8,OUT=9,WEB=10,EMAIL=11,REG=12,DIS=13,CNUM=14,LEG=15,HQ=16,EVID=17,CONAME=18;
+const EVLAB=['Not verified','Company matched','Companies House verified'];
 const CC = ['--c0','--c1','--c2','--c3','--c4'];
 const css = v => getComputedStyle(document.documentElement).getPropertyValue(v).trim();
 let COL = CC.map(css);
@@ -355,8 +375,8 @@ function haversine(a,b,c,d){ // miles
 /* ---------- state ---------- */
 const S = {
   q:'', cats:[true,true,true,true,true], outMin:1, outMax:20,
-  web:'any', onlyEmail:false, region:'', legal:'',
-  near:null, radius:40, sort:'score', sel:null
+  web:'any', onlyEmail:false, onlyVerified:false, region:'', legal:'',
+  near:null, radius:40, sort:'score', sel:null, mode:'places'
 };
 
 /* ---------- filter controls ---------- */
@@ -394,6 +414,7 @@ el('webseg').addEventListener('click',e=>{
   [...el('webseg').children].forEach(x=>x.setAttribute('aria-pressed', x===b));
   S.web=b.dataset.v; apply();});
 el('onlyemail').addEventListener('change',e=>{S.onlyEmail=e.target.checked;apply();});
+el('onlyverified').addEventListener('change',e=>{S.onlyVerified=e.target.checked;apply();});
 el('region').addEventListener('change',e=>{S.region=e.target.value;apply();});
 el('legal').addEventListener('change',e=>{S.legal=e.target.value;apply();});
 el('radius').addEventListener('input',e=>{S.radius=+e.target.value;el('radius-v').textContent=S.radius;apply();});
@@ -414,10 +435,11 @@ el('clearnear').addEventListener('click',()=>{S.near=null;el('near').value='';
 el('sort').addEventListener('change',e=>{S.sort=e.target.value;render();});
 el('reset').addEventListener('click',()=>{
   S.q='';S.cats=[true,true,true,true,true];S.outMin=1;S.outMax=20;S.web='any';
-  S.onlyEmail=false;S.region='';S.legal='';S.near=null;S.radius=40;S.sel=null;
+  S.onlyEmail=false;S.onlyVerified=false;S.region='';S.legal='';S.near=null;S.radius=40;S.sel=null;
   el('q').value='';el('outmin').value=1;el('outmax').value=20;syncOut();
   [...el('webseg').children].forEach((x,i)=>x.setAttribute('aria-pressed',i===0));
-  el('onlyemail').checked=false;el('region').value='';el('legal').value='';
+  el('onlyemail').checked=false;el('onlyverified').checked=false;
+  el('region').value='';el('legal').value='';
   el('near').value='';el('radius').value=40;el('radius-v').textContent='40';
   el('nearmsg').textContent='Or shift-click the map to drop a point.';
   CATS.forEach((_,i)=>el('cat'+i).checked=true);
@@ -445,6 +467,7 @@ function apply(){
     if(S.web==='no' && r[WEB]) continue;
     if(S.web==='yes' && !r[WEB]) continue;
     if(S.onlyEmail && !r[EMAIL]) continue;
+    if(S.onlyVerified && r[EVID]===0) continue;
     if(S.region && D.reg[r[REG]]!==S.region) continue;
     if(S.legal && D.leg[r[LEG]]!==S.legal) continue;
     if(DIST && DIST[i]>S.radius) continue;
@@ -461,6 +484,7 @@ function apply(){
   el('k-ind').textContent=VIS.filter(i=>ROWS[i][CAT]<=1).length.toLocaleString();
   el('k-nw').textContent=VIS.filter(i=>!ROWS[i][WEB]).length.toLocaleString();
   el('k-em').textContent=VIS.filter(i=>ROWS[i][EMAIL]).length.toLocaleString();
+  el('k-ver').textContent=VIS.filter(i=>ROWS[i][EVID]>0).length.toLocaleString();
   render(); draw();
 }
 
@@ -497,6 +521,7 @@ function render(){
     bits.push(r[WEB]?'<span class="pill ok">site</span>':'<span class="pill no">no site</span>');
     if(r[EMAIL]) bits.push('<span class="pill ok">email</span>');
     if(DIST) bits.push('<span class="pill">'+DIST[i].toFixed(0)+' mi</span>');
+    if(r[EVID]===0) bits.push('<span class="pill no" title="No Companies House record matched - ownership from NHS data only">unverified</span>');
     d.innerHTML='<div class="nm">'+esc(r[N])+'</div>'+
       '<div class="mt">'+esc(D.town[r[TOWN]]||'')+(r[PC]?' \u00B7 '+esc(r[PC]):'')+'</div>'+
       '<div class="foot">'+bits.join('')+'<span class="score num" style="color:var('+CC[r[CAT]]+')">'+SCORE[i]+'</span></div>';
@@ -524,10 +549,14 @@ function renderDetail(i){
   const addr=[r[ADDR],D.town[r[TOWN]],r[PC]].filter(Boolean).map(esc).join(', ');
   const kv=[
     ['Ownership',esc(CATS[r[CAT]])],
+    ['Confidence', r[EVID]===2?'Verified against Companies House'
+       : r[EVID]===1?'Company matched by search'
+       : '<span style="color:var(--warn)">Not verified \u2014 no Companies House record matched, so ownership comes from NHS records and brand name only</span>'],
     ['Brand / group',esc(D.grp[r[GRP]]||'\u2014')],
     ['Ultimate owner',esc(D.own[r[OWN]]||'\u2014')],
     ['Outlets',r[OUT]+(r[OUT]===1?' (standalone)':' under this owner')],
     ['Operating co.',esc(D.hq[r[HQ]]||'\u2014')],
+    ['Registered co.',esc(D.co[r[CONAME]]||'\u2014')],
     ['Legal form',esc(D.leg[r[LEG]]||'\u2014')],
     ['Company no.', r[CNUM]?'<a href="https://find-and-update.company-information.service.gov.uk/company/'+esc(r[CNUM])+'" target="_blank" rel="noopener">'+esc(r[CNUM])+'</a>':'\u2014'],
     ['Region',esc(D.reg[r[REG]]||'\u2014')],
@@ -645,6 +674,27 @@ function draw(){
     ctx.beginPath(); ctx.arc(c[0],c[1],4.5,0,7); ctx.fillStyle=css('--accent'); ctx.fill();
     ctx.lineWidth=2; ctx.strokeStyle=css('--surface'); ctx.stroke();
   }
+  // --- density field (clusters read at a glance) ---
+  if(S.mode==='density'){
+    const CELL=16, cols=Math.ceil(W/CELL)+1, rows=Math.ceil(H/CELL)+1;
+    const grid=new Float32Array(cols*rows); let peak=0;
+    for(const i of VIS){
+      const r=ROWS[i], p=px(r[LON],r[LAT]);
+      if(p[0]<0||p[0]>W||p[1]<0||p[1]>H) continue;
+      const gx=(p[0]/CELL)|0, gy=(p[1]/CELL)|0, k=gy*cols+gx;
+      grid[k]+=1; if(grid[k]>peak) peak=grid[k];
+    }
+    if(peak>0){
+      for(let gy=0;gy<rows;gy++) for(let gx=0;gx<cols;gx++){
+        const v=grid[gy*cols+gx]; if(!v) continue;
+        const a=Math.min(0.82,0.16+0.66*Math.sqrt(v/peak));
+        ctx.fillStyle=COL[0]; ctx.globalAlpha=a;
+        ctx.fillRect(gx*CELL,gy*CELL,CELL,CELL);
+      }
+      ctx.globalAlpha=1;
+    }
+  }
+
   // points, largest-owner first so singles land on top
   const order=VIS.slice().sort((a,b)=>ROWS[b][OUT]-ROWS[a][OUT]);
   const zf=Math.min(2.2,Math.max(.75,view.k/1400));
@@ -664,6 +714,61 @@ function draw(){
     ctx.beginPath(); ctx.arc(p[0],p[1],3.4*zf,0,7);
     ctx.fillStyle=COL[r[CAT]]; ctx.fill();
   }
+  // --- place labels: greedy, importance-ordered, collision-avoiding ---
+  if(S.mode!=='density'&&S.mode!=='plain'){
+    const k=view.k;
+    const maxTier = k<1500?0 : k<2600?1 : k<5200?2 : k<12000?3 : k<30000?4 : 5;
+    const boxes=[]; const ink=css('--ink'); const halo=css('--land');
+    ctx.textBaseline='middle';
+    for(const pl of PLACES_L){
+      if(pl[3]>maxTier) continue;
+      const p=px(pl[2],pl[1]);
+      if(p[0]<-40||p[0]>W+40||p[1]<-20||p[1]>H+20) continue;
+      const major=pl[3]<=1;
+      ctx.font=(major?'600 ':'500 ')+(major?13:11.5)+'px Archivo, system-ui, sans-serif';
+      const tw=ctx.measureText(pl[0]).width, th=major?15:13;
+      const bx=p[0]+7, by=p[1];
+      const box=[bx-3,by-th/2-1,tw+6,th+2];
+      let clash=false;
+      for(const b of boxes){
+        if(box[0]<b[0]+b[2]&&box[0]+box[2]>b[0]&&box[1]<b[1]+b[3]&&box[1]+box[3]>b[1]){clash=true;break;}
+      }
+      if(clash) continue;
+      boxes.push(box);
+      ctx.beginPath(); ctx.arc(p[0],p[1],major?3:2,0,7);
+      ctx.fillStyle=ink; ctx.globalAlpha=major?.62:.42; ctx.fill(); ctx.globalAlpha=1;
+      ctx.lineWidth=3.2; ctx.strokeStyle=halo; ctx.lineJoin='round';
+      ctx.strokeText(pl[0],bx,by);
+      ctx.fillStyle=ink; ctx.globalAlpha=major?.95:.72;
+      ctx.fillText(pl[0],bx,by); ctx.globalAlpha=1;
+      if(boxes.length>420) break;
+    }
+  }
+
+  // --- callout on the selected practice ---
+  if(S.sel!==null && VIS.indexOf(S.sel)>-1){
+    const r=ROWS[S.sel], p=px(r[LON],r[LAT]);
+    const t1=r[N], t2=(D.town[r[TOWN]]||'')+(r[PC]?'  '+r[PC]:'');
+    ctx.font='600 12.5px Archivo, system-ui, sans-serif';
+    const w1=ctx.measureText(t1).width;
+    ctx.font='11.5px "IBM Plex Sans", system-ui, sans-serif';
+    const w2=ctx.measureText(t2).width;
+    const bw=Math.min(260,Math.max(w1,w2))+18, bh=40;
+    let bx=p[0]+14, by=p[1]-bh-12;
+    if(bx+bw>W-8) bx=p[0]-bw-14;
+    if(by<6) by=p[1]+16;
+    ctx.fillStyle=css('--surface'); ctx.strokeStyle=css('--line'); ctx.lineWidth=1;
+    if(ctx.roundRect){ctx.beginPath();ctx.roundRect(bx,by,bw,bh,8);ctx.fill();ctx.stroke();}
+    else {ctx.fillRect(bx,by,bw,bh);ctx.strokeRect(bx,by,bw,bh);}
+    ctx.save(); ctx.beginPath(); ctx.rect(bx,by,bw,bh); ctx.clip();
+    ctx.textBaseline='alphabetic';
+    ctx.font='600 12.5px Archivo, system-ui, sans-serif'; ctx.fillStyle=css('--ink');
+    ctx.fillText(t1,bx+9,by+17);
+    ctx.font='11.5px "IBM Plex Sans", system-ui, sans-serif'; ctx.fillStyle=css('--muted');
+    ctx.fillText(t2,bx+9,by+32);
+    ctx.restore(); ctx.textBaseline='middle';
+  }
+
   // scale bar
   const [lo1]=unpx(0,H/2), [lo2]=unpx(100,H/2);
   const [,la]=unpx(0,H/2);
@@ -726,6 +831,14 @@ function pick(x,y){
   }
   return best;
 }
+el('modeseg').addEventListener('click',e=>{
+  const b=e.target.closest('button'); if(!b) return;
+  [...el('modeseg').children].forEach(x=>x.setAttribute('aria-pressed', x===b));
+  S.mode=b.dataset.v;
+  el('legend-title').textContent = S.mode==='density' ? 'Practice density' : 'Ownership';
+  el('legend-items').style.display = S.mode==='density' ? 'none' : '';
+  draw();
+});
 el('zin').addEventListener('click',()=>{view.k=Math.min(90000,view.k*1.5);draw();});
 el('zout').addEventListener('click',()=>{view.k=Math.max(260,view.k/1.5);draw();});
 el('zfit').addEventListener('click',fit);

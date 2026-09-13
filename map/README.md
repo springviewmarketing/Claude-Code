@@ -10,11 +10,11 @@ Published artifact: https://claude.ai/code/artifact/18838dbf-81b4-45d0-8ed0-4348
 
 | Colour | Meaning | Practices |
 |---|---|---:|
-| Orange | Independent, standalone | 2,211 |
-| Amber | Independent group (2-5 practices) | 1,287 |
-| Violet | Hakim Group (trades as independent) | 283 |
-| Blue | Other group / consolidator (6+) | 516 |
-| Grey | National chain | 2,560 |
+| Orange | Independent, standalone | 2,118 |
+| Amber | Independent group (2-5 practices) | 1,271 |
+| Violet | Hakim Group (trades as independent) | 367 |
+| Blue | Other group / consolidator (6+) | 538 |
+| Grey | National chain | 2,563 |
 
 Warm colours are prospects; cool and grey recede.
 
@@ -94,3 +94,56 @@ Run with `python3 build/serve.py` then `python3 build/xbrowser.py`.
    charset. The page is now pure ASCII, so it renders correctly under any encoding.
 7. **Silent failure.** Any startup error now shows a visible message naming the cause
    instead of an empty page.
+
+
+## Ownership accuracy rebuild
+
+A user reported that Alex Gage Opticians in Sheffield were shown as independent when they
+are Hakim Group. Root-causing that surfaced two separate defects.
+
+**1. Linkage, not detection.** `ALEXANDER GAGE OPTICIANS LIMITED (03213042)` was already in
+the Hakim set. The NHS record trades as "ALEX GAGE OPTICIANS", Companies House registers
+"ALEXANDER GAGE OPTICIANS LIMITED", and linkage was exact-name-only, so no company number
+was attached and the practice silently defaulted to independent. This was systemic: **57% of
+practices had no company linked at all**, and 1,931 of those were called independent purely
+by default. The earlier claim that these were "overwhelmingly sole traders" was wrong.
+
+Fixed by searching Companies House for every unmatched HQ name (`relink.py`) and scoring
+each candidate (`score_links.py`) before accepting it. Scoring uses inverse-document-frequency
+so a shared rare surname (GAGE) outweighs a common one (ALEXANDER) - without that, "Alexander
+Opticians" outranked the correct "Alexander Gage Opticians". Hard gates reject candidates in
+the wrong sector, dissolved companies, and matches resting only on a generic optical word or
+a town name. That last gate matters: earlier drafts matched *Foleshill Eye Centre* to
+*Foleshill MOT Centre*, *Kilburn Eye Centre* to *Kilburn Islamic Centre*, and *Hunmanby
+Opticians* to *Hunmanby Fish Bar*.
+
+Linkage coverage went from 43% to 60% of practices, at a threshold chosen for precision over
+recall - a wrong company link produces a wrong ownership verdict, which is worse than no link.
+
+**2. PSC-only detection missed board control.** Hakim ownership was tested only against
+Persons with Significant Control (25%+ shareholding). Hakim's joint-venture model often
+leaves the optometrist as majority shareholder while Hakim takes a board seat, so the group
+never appears as a PSC. `officers.py` pulls all 528 of Imran Hakim's directorships from the
+Companies House officer register; **75 companies are Hakim-controlled by directorship with no
+Hakim PSC at all**. `hakim_match.py` then matches that known company set onto practices,
+requiring two shared distinctive tokens, a rare shared token, or a registered-address match.
+
+Hakim practices: **284 to 367** (+29%). Independent standalone: 2,211 to 2,118.
+
+**Residual uncertainty is now shown, not hidden.** Every practice carries an
+`OwnershipEvidence` value - verified on Companies House, matched by search, or not verified.
+About 1,500 practices (22%) have ownership resting on NHS data and brand name alone. The map
+marks them `unverified` and has an "Only verified ownership" filter.
+
+## Map reference layers
+
+Practices were previously plotted on a bare coastline with no way to tell where anything was.
+Added a **Places / Plain / Density** mode switch:
+
+- **Places** - town and city labels from the GeoNames GB gazetteer (1,400 settlements,
+  tiered by population), drawn with collision avoidance so labels never overlap, and revealed
+  progressively as you zoom
+- **Plain** - coastline only, for an uncluttered view of the dots
+- **Density** - filtered practices binned into an intensity field so clusters read at a glance
+
+The selected practice also gets a callout on the map showing its name, town and postcode.

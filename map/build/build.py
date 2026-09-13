@@ -23,7 +23,11 @@ for line in open("out/psc_final.jsonl",encoding="utf-8"):
     psc[r["company_number"].strip().upper()].append(d)
 
 HAKIM=re.compile(r'HO2 MANAGEMENT|HAKIM GROUP|EYE ACADEMY',re.I)
-HAKIM_COS=set(json.load(open("out/hakim_all_companies.json")).keys())
+# Hakim = PSC-controlled UNION Imran Hakim's directorships. A PSC-only test misses
+# the JV practices where the optometrist keeps the majority shareholding.
+HAKIM_COS=set(json.load(open("out/hakim_all_companies.json")).keys()) | set(json.load(open("out/hakim_directorships.json")).keys())
+RELINK=json.load(open("out/relinked.json"))          # OrgId -> company found via CH search
+HAKIM_DIRECT=json.load(open("out/hakim_practice_match.json"))  # OrgId -> Hakim company by name
 CHAINS=[("SPECSAVERS","Specsavers"),("BOOTS","Boots Opticians"),("VISION EXPRESS","Vision Express"),
  ("ASDA","Asda Opticians"),("TESCO","Tesco Opticians"),("SCRIVENS","Scrivens"),
  ("COSTCO","Costco Opticians"),("OPTICAL EXPRESS","Optical Express"),("LUXOTTICA","Luxottica/Sunglass Hut"),
@@ -34,6 +38,15 @@ for s in sites:
     h=hqs.get(s["HQ"]) or {}
     hqname=h.get("Name","")
     co=hq2co.get(norm(hqname))
+    linksrc="exact-name" if co else ""
+    if not co and s["OrgId"] in RELINK:
+        rl=RELINK[s["OrgId"]]
+        co={"num":rl["num"],"nm":rl["nm"],"st":"Active"}
+        linksrc="ch-search(%.2f)"%rl["score"]
+    if not co and s["OrgId"] in HAKIM_DIRECT:
+        hd=HAKIM_DIRECT[s["OrgId"]]
+        co={"num":hd["num"],"nm":hd["nm"],"st":"Active"}
+        linksrc="hakim-name(%.2f)"%hd["score"]
     cnum=co["num"] if co else ""
     ds=psc.get(cnum,[]) if cnum else []
     corp=[d for d in ds if "corporate" in d.get("kind","") or "legal-person" in d.get("kind","")]
@@ -42,7 +55,7 @@ for s in sites:
     group=""; owner=""
     corpnames=" | ".join(d.get("name","") for d in corp).upper()
     blob=f"{s['Name']} {hqname} {corpnames}".upper()
-    if cnum and cnum in HAKIM_COS:
+    if s["OrgId"] in HAKIM_DIRECT or (cnum and cnum in HAKIM_COS):
         group="Hakim Group"; owner="HO2 Management Ltd (Hakim Group)"
     for pat,label in CHAINS:
         if group: break
@@ -61,6 +74,7 @@ for s in sites:
       "County":s.get("County",""),"Postcode":s.get("PostCode",""),"Country":s.get("Country",""),
       "OperatingHQ":hqname,"HQ_OrgId":s["HQ"],"CompanyNumber":cnum,
       "CompanyName":co["nm"] if co else "","CompanyStatus":co["st"] if co else "",
+      "LinkSource":linksrc or "unlinked",
       "_group":group,"_owner":owner})
 
 # ultimate-owner key for grouping

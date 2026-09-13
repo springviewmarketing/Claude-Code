@@ -17,7 +17,15 @@ class Dict:
         v=v or ""
         if v not in self.m: self.m[v]=len(self.a); self.a.append(v)
         return self.m[v]
-Dgrp, Down, Dreg, Ddis, Dleg, Dtown, Dhq = (Dict() for _ in range(7))
+Dgrp, Down, Dreg, Ddis, Dleg, Dtown, Dhq, Dco = (Dict() for _ in range(8))
+def evidence(r):
+    """2 = ownership verified against a Companies House record.
+       1 = company matched by search, good but not exact.
+       0 = no company found; ownership from NHS records / brand only."""
+    ls=r.get("LinkSource","unlinked")
+    if ls.startswith("exact-name"): return 2
+    if ls.startswith("ch-search") or ls.startswith("hakim-name"): return 1
+    return 0
 rows=[]; missing=0
 for p in practices:
     g=geo.get(p["Postcode"].strip().upper())
@@ -31,7 +39,8 @@ for p in practices:
         round(g["lat"],5),round(g["lon"],5),catcode(p["OwnershipCategory"]),
         Dgrp.i(p["OwnershipGroup"]),Down.i(p["UltimateOwner"]),int(p["PracticesUnderSameOwner"]),
         web,em,Dreg.i(g.get("region","")),Ddis.i(g.get("district","")),
-        p.get("CompanyNumber",""),Dleg.i(p.get("LegalForm","")),Dhq.i(p.get("OperatingHQ",""))])
+        p.get("CompanyNumber",""),Dleg.i(p.get("LegalForm","")),Dhq.i(p.get("OperatingHQ","")),
+        evidence(p),Dco.i(p.get("CompanyName",""))])
 def centroids(fn):
     acc=collections.defaultdict(lambda:[0,0,0])
     for r in rows:
@@ -46,7 +55,7 @@ for src in (centroids(lambda r: r[3].split()[0].upper() if r[3].strip() else "")
     for k,v in src.items():
         if k and k not in places: places[k]=v
 bundle={"cats":CATS,"rows":rows,"places":places,
- "d":{"grp":Dgrp.a,"own":Down.a,"reg":Dreg.a,"dis":Ddis.a,"leg":Dleg.a,"town":Dtown.a,"hq":Dhq.a},
+ "d":{"grp":Dgrp.a,"own":Down.a,"reg":Dreg.a,"dis":Ddis.a,"leg":Dleg.a,"town":Dtown.a,"hq":Dhq.a,"co":Dco.a},
  "generated":"2026-09-13"}
 json.dump(bundle, open("out/mapdata.json","w"), separators=(",",":"))
 print(f"mapped {len(rows):,} practices ({missing} without coords)")
@@ -54,3 +63,4 @@ print(f"mapdata.json: {os.path.getsize('out/mapdata.json')/1024:.0f} KB  places:
 print("dicts:", {k:len(v) for k,v in bundle["d"].items()})
 print("cats:", collections.Counter(CATS[r[6]] for r in rows))
 print("website:",sum(1 for r in rows if r[10]),"email:",sum(1 for r in rows if r[11]))
+print("evidence:",collections.Counter(r[17] for r in rows))

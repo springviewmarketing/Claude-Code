@@ -17,7 +17,10 @@ def clean_email(em, site):
     if em.count("@")!=1 or len(em)<6: return ""
     return em
 dropped=0
+EV={"exact-name":"Verified on Companies House","ch-search":"Company matched by search",
+    "hakim-name":"Company matched by search","unlinked":"Not verified - NHS data only"}
 for p in practices:
+    p["OwnershipEvidence"]=EV.get((p.get("LinkSource","unlinked")).split("(")[0],"Not verified - NHS data only")
     e=enr.get(p["OrgId"],{})
     p["Website"]=e.get("Website","")
     raw=e.get("Email","")
@@ -109,17 +112,20 @@ blank(2)
 put("SECTION 3 — HAKIM GROUP FOOTPRINT",font=SUB,fill=LBLUE)
 put("Metric","Count","","Notes",font=Font(bold=True),fill=GREY)
 hakco=sum(1 for c in companies if c["OwnershipGroup"]=="Hakim Group")
-hakall=len(json.load(open("out/hakim_all_companies.json")))
+hakall=len(set(json.load(open("out/hakim_all_companies.json"))) | set(json.load(open("out/hakim_directorships.json"))))
 put("NHS practices in England & Wales",hak,"","Practice-level, the most reliable count")
 put("UK optical companies owned by Hakim",hakco,"","Companies House + PSC, incl. Scotland & N. Ireland")
-put("All UK companies under Hakim control",hallk:=hakall,"","Includes audiology (Amplify Hearing), property, dormant")
+put("All UK companies under Hakim control",hallk:=hakall,"","PSC-controlled or Imran Hakim directorship; incl. audiology, property, dormant")
 put("Hakim's own public claim","500+","","UK AND Ireland, incl. audiology - consistent with the above")
 blank()
 put("How Hakim ownership was identified:", font=Font(bold=True))
 put("Hakim practices keep their original local trading names, so name matching finds almost nothing. "
-    "They are identified instead through Companies House Persons with Significant Control (PSC) data: the "
-    "controlling entity is HO2 Management Ltd (and related vehicles) at Unit 317 India Mill Business Centre, "
-    "Darwen BB3 1AE. Every company with an active Hakim-linked PSC was captured.",fill=AMBER)
+    "They are identified through TWO Companies House registers, because either alone misses practices: "
+    "(1) Persons with Significant Control - the controlling entity is HO2 Management Ltd and related "
+    "vehicles at Unit 317 India Mill Business Centre, Darwen BB3 1AE; and (2) DIRECTORSHIPS - Imran Hakim "
+    "holds 528 board seats. Hakim's joint-venture model often leaves the optometrist as majority "
+    "shareholder, so Hakim never appears as a PSC and only the board seat reveals the ownership. "
+    "75 companies were found by directorship alone.",fill=AMBER)
 blank(2)
 
 put("SECTION 4 — COMPANY LEVEL (whole UK, incl. Scotland & N. Ireland)",font=SUB,fill=LBLUE)
@@ -159,8 +165,9 @@ ws.freeze_panes="A3"
 # ---------- PRACTICES ----------
 PC=["PracticeName","Address1","Address2","Town","County","Postcode","Country",
  "OwnershipCategory","OwnershipGroup","UltimateOwner","StandalonePractice","PracticesUnderSameOwner",
- "Website","Email","OperatingHQ","CompanyName","CompanyNumber","CompanyStatus","LegalForm","OrgId"]
-W={"PracticeName":38,"Address1":30,"Address2":22,"OwnershipCategory":30,"OwnershipGroup":26,
+ "OwnershipEvidence","Website","Email","OperatingHQ","CompanyName","CompanyNumber","CompanyStatus",
+ "LegalForm","LinkSource","OrgId"]
+W={"OwnershipEvidence":30,"LinkSource":18,"PracticeName":38,"Address1":30,"Address2":22,"OwnershipCategory":30,"OwnershipGroup":26,
    "UltimateOwner":38,"Website":38,"Email":34,"OperatingHQ":34,"CompanyName":34}
 sheet("All Practices (E&W)",sorted(practices,key=lambda x:(x["OwnershipCategory"],x["PracticeName"])),PC,W)
 ind=[p for p in practices if p["OwnershipCategory"].startswith("Independent")]
@@ -235,9 +242,12 @@ lines=[("METHOD & CAVEATS",TITLE),("",None),
 ("CAVEATS - PLEASE READ",SUB),
 ("* England & Wales only at practice level. NHS ODS holds only 93 Scottish and 11 Northern Irish optical sites,",None),
 ("  because those nations run separate systems. Scotland and N. Ireland ARE covered in the company-level sheet.",None),
-("* Roughly half of NHS optical HQs could not be matched to a limited company. These are overwhelmingly sole",None),
-("  traders and partnerships, which have no Companies House entry - they are independent by definition, and are",None),
-("  classified as such with legal form 'Unincorporated'.",None),
+("* Practices are linked to a company in three ways, recorded per row in 'OwnershipEvidence': an exact name",None),
+("  match, a Companies House search match (scored and verified on name rarity, sector and postcode before being",None),
+("  accepted), or no match at all. 60% of practices now carry a verified company. The remaining 40% are either",None),
+("  national chains identified by brand (ownership certain) or, for about 1,500 practices, businesses whose",None),
+("  ownership rests on NHS data alone. Those are marked 'Not verified' and should be checked before you rely",None),
+("  on the independent label - some will be sole traders, but some are limited companies we could not match.",None),
 ("* Company registered-office postcodes are often the accountant's address, not the practice. Practice postcodes",None),
 ("  in the practice sheets are the real premises.",None),
 ("* Website and email coverage is partial. Domains were found by generating candidates from the trading name and",None),

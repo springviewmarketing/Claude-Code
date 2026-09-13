@@ -4,7 +4,7 @@ def norm(n):
     n=n.replace('&',' AND '); n=re.sub(r'[^A-Z0-9 ]',' ',n)
     return re.sub(r'\s+',' ',n).strip()
 rows=list(csv.DictReader(open("out/universe.csv",encoding="utf-8")))
-HAKIM_COS=set(json.load(open("out/hakim_all_companies.json")).keys())
+HAKIM_COS=set(json.load(open("out/hakim_all_companies.json")).keys()) | set(json.load(open("out/hakim_directorships.json")).keys())
 psc=collections.defaultdict(list)
 for line in open("out/psc_final.jsonl",encoding="utf-8"):
     r=json.loads(line); d=r.get("data",{})
