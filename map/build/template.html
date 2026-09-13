@@ -1,0 +1,739 @@
+<title>Optician Landscape</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;600;700&family=IBM+Plex+Sans:wght@400;500;600&display=swap">
+<style>
+:root{
+  --ground:#F7F9FA; --surface:#FFFFFF; --surface-2:#EEF3F5; --sunken:#E4ECEF;
+  --ink:#0E1B22; --ink-2:#35505B; --muted:#5C7079; --faint:#8AA0A8;
+  --line:#D6E0E4; --line-soft:#E6EDEF;
+  --accent:#0A6E7C; --accent-ink:#FFFFFF; --accent-soft:#D6EBEE;
+  --sea:#E8EFF2; --land:#FDFDFC; --land-line:#C2D2D8;
+  --c0:#E8622C; --c1:#F2A93B; --c2:#7B4FCF; --c3:#2E86C8; --c4:#8EA3AC;
+  --good:#1E7F5C; --warn:#B0741A;
+  --shadow:0 1px 2px rgba(14,27,34,.06),0 6px 20px rgba(14,27,34,.07);
+  --rail:304px; --panel:348px;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --ground:#0B1418; --surface:#111E24; --surface-2:#16262D; --sunken:#0A1317;
+  --ink:#EAF2F4; --ink-2:#B8CCD3; --muted:#8BA3AC; --faint:#65808A;
+  --line:#22363E; --line-soft:#1A2A31;
+  --accent:#4FC5D6; --accent-ink:#04222A; --accent-soft:#12333C;
+  --sea:#0A1418; --land:#16242A; --land-line:#2C444E;
+  --c0:#FF7F49; --c1:#FFC259; --c2:#A98BEA; --c3:#5FAEE8; --c4:#6E848E;
+  --good:#4FBF92; --warn:#D9A045;
+  --shadow:0 1px 2px rgba(0,0,0,.4),0 8px 24px rgba(0,0,0,.35);
+}}
+:root[data-theme="dark"]{
+  --ground:#0B1418; --surface:#111E24; --surface-2:#16262D; --sunken:#0A1317;
+  --ink:#EAF2F4; --ink-2:#B8CCD3; --muted:#8BA3AC; --faint:#65808A;
+  --line:#22363E; --line-soft:#1A2A31;
+  --accent:#4FC5D6; --accent-ink:#04222A; --accent-soft:#12333C;
+  --sea:#0A1418; --land:#16242A; --land-line:#2C444E;
+  --c0:#FF7F49; --c1:#FFC259; --c2:#A98BEA; --c3:#5FAEE8; --c4:#6E848E;
+  --good:#4FBF92; --warn:#D9A045;
+  --shadow:0 1px 2px rgba(0,0,0,.4),0 8px 24px rgba(0,0,0,.35);
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--ground);color:var(--ink);
+  height:100dvh;display:flex;flex-direction:column;overflow:hidden;
+  font-family:"IBM Plex Sans",system-ui,-apple-system,"Segoe UI",sans-serif;
+  font-size:14px;line-height:1.45;-webkit-font-smoothing:antialiased}
+h1,h2,h3,.dsp{font-family:Archivo,"Helvetica Neue",system-ui,sans-serif;letter-spacing:-.01em}
+button,input,select{font:inherit;color:inherit}
+.num{font-variant-numeric:tabular-nums}
+
+/* ---------- shell ---------- */
+header.top{display:flex;align-items:center;gap:16px;flex-wrap:wrap;flex:none;
+  padding:11px 18px;background:var(--surface);border-bottom:1px solid var(--line);z-index:40}
+.brand{display:flex;align-items:baseline;gap:10px;min-width:0}
+.brand h1{margin:0;font-size:17px;font-weight:700}
+.brand .sub{color:var(--muted);font-size:12px;white-space:nowrap}
+.kpis{display:flex;gap:8px;margin-left:auto;flex-wrap:wrap}
+.kpi{background:var(--surface-2);border:1px solid var(--line-soft);border-radius:7px;
+  padding:5px 10px;display:flex;align-items:baseline;gap:7px}
+.kpi b{font-family:Archivo;font-size:15px;font-weight:700}
+.kpi span{font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:.05em}
+.iconbtn{background:var(--surface-2);border:1px solid var(--line);border-radius:7px;
+  padding:6px 11px;cursor:pointer;font-size:12px;font-weight:500}
+.iconbtn:hover{background:var(--accent-soft);border-color:var(--accent)}
+
+.app{display:grid;grid-template-columns:var(--rail) minmax(0,1fr) var(--panel);overflow:hidden;
+  flex:1;min-height:0}
+
+/* ---------- rail ---------- */
+.rail{border-right:1px solid var(--line);background:var(--surface);
+  overflow-y:auto;padding:14px 14px 40px}
+.grp{border-top:1px solid var(--line-soft);padding-top:13px;margin-top:13px}
+.grp:first-child{border-top:0;margin-top:0;padding-top:0}
+.grp>h3{margin:0 0 9px;font-size:11px;font-weight:700;text-transform:uppercase;
+  letter-spacing:.09em;color:var(--muted)}
+.fld{width:100%;background:var(--sunken);border:1px solid var(--line);border-radius:7px;
+  padding:8px 10px;outline:none}
+.fld:focus-visible{border-color:var(--accent);box-shadow:0 0 0 3px var(--accent-soft)}
+.chk{display:flex;align-items:center;gap:9px;padding:5px 6px;border-radius:6px;cursor:pointer}
+.chk:hover{background:var(--surface-2)}
+.chk input{accent-color:var(--accent);width:15px;height:15px;flex:none;margin:0}
+.dot{width:11px;height:11px;border-radius:50%;flex:none;box-shadow:0 0 0 1.5px var(--surface)}
+.chk .lab{flex:1;min-width:0;font-size:13px}
+.chk .ct{font-size:11px;color:var(--muted);font-variant-numeric:tabular-nums}
+.row{display:flex;align-items:center;gap:8px}
+.rng{width:100%;accent-color:var(--accent);margin:6px 0 2px}
+.hint{font-size:11px;color:var(--faint);line-height:1.4}
+.seg{display:flex;background:var(--sunken);border:1px solid var(--line);border-radius:7px;padding:2px;gap:2px}
+.seg button{flex:1;background:transparent;border:0;border-radius:5px;padding:5px 4px;
+  font-size:11.5px;cursor:pointer;color:var(--muted);font-weight:500}
+.seg button[aria-pressed="true"]{background:var(--surface);color:var(--ink);box-shadow:var(--shadow);font-weight:600}
+
+/* ---------- map ---------- */
+.mapwrap{position:relative;background:var(--sea);overflow:hidden}
+#map{display:block;width:100%;height:100%;cursor:grab;touch-action:none}
+#map.drag{cursor:grabbing}
+.legend{position:absolute;left:14px;bottom:14px;background:var(--surface);
+  border:1px solid var(--line);border-radius:9px;padding:10px 12px;box-shadow:var(--shadow);max-width:240px}
+.legend h4{margin:0 0 7px;font-size:10.5px;text-transform:uppercase;letter-spacing:.09em;color:var(--muted);font-family:Archivo}
+.legend .li{display:flex;align-items:center;gap:8px;font-size:12px;padding:2px 0}
+.mapbtns{position:absolute;right:14px;top:14px;display:flex;flex-direction:column;gap:6px}
+.mapbtns button{width:32px;height:32px;border-radius:7px;border:1px solid var(--line);
+  background:var(--surface);cursor:pointer;font-size:15px;line-height:1;box-shadow:var(--shadow);font-weight:600}
+.mapbtns button:hover{background:var(--accent-soft);border-color:var(--accent)}
+.tip{position:absolute;pointer-events:none;background:var(--ink);color:var(--ground);
+  padding:6px 9px;border-radius:6px;font-size:12px;max-width:230px;opacity:0;transition:opacity .12s;z-index:20}
+.tip b{display:block;font-weight:600}
+.tip small{opacity:.75}
+.scalebar{position:absolute;right:14px;bottom:14px;background:var(--surface);border:1px solid var(--line);
+  border-radius:7px;padding:5px 9px;font-size:11px;color:var(--muted);box-shadow:var(--shadow)}
+
+/* ---------- results ---------- */
+.panel{border-left:1px solid var(--line);background:var(--surface);display:flex;flex-direction:column;min-width:0}
+.ptop{padding:12px 14px;border-bottom:1px solid var(--line-soft);display:flex;flex-direction:column;gap:9px}
+.ptop .t{display:flex;align-items:center;gap:8px}
+.ptop h2{margin:0;font-size:14px;font-weight:700}
+.plist{overflow-y:auto;flex:1;padding:6px 8px 30px}
+.card{border:1px solid var(--line-soft);border-radius:9px;padding:10px 11px;margin-bottom:7px;
+  cursor:pointer;background:var(--surface);border-left:3px solid var(--cc,var(--line))}
+.card:hover{border-color:var(--line);background:var(--surface-2)}
+.card[aria-selected="true"]{border-color:var(--accent);background:var(--accent-soft)}
+.card .nm{font-weight:600;font-size:13px;line-height:1.3}
+.card .mt{font-size:11.5px;color:var(--muted);margin-top:2px}
+.card .foot{display:flex;align-items:center;gap:6px;margin-top:7px;flex-wrap:wrap}
+.pill{font-size:10.5px;padding:2px 7px;border-radius:99px;background:var(--surface-2);
+  border:1px solid var(--line-soft);color:var(--ink-2);white-space:nowrap}
+.pill.ok{background:var(--accent-soft);border-color:transparent;color:var(--ink)}
+.pill.no{background:transparent;border-style:dashed;color:var(--muted)}
+.score{margin-left:auto;font-family:Archivo;font-weight:700;font-size:13px;font-variant-numeric:tabular-nums}
+
+/* detail */
+.detail{padding:14px;overflow-y:auto;flex:1}
+.detail h2{margin:0 0 3px;font-size:17px;line-height:1.22}
+.detail .loc{color:var(--muted);font-size:12.5px;margin-bottom:12px}
+.acts{display:flex;gap:7px;flex-wrap:wrap;margin-bottom:14px}
+.btn{display:inline-flex;align-items:center;gap:6px;padding:7px 12px;border-radius:7px;
+  border:1px solid var(--line);background:var(--surface-2);cursor:pointer;font-size:12.5px;
+  font-weight:500;text-decoration:none;color:var(--ink)}
+.btn.pri{background:var(--accent);border-color:var(--accent);color:var(--accent-ink);font-weight:600}
+.btn:hover{filter:brightness(.97)}
+.btn[aria-disabled="true"]{opacity:.45;pointer-events:none}
+dl.kv{margin:0;display:grid;grid-template-columns:104px minmax(0,1fr);gap:7px 12px;font-size:12.5px}
+dl.kv dt{color:var(--muted)}
+dl.kv dd{margin:0;word-break:break-word}
+.scorebox{background:var(--surface-2);border:1px solid var(--line-soft);border-radius:9px;
+  padding:11px 12px;margin-bottom:14px}
+.scorebox .hd{display:flex;align-items:baseline;gap:8px;margin-bottom:6px}
+.scorebox .big{font-family:Archivo;font-size:26px;font-weight:700;line-height:1}
+.scorebox ul{margin:0;padding-left:16px;font-size:11.5px;color:var(--muted)}
+a{color:var(--accent)}
+.empty{padding:34px 20px;text-align:center;color:var(--muted);font-size:13px}
+.note{font-size:11px;color:var(--faint);padding:9px 14px;border-top:1px solid var(--line-soft)}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
+.toast{position:fixed;left:50%;transform:translateX(-50%);bottom:22px;background:var(--ink);
+  color:var(--ground);padding:9px 16px;border-radius:8px;font-size:13px;z-index:90;opacity:0;
+  transition:opacity .2s,transform .2s;pointer-events:none}
+.toast.on{opacity:1;transform:translateX(-50%) translateY(-4px)}
+.mobtabs{display:none}
+@media (max-width:1120px){:root{--rail:266px;--panel:300px}}
+@media (max-width:900px){
+  body{height:auto;overflow:visible}
+  .app{grid-template-columns:1fr;grid-template-rows:auto;height:auto;overflow:visible}
+  .mobtabs{display:flex;gap:2px;padding:8px 14px 0;background:var(--surface)}
+  .mobtabs button{flex:1;padding:8px;border:1px solid var(--line);background:var(--sunken);
+    border-radius:7px;font-size:12.5px;cursor:pointer;font-weight:500}
+  .mobtabs button[aria-pressed="true"]{background:var(--accent);color:var(--accent-ink);border-color:var(--accent)}
+  .rail,.panel{border:0;border-top:1px solid var(--line)}
+  .mapwrap{height:62vh;min-height:380px}
+  .plist{max-height:none}
+  .app>*[hidden]{display:none}
+}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+</style>
+
+<header class="top">
+  <div class="brand">
+    <h1>Optician Landscape</h1>
+    <span class="sub">Who owns whom, practice by practice</span>
+  </div>
+  <div class="kpis">
+    <div class="kpi"><b class="num" id="k-show">0</b><span>shown</span></div>
+    <div class="kpi"><b class="num" id="k-ind">0</b><span>independent</span></div>
+    <div class="kpi"><b class="num" id="k-nw">0</b><span>no website</span></div>
+    <div class="kpi"><b class="num" id="k-em">0</b><span>emailable</span></div>
+  </div>
+  <button class="iconbtn" id="theme" title="Switch light / dark">Theme</button>
+</header>
+
+<div class="mobtabs" role="tablist">
+  <button role="tab" data-pane="rail" aria-pressed="false">Filters</button>
+  <button role="tab" data-pane="map" aria-pressed="true">Map</button>
+  <button role="tab" data-pane="panel" aria-pressed="false">Results</button>
+</div>
+
+<div class="app">
+  <aside class="rail" id="pane-rail">
+    <div class="grp">
+      <h3>Search</h3>
+      <input class="fld" id="q" type="search" placeholder="Practice, town, owner, postcode…" autocomplete="off">
+    </div>
+
+    <div class="grp">
+      <h3>Ownership</h3>
+      <div id="cats"></div>
+    </div>
+
+    <div class="grp">
+      <h3>Outlets under same owner</h3>
+      <div class="row"><input class="rng" id="outmin" type="range" min="1" max="20" value="1"></div>
+      <div class="row" style="justify-content:space-between">
+        <span class="hint">From <b class="num" id="outmin-v">1</b></span>
+        <span class="hint">to <b class="num" id="outmax-v">20+</b></span>
+      </div>
+      <div class="row"><input class="rng" id="outmax" type="range" min="1" max="20" value="20"></div>
+    </div>
+
+    <div class="grp">
+      <h3>Digital presence</h3>
+      <div class="seg" id="webseg" role="group" aria-label="Website filter">
+        <button data-v="any" aria-pressed="true">Any</button>
+        <button data-v="no" aria-pressed="false">No site found</button>
+        <button data-v="yes" aria-pressed="false">Has site</button>
+      </div>
+      <label class="chk" style="margin-top:7px"><input type="checkbox" id="onlyemail">
+        <span class="lab">Only show ones I can email</span></label>
+      <p class="hint">“No site found” is an unverified signal — my search could not confidently match a website, which is often exactly the gap worth a call.</p>
+    </div>
+
+    <div class="grp">
+      <h3>Distance from a point</h3>
+      <input class="fld" id="near" type="search" placeholder="Postcode, town or district…" autocomplete="off" list="places">
+      <datalist id="places"></datalist>
+      <div class="row" style="margin-top:7px"><input class="rng" id="radius" type="range" min="5" max="300" step="5" value="40"></div>
+      <div class="row" style="justify-content:space-between">
+        <span class="hint">Within <b class="num" id="radius-v">40</b> miles</span>
+        <button class="iconbtn" id="clearnear" style="padding:3px 8px;font-size:11px">Clear</button>
+      </div>
+      <p class="hint" id="nearmsg">Or shift-click the map to drop a point.</p>
+    </div>
+
+    <div class="grp">
+      <h3>Region</h3>
+      <select class="fld" id="region"><option value="">All regions</option></select>
+      <select class="fld" id="legal" style="margin-top:7px"><option value="">Any legal form</option></select>
+    </div>
+
+    <div class="grp">
+      <button class="iconbtn" id="reset" style="width:100%;padding:8px">Reset all filters</button>
+    </div>
+
+    <div class="grp">
+      <h3>About this data</h3>
+      <p class="hint">6,857 NHS-registered optical practices. Ownership resolved through
+      Companies House PSC control, so Hakim Group practices are identified even though they
+      trade under their original local names.</p>
+      <p class="hint" style="margin-top:7px">Coverage is England &amp; Wales; NHS Scotland and
+      Northern Ireland publish no equivalent practice list, so only a handful appear.
+      Companies House snapshot 1 Sep 2026, PSC 12 Sep 2026.</p>
+    </div>
+  </aside>
+
+  <div class="mapwrap" id="pane-map">
+    <canvas id="map"></canvas>
+    <div class="mapbtns">
+      <button id="zin" title="Zoom in" aria-label="Zoom in">+</button>
+      <button id="zout" title="Zoom out" aria-label="Zoom out">−</button>
+      <button id="zfit" title="Fit to United Kingdom" aria-label="Fit to United Kingdom">⤢</button>
+    </div>
+    <div class="legend">
+      <h4>Ownership</h4>
+      <div id="legend-items"></div>
+    </div>
+    <div class="tip" id="tip"></div>
+    <div class="scalebar" id="scalebar">—</div>
+  </div>
+
+  <aside class="panel" id="pane-panel">
+    <div class="ptop">
+      <div class="t">
+        <h2 id="ptitle">Targets</h2>
+        <button class="iconbtn" id="back" hidden style="margin-left:auto;padding:4px 9px;font-size:11.5px">← List</button>
+      </div>
+      <div class="row" id="sortrow">
+        <select class="fld" id="sort" style="padding:6px 8px;font-size:12.5px">
+          <option value="score">Sort: opportunity</option>
+          <option value="dist">Sort: nearest</option>
+          <option value="outlets">Sort: most outlets</option>
+          <option value="name">Sort: name A–Z</option>
+          <option value="town">Sort: town A–Z</option>
+        </select>
+        <button class="iconbtn" id="copy" style="white-space:nowrap;padding:6px 10px;font-size:12px">Copy emails</button>
+      </div>
+    </div>
+    <div class="plist" id="plist"></div>
+    <div class="note" id="pnote"></div>
+  </aside>
+</div>
+
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+<script type="application/json" id="DATA">__DATA__</script>
+<script type="application/json" id="BASE">__BASEMAP__</script>
+<script>
+(function(){
+"use strict";
+const DATA = JSON.parse(document.getElementById('DATA').textContent);
+const BASE = JSON.parse(document.getElementById('BASE').textContent);
+const D = DATA.d, ROWS = DATA.rows, CATS = DATA.cats, PLACES = DATA.places;
+// row indices
+const N=0,ADDR=1,TOWN=2,PC=3,LAT=4,LON=5,CAT=6,GRP=7,OWN=8,OUT=9,WEB=10,EMAIL=11,REG=12,DIS=13,CNUM=14,LEG=15,HQ=16;
+const CC = ['--c0','--c1','--c2','--c3','--c4'];
+const css = v => getComputedStyle(document.documentElement).getPropertyValue(v).trim();
+let COL = CC.map(css);
+
+/* ---------- opportunity score ----------
+   Transparent and deliberately simple. Rewards: genuinely independent,
+   no website found (the clearest gap), reachable by email, enough scale to
+   have a budget. Chains score ~0 because they are not sellable prospects. */
+const CATPTS=[42,36,6,12,0];
+function score(r){
+  let s = CATPTS[r[CAT]];
+  if(!r[WEB]) s += 30; else s += 4;
+  if(r[EMAIL]) s += 12;
+  const o=r[OUT];
+  if(o>=2&&o<=5) s += 10; else if(o===1) s += 4;
+  return Math.min(100,s);
+}
+function scoreParts(r){
+  const p=[];
+  p.push([CATS[r[CAT]], CATPTS[r[CAT]]]);
+  p.push([r[WEB]?'Website found':'No website found', r[WEB]?4:30]);
+  if(r[EMAIL]) p.push(['Email address available',12]);
+  const o=r[OUT];
+  p.push([o>=2&&o<=5?('Group of '+o+' — budget, still independent'):(o===1?'Single site':'Large group'), o>=2&&o<=5?10:(o===1?4:0)]);
+  return p;
+}
+const SCORE = ROWS.map(score);
+
+/* ---------- geo ---------- */
+const R2D=180/Math.PI, D2R=Math.PI/180;
+const mx = lon => lon*D2R;
+const my = lat => Math.log(Math.tan(Math.PI/4 + lat*D2R/2));
+function haversine(a,b,c,d){ // miles
+  const dLat=(c-a)*D2R, dLon=(d-b)*D2R;
+  const s=Math.sin(dLat/2)**2 + Math.cos(a*D2R)*Math.cos(c*D2R)*Math.sin(dLon/2)**2;
+  return 7917.5*Math.asin(Math.min(1,Math.sqrt(s)));
+}
+
+/* ---------- state ---------- */
+const S = {
+  q:'', cats:[true,true,true,true,true], outMin:1, outMax:20,
+  web:'any', onlyEmail:false, region:'', legal:'',
+  near:null, radius:40, sort:'score', sel:null
+};
+
+/* ---------- filter controls ---------- */
+const el = id => document.getElementById(id);
+const catsBox = el('cats'), legendBox = el('legend-items');
+CATS.forEach((c,i)=>{
+  const id='cat'+i;
+  const l=document.createElement('label'); l.className='chk';
+  l.innerHTML='<input type="checkbox" id="'+id+'" checked>'+
+    '<span class="dot" style="background:var('+CC[i]+')"></span>'+
+    '<span class="lab">'+c+'</span><span class="ct num" id="ct'+i+'"></span>';
+  l.querySelector('input').addEventListener('change',e=>{S.cats[i]=e.target.checked;apply();});
+  catsBox.appendChild(l);
+  const li=document.createElement('div'); li.className='li';
+  li.innerHTML='<span class="dot" style="background:var('+CC[i]+')"></span><span>'+c+'</span>';
+  legendBox.appendChild(li);
+});
+{
+  const regs=[...new Set(ROWS.map(r=>D.reg[r[REG]]).filter(Boolean))].sort();
+  regs.forEach(r=>{const o=document.createElement('option');o.value=o.textContent=r;el('region').appendChild(o);});
+  D.leg.filter(Boolean).forEach(v=>{const o=document.createElement('option');o.value=o.textContent=v;el('legal').appendChild(o);});
+  const dl=el('places'), keys=Object.keys(PLACES).sort();
+  keys.forEach(k=>{const o=document.createElement('option');o.value=k;dl.appendChild(o);});
+}
+el('q').addEventListener('input',e=>{S.q=e.target.value.trim().toLowerCase();apply();});
+el('outmin').addEventListener('input',e=>{
+  S.outMin=+e.target.value; if(S.outMin>S.outMax){S.outMax=S.outMin;el('outmax').value=S.outMax;}
+  syncOut(); apply();});
+el('outmax').addEventListener('input',e=>{
+  S.outMax=+e.target.value; if(S.outMax<S.outMin){S.outMin=S.outMax;el('outmin').value=S.outMin;}
+  syncOut(); apply();});
+function syncOut(){ el('outmin-v').textContent=S.outMin; el('outmax-v').textContent=S.outMax>=20?'20+':S.outMax; }
+el('webseg').addEventListener('click',e=>{
+  const b=e.target.closest('button'); if(!b)return;
+  [...el('webseg').children].forEach(x=>x.setAttribute('aria-pressed', x===b));
+  S.web=b.dataset.v; apply();});
+el('onlyemail').addEventListener('change',e=>{S.onlyEmail=e.target.checked;apply();});
+el('region').addEventListener('change',e=>{S.region=e.target.value;apply();});
+el('legal').addEventListener('change',e=>{S.legal=e.target.value;apply();});
+el('radius').addEventListener('input',e=>{S.radius=+e.target.value;el('radius-v').textContent=S.radius;apply();});
+el('near').addEventListener('change',setNearFromText);
+el('near').addEventListener('search',setNearFromText);
+function setNearFromText(){
+  const v=el('near').value.trim();
+  if(!v){S.near=null;el('nearmsg').textContent='Or shift-click the map to drop a point.';apply();return;}
+  const key=Object.keys(PLACES).find(k=>k.toLowerCase()===v.toLowerCase())
+        || Object.keys(PLACES).find(k=>k.toLowerCase().startsWith(v.toLowerCase()));
+  if(key){ S.near={lat:PLACES[key][0],lon:PLACES[key][1],label:key};
+    el('nearmsg').textContent='Centred on '+key+'.'; }
+  else { S.near=null; el('nearmsg').textContent='No match for “'+v+'”. Try a postcode district like SW1 or a town.'; }
+  apply();
+}
+el('clearnear').addEventListener('click',()=>{S.near=null;el('near').value='';
+  el('nearmsg').textContent='Or shift-click the map to drop a point.';apply();});
+el('sort').addEventListener('change',e=>{S.sort=e.target.value;render();});
+el('reset').addEventListener('click',()=>{
+  S.q='';S.cats=[true,true,true,true,true];S.outMin=1;S.outMax=20;S.web='any';
+  S.onlyEmail=false;S.region='';S.legal='';S.near=null;S.radius=40;S.sel=null;
+  el('q').value='';el('outmin').value=1;el('outmax').value=20;syncOut();
+  [...el('webseg').children].forEach((x,i)=>x.setAttribute('aria-pressed',i===0));
+  el('onlyemail').checked=false;el('region').value='';el('legal').value='';
+  el('near').value='';el('radius').value=40;el('radius-v').textContent='40';
+  el('nearmsg').textContent='Or shift-click the map to drop a point.';
+  CATS.forEach((_,i)=>el('cat'+i).checked=true);
+  showList(); apply();
+});
+el('theme').addEventListener('click',()=>{
+  const cur=document.documentElement.getAttribute('data-theme');
+  const dark=cur ? cur==='dark' : matchMedia('(prefers-color-scheme:dark)').matches;
+  document.documentElement.setAttribute('data-theme', dark?'light':'dark');
+  COL=CC.map(css); draw(); render();
+});
+
+/* ---------- filtering ---------- */
+let VIS=[], DIST=null;
+function apply(){
+  DIST = S.near ? ROWS.map(r=>haversine(S.near.lat,S.near.lon,r[LAT],r[LON])) : null;
+  const q=S.q;
+  VIS=[];
+  for(let i=0;i<ROWS.length;i++){
+    const r=ROWS[i];
+    if(!S.cats[r[CAT]]) continue;
+    const o=r[OUT];
+    if(o<S.outMin) continue;
+    if(S.outMax<20 && o>S.outMax) continue;
+    if(S.web==='no' && r[WEB]) continue;
+    if(S.web==='yes' && !r[WEB]) continue;
+    if(S.onlyEmail && !r[EMAIL]) continue;
+    if(S.region && D.reg[r[REG]]!==S.region) continue;
+    if(S.legal && D.leg[r[LEG]]!==S.legal) continue;
+    if(DIST && DIST[i]>S.radius) continue;
+    if(q){
+      const hay=(r[N]+' '+D.town[r[TOWN]]+' '+r[PC]+' '+D.own[r[OWN]]+' '+D.grp[r[GRP]]+' '+D.dis[r[DIS]]+' '+D.hq[r[HQ]]).toLowerCase();
+      if(hay.indexOf(q)===-1) continue;
+    }
+    VIS.push(i);
+  }
+  const counts=[0,0,0,0,0];
+  VIS.forEach(i=>counts[ROWS[i][CAT]]++);
+  counts.forEach((c,i)=>el('ct'+i).textContent=c.toLocaleString());
+  el('k-show').textContent=VIS.length.toLocaleString();
+  el('k-ind').textContent=VIS.filter(i=>ROWS[i][CAT]<=1).length.toLocaleString();
+  el('k-nw').textContent=VIS.filter(i=>!ROWS[i][WEB]).length.toLocaleString();
+  el('k-em').textContent=VIS.filter(i=>ROWS[i][EMAIL]).length.toLocaleString();
+  render(); draw();
+}
+
+/* ---------- results ---------- */
+const LIMIT=250;
+function sorted(){
+  const a=VIS.slice();
+  const by={
+    score:(x,y)=>SCORE[y]-SCORE[x] || ROWS[y][OUT]-ROWS[x][OUT]
+                 || (ROWS[y][EMAIL]?1:0)-(ROWS[x][EMAIL]?1:0)
+                 || ROWS[x][N].localeCompare(ROWS[y][N]),
+    outlets:(x,y)=>ROWS[y][OUT]-ROWS[x][OUT] || SCORE[y]-SCORE[x],
+    name:(x,y)=>ROWS[x][N].localeCompare(ROWS[y][N]),
+    town:(x,y)=>D.town[ROWS[x][TOWN]].localeCompare(D.town[ROWS[y][TOWN]])||ROWS[x][N].localeCompare(ROWS[y][N]),
+    dist:(x,y)=>DIST?(DIST[x]-DIST[y]):(SCORE[y]-SCORE[x])
+  };
+  return a.sort(by[S.sort]||by.score);
+}
+function esc(s){return (s||'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));}
+function render(){
+  if(S.sel!==null){ renderDetail(S.sel); return; }
+  const list=el('plist'), arr=sorted();
+  el('ptitle').textContent='Targets';
+  if(!arr.length){ list.innerHTML='<div class="empty">Nothing matches these filters.<br>Try widening the radius or re-enabling a category.</div>';
+    el('pnote').textContent=''; return; }
+  const frag=document.createDocumentFragment();
+  arr.slice(0,LIMIT).forEach(i=>{
+    const r=ROWS[i], d=document.createElement('div');
+    d.className='card'; d.style.setProperty('--cc','var('+CC[r[CAT]]+')');
+    d.dataset.i=i; d.setAttribute('aria-selected','false'); d.tabIndex=0;
+    const bits=[];
+    bits.push('<span class="pill">'+esc(CATS[r[CAT]])+'</span>');
+    if(r[OUT]>1) bits.push('<span class="pill">'+r[OUT]+' outlets</span>');
+    bits.push(r[WEB]?'<span class="pill ok">site</span>':'<span class="pill no">no site</span>');
+    if(r[EMAIL]) bits.push('<span class="pill ok">email</span>');
+    if(DIST) bits.push('<span class="pill">'+DIST[i].toFixed(0)+' mi</span>');
+    d.innerHTML='<div class="nm">'+esc(r[N])+'</div>'+
+      '<div class="mt">'+esc(D.town[r[TOWN]]||'')+(r[PC]?' · '+esc(r[PC]):'')+'</div>'+
+      '<div class="foot">'+bits.join('')+'<span class="score num" style="color:var('+CC[r[CAT]]+')">'+SCORE[i]+'</span></div>';
+    frag.appendChild(d);
+  });
+  list.innerHTML=''; list.appendChild(frag);
+  el('pnote').textContent = arr.length>LIMIT
+    ? 'Showing the top '+LIMIT+' of '+arr.length.toLocaleString()+'. Narrow the filters to see the rest.'
+    : arr.length.toLocaleString()+' practice'+(arr.length===1?'':'s')+' match.';
+}
+el('plist').addEventListener('click',e=>{const c=e.target.closest('.card'); if(c) select(+c.dataset.i);});
+el('plist').addEventListener('keydown',e=>{
+  const c=e.target.closest('.card');
+  if(c&&(e.key==='Enter'||e.key===' ')){e.preventDefault();select(+c.dataset.i);}
+});
+el('back').addEventListener('click',showList);
+function showList(){S.sel=null;el('back').hidden=true;el('sortrow').style.display='';render();draw();}
+function select(i){S.sel=i;el('back').hidden=false;el('sortrow').style.display='none';render();draw();}
+
+function renderDetail(i){
+  const r=ROWS[i];
+  el('ptitle').textContent='Practice';
+  const web=r[WEB]?('https://'+r[WEB]):'';
+  const parts=scoreParts(r);
+  const addr=[r[ADDR],D.town[r[TOWN]],r[PC]].filter(Boolean).map(esc).join(', ');
+  const kv=[
+    ['Ownership',esc(CATS[r[CAT]])],
+    ['Brand / group',esc(D.grp[r[GRP]]||'—')],
+    ['Ultimate owner',esc(D.own[r[OWN]]||'—')],
+    ['Outlets',r[OUT]+(r[OUT]===1?' (standalone)':' under this owner')],
+    ['Operating co.',esc(D.hq[r[HQ]]||'—')],
+    ['Legal form',esc(D.leg[r[LEG]]||'—')],
+    ['Company no.', r[CNUM]?'<a href="https://find-and-update.company-information.service.gov.uk/company/'+esc(r[CNUM])+'" target="_blank" rel="noopener">'+esc(r[CNUM])+'</a>':'—'],
+    ['Region',esc(D.reg[r[REG]]||'—')],
+    ['District',esc(D.dis[r[DIS]]||'—')],
+    ['Address',addr||'—'],
+    ['Website', web?'<a href="'+esc(web)+'" target="_blank" rel="noopener">'+esc(r[WEB])+'</a>':'<span style="color:var(--muted)">none found</span>'],
+    ['Email', r[EMAIL]?'<a href="mailto:'+esc(r[EMAIL])+'">'+esc(r[EMAIL])+'</a>':'<span style="color:var(--muted)">none found</span>']
+  ];
+  if(DIST) kv.splice(1,0,['Distance',DIST[i].toFixed(1)+' miles from '+esc(S.near.label)]);
+  el('plist').innerHTML=
+    '<div class="detail">'+
+      '<h2>'+esc(r[N])+'</h2>'+
+      '<div class="loc">'+esc(D.town[r[TOWN]]||'')+(r[PC]?' · '+esc(r[PC]):'')+'</div>'+
+      '<div class="acts">'+
+        (web?'<a class="btn pri" href="'+esc(web)+'" target="_blank" rel="noopener">Open website ↗</a>'
+            :'<span class="btn" aria-disabled="true">No website found</span>')+
+        (r[EMAIL]?'<a class="btn" href="mailto:'+esc(r[EMAIL])+'">Email</a>':'')+
+        '<a class="btn" target="_blank" rel="noopener" href="https://www.google.com/search?q='+
+          encodeURIComponent(r[N]+' opticians '+(D.town[r[TOWN]]||'')+' '+r[PC])+'">Search ↗</a>'+
+      '</div>'+
+      '<div class="scorebox">'+
+        '<div class="hd"><span class="big" style="color:var('+CC[r[CAT]]+')">'+SCORE[i]+'</span>'+
+        '<span style="font-size:12px;color:var(--muted)">opportunity score</span></div>'+
+        '<ul>'+parts.map(p=>'<li>'+esc(p[0])+' <b>+'+p[1]+'</b></li>').join('')+'</ul>'+
+      '</div>'+
+      '<dl class="kv">'+kv.map(k=>'<dt>'+k[0]+'</dt><dd>'+k[1]+'</dd>').join('')+'</dl>'+
+    '</div>';
+  el('pnote').textContent='';
+}
+
+/* ---------- copy emails ---------- */
+el('copy').addEventListener('click',()=>{
+  const ems=[...new Set(sorted().map(i=>ROWS[i][EMAIL]).filter(Boolean))];
+  if(!ems.length){toast('No email addresses in this selection.');return;}
+  const txt=ems.join(', ');
+  const done=()=>toast(ems.length+' address'+(ems.length===1?'':'es')+' copied.');
+  if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(txt).then(done,()=>fallback(txt,done));}
+  else fallback(txt,done);
+});
+function fallback(txt,done){
+  const t=document.createElement('textarea'); t.value=txt; t.style.position='fixed'; t.style.opacity='0';
+  document.body.appendChild(t); t.select();
+  try{document.execCommand('copy'); done();}catch(e){toast('Copy failed — select the list manually.');}
+  t.remove();
+}
+let toastT;
+function toast(m){const t=el('toast');t.textContent=m;t.classList.add('on');
+  clearTimeout(toastT);toastT=setTimeout(()=>t.classList.remove('on'),2400);}
+
+/* ---------- map ---------- */
+const cv=el('map'), ctx=cv.getContext('2d');
+const view={cx:mx(-3.2),cy:my(54.6),k:1200};
+let W=0,H=0,DPR=1;
+function resize(){
+  const b=cv.parentElement.getBoundingClientRect();
+  DPR=Math.min(2,window.devicePixelRatio||1);
+  W=Math.max(120,b.width); H=Math.max(120,b.height);
+  cv.width=W*DPR; cv.height=H*DPR; cv.style.width=W+'px'; cv.style.height=H+'px';
+  ctx.setTransform(DPR,0,0,DPR,0,0); draw();
+}
+const px = (lon,lat) => [ (mx(lon)-view.cx)*view.k + W/2, -(my(lat)-view.cy)*view.k + H/2 ];
+function unpx(x,y){
+  const lon=((x-W/2)/view.k + view.cx)*R2D;
+  const t=-(y-H/2)/view.k + view.cy;
+  const lat=(2*Math.atan(Math.exp(t))-Math.PI/2)*R2D;
+  return [lon,lat];
+}
+function fit(){
+  const b={w:-6.4,e:1.9,s:49.9,n:58.7};
+  const kx=W/(mx(b.e)-mx(b.w)), ky=H/(my(b.n)-my(b.s));
+  view.k=Math.min(kx,ky)*0.94;
+  view.cx=(mx(b.e)+mx(b.w))/2; view.cy=(my(b.n)+my(b.s))/2;
+  draw();
+}
+function draw(){
+  if(!W) return;
+  ctx.clearRect(0,0,W,H);
+  ctx.fillStyle=css('--sea'); ctx.fillRect(0,0,W,H);
+  // land
+  ctx.lineJoin='round';
+  ctx.fillStyle=css('--land'); ctx.strokeStyle=css('--land-line'); ctx.lineWidth=0.8;
+  BASE.features.forEach(f=>{
+    f.polys.forEach(poly=>{
+      ctx.beginPath();
+      poly.forEach(ring=>{
+        for(let i=0;i<ring.length;i++){
+          const p=px(ring[i][0],ring[i][1]);
+          if(i===0) ctx.moveTo(p[0],p[1]); else ctx.lineTo(p[0],p[1]);
+        }
+        ctx.closePath();
+      });
+      ctx.fill('evenodd'); ctx.stroke();
+    });
+  });
+  // radius ring
+  if(S.near){
+    ctx.beginPath();
+    for(let a=0;a<=360;a+=4){
+      const br=a*D2R, dr=S.radius/3958.8;
+      const la1=S.near.lat*D2R, lo1=S.near.lon*D2R;
+      const la2=Math.asin(Math.sin(la1)*Math.cos(dr)+Math.cos(la1)*Math.sin(dr)*Math.cos(br));
+      const lo2=lo1+Math.atan2(Math.sin(br)*Math.sin(dr)*Math.cos(la1),Math.cos(dr)-Math.sin(la1)*Math.sin(la2));
+      const p=px(lo2*R2D,la2*R2D);
+      if(a===0) ctx.moveTo(p[0],p[1]); else ctx.lineTo(p[0],p[1]);
+    }
+    ctx.closePath();
+    ctx.fillStyle=css('--accent')+'18'; ctx.fill();
+    ctx.strokeStyle=css('--accent'); ctx.setLineDash([5,4]); ctx.lineWidth=1.3; ctx.stroke(); ctx.setLineDash([]);
+    const c=px(S.near.lon,S.near.lat);
+    ctx.beginPath(); ctx.arc(c[0],c[1],4.5,0,7); ctx.fillStyle=css('--accent'); ctx.fill();
+    ctx.lineWidth=2; ctx.strokeStyle=css('--surface'); ctx.stroke();
+  }
+  // points, largest-owner first so singles land on top
+  const order=VIS.slice().sort((a,b)=>ROWS[b][OUT]-ROWS[a][OUT]);
+  const zf=Math.min(2.2,Math.max(.75,view.k/1400));
+  for(const i of order){
+    const r=ROWS[i], p=px(r[LON],r[LAT]);
+    if(p[0]<-20||p[0]>W+20||p[1]<-20||p[1]>H+20) continue;
+    const rad=(r[OUT]>=6?3.2:r[OUT]>=2?2.9:2.6)*zf;
+    ctx.beginPath(); ctx.arc(p[0],p[1],rad,0,7);
+    ctx.fillStyle=COL[r[CAT]];
+    ctx.globalAlpha=r[CAT]===4?0.55:0.92;
+    ctx.fill(); ctx.globalAlpha=1;
+  }
+  if(S.sel!==null && VIS.indexOf(S.sel)>-1){
+    const r=ROWS[S.sel], p=px(r[LON],r[LAT]);
+    ctx.beginPath(); ctx.arc(p[0],p[1],9*zf,0,7);
+    ctx.strokeStyle=css('--ink'); ctx.lineWidth=2; ctx.stroke();
+    ctx.beginPath(); ctx.arc(p[0],p[1],3.4*zf,0,7);
+    ctx.fillStyle=COL[r[CAT]]; ctx.fill();
+  }
+  // scale bar
+  const [lo1]=unpx(0,H/2), [lo2]=unpx(100,H/2);
+  const [,la]=unpx(0,H/2);
+  const miles=haversine(la,lo1,la,lo2);
+  el('scalebar').textContent='100 px ≈ '+(miles<10?miles.toFixed(1):Math.round(miles))+' mi';
+}
+/* interaction */
+let drag=null;
+cv.addEventListener('pointerdown',e=>{
+  if(e.shiftKey){
+    const b=cv.getBoundingClientRect();
+    const [lon,lat]=unpx(e.clientX-b.left,e.clientY-b.top);
+    S.near={lat,lon,label:'map point'}; el('near').value='';
+    el('nearmsg').textContent='Centred on your map point.'; apply(); return;
+  }
+  drag={x:e.clientX,y:e.clientY,cx:view.cx,cy:view.cy,moved:0};
+  cv.setPointerCapture(e.pointerId); cv.classList.add('drag');
+});
+cv.addEventListener('pointermove',e=>{
+  const b=cv.getBoundingClientRect(), mxp=e.clientX-b.left, myp=e.clientY-b.top;
+  if(drag){
+    const dx=e.clientX-drag.x, dy=e.clientY-drag.y;
+    drag.moved=Math.max(drag.moved,Math.abs(dx)+Math.abs(dy));
+    view.cx=drag.cx-dx/view.k; view.cy=drag.cy+dy/view.k; draw(); hideTip(); return;
+  }
+  const i=pick(mxp,myp);
+  if(i===null){hideTip();return;}
+  const r=ROWS[i], t=el('tip');
+  t.innerHTML='<b>'+esc(r[N])+'</b><small>'+esc(D.town[r[TOWN]]||'')+' · '+esc(CATS[r[CAT]])+
+    (r[OUT]>1?' · '+r[OUT]+' outlets':'')+'</small>';
+  t.style.opacity='1';
+  t.style.left=Math.min(W-235,mxp+14)+'px'; t.style.top=Math.max(4,myp-10)+'px';
+});
+cv.addEventListener('pointerup',e=>{
+  if(drag&&drag.moved<5){
+    const b=cv.getBoundingClientRect();
+    const i=pick(e.clientX-b.left,e.clientY-b.top);
+    if(i!==null) select(i); else showList();
+  }
+  drag=null; cv.classList.remove('drag');
+});
+cv.addEventListener('pointerleave',()=>{hideTip();});
+function hideTip(){el('tip').style.opacity='0';}
+cv.addEventListener('wheel',e=>{
+  e.preventDefault();
+  const b=cv.getBoundingClientRect(), mxp=e.clientX-b.left, myp=e.clientY-b.top;
+  const before=unpx(mxp,myp);
+  const f=Math.exp(-e.deltaY*0.0016);
+  view.k=Math.max(260,Math.min(90000,view.k*f));
+  const after=unpx(mxp,myp);
+  view.cx+=mx(before[0])-mx(after[0]); view.cy+=my(before[1])-my(after[1]);
+  draw();
+},{passive:false});
+function pick(x,y){
+  let best=null,bd=144;
+  for(const i of VIS){
+    const r=ROWS[i], p=px(r[LON],r[LAT]);
+    const d=(p[0]-x)*(p[0]-x)+(p[1]-y)*(p[1]-y);
+    if(d<bd){bd=d;best=i;}
+  }
+  return best;
+}
+el('zin').addEventListener('click',()=>{view.k=Math.min(90000,view.k*1.5);draw();});
+el('zout').addEventListener('click',()=>{view.k=Math.max(260,view.k/1.5);draw();});
+el('zfit').addEventListener('click',fit);
+
+/* mobile panes */
+const panes={rail:el('pane-rail'),map:el('pane-map'),panel:el('pane-panel')};
+function setPane(name){
+  const mob=matchMedia('(max-width:900px)').matches;
+  Object.entries(panes).forEach(([k,v])=>{ v.hidden = mob && k!==name; });
+  [...document.querySelectorAll('.mobtabs button')].forEach(b=>b.setAttribute('aria-pressed',b.dataset.pane===name));
+  if(name==='map') requestAnimationFrame(resize);
+}
+document.querySelector('.mobtabs').addEventListener('click',e=>{
+  const b=e.target.closest('button'); if(b) setPane(b.dataset.pane);
+});
+matchMedia('(max-width:900px)').addEventListener('change',()=>{
+  const mob=matchMedia('(max-width:900px)').matches;
+  if(!mob) Object.values(panes).forEach(v=>v.hidden=false); else setPane('map');
+  requestAnimationFrame(resize);
+});
+
+window.addEventListener('resize',()=>requestAnimationFrame(resize));
+syncOut();
+resize(); fit(); apply();
+if(matchMedia('(max-width:900px)').matches) setPane('map');
+})();
+</script>
