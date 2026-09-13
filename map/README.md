@@ -63,3 +63,34 @@ Scripts in `build/`, run in order against the data sources documented in
 England & Wales. NHS Scotland and Northern Ireland publish no equivalent practice list,
 so only a handful of their practices appear. Scotland and NI companies are covered in the
 spreadsheet's company-level sheet instead.
+
+## Cross-browser testing
+
+`build/xbrowser.py` drives Chromium, Firefox and WebKit (the Safari engine) through the
+page and asserts it actually works: canvas sized, pixels painted, results rendered,
+radius filter, detail panel, dark mode, zoom, reset, no JS errors, no horizontal scroll.
+It checks three contexts each: desktop 1440x900, phone 390x844, and embedded in an iframe
+that is laid out *after* load (`build/host.html`), which is how the artifact host renders it.
+
+Run with `python3 build/serve.py` then `python3 build/xbrowser.py`.
+
+### Bugs this caught
+
+1. **Blocking web font stopped the page dead.** The Google Fonts stylesheet sat in the
+   head, and a pending stylesheet blocks execution of every script after it. When that
+   request was slow, blocked or unreachable, the main script never ran and the page stayed
+   blank forever, with `document.readyState` stuck at `loading`. Now loaded via
+   `media="print"` + `onload`, so fonts can never block the app.
+2. **Grid row sized to content.** `.app` had no explicit row track, so the row grew to its
+   tallest child (the 250-card results list, ~24,000px) and pushed the map out of view when
+   embedded. Fixed with `grid-template-rows:minmax(0,1fr)` and `min-height:0` on children.
+3. **`100dvh` with no fallback** collapsed the layout on older Safari and Firefox.
+4. **Canvas never resized** if its container was laid out after the script ran. Now tracked
+   with a `ResizeObserver`, with a polling fallback, and the initial fit is deferred until
+   the canvas has a real size.
+5. **`MediaQueryList.addEventListener` threw on older Safari**, and sat before init, so one
+   TypeError blanked the whole page. Feature-detected with an `addListener` fallback.
+6. **Mojibake** (`Fareham Â· PO14 2LE`) whenever the page was served without a UTF-8
+   charset. The page is now pure ASCII, so it renders correctly under any encoding.
+7. **Silent failure.** Any startup error now shows a visible message naming the cause
+   instead of an empty page.

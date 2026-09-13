@@ -1,7 +1,7 @@
 <title>Optician Landscape</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;600;700&family=IBM+Plex+Sans:wght@400;500;600&display=swap">
+<link rel="stylesheet" media="print" onload="this.media='all';this.onload=null" href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;600;700&family=IBM+Plex+Sans:wght@400;500;600&display=swap">
 <style>
 :root{
   --ground:#F7F9FA; --surface:#FFFFFF; --surface-2:#EEF3F5; --sunken:#E4ECEF;
@@ -36,7 +36,7 @@
 }
 *{box-sizing:border-box}
 body{margin:0;background:var(--ground);color:var(--ink);
-  height:100dvh;display:flex;flex-direction:column;overflow:hidden;
+  height:100vh;height:100dvh;display:flex;flex-direction:column;overflow:hidden;
   font-family:"IBM Plex Sans",system-ui,-apple-system,"Segoe UI",sans-serif;
   font-size:14px;line-height:1.45;-webkit-font-smoothing:antialiased}
 h1,h2,h3,.dsp{font-family:Archivo,"Helvetica Neue",system-ui,sans-serif;letter-spacing:-.01em}
@@ -58,8 +58,9 @@ header.top{display:flex;align-items:center;gap:16px;flex-wrap:wrap;flex:none;
   padding:6px 11px;cursor:pointer;font-size:12px;font-weight:500}
 .iconbtn:hover{background:var(--accent-soft);border-color:var(--accent)}
 
-.app{display:grid;grid-template-columns:var(--rail) minmax(0,1fr) var(--panel);overflow:hidden;
-  flex:1;min-height:0}
+.app{display:grid;grid-template-columns:var(--rail) minmax(0,1fr) var(--panel);
+  grid-template-rows:minmax(0,1fr);overflow:hidden;flex:1;min-height:0}
+.app>*{min-height:0;min-width:0}
 
 /* ---------- rail ---------- */
 .rail{border-right:1px solid var(--line);background:var(--surface);
@@ -160,7 +161,7 @@ a{color:var(--accent)}
     border-radius:7px;font-size:12.5px;cursor:pointer;font-weight:500}
   .mobtabs button[aria-pressed="true"]{background:var(--accent);color:var(--accent-ink);border-color:var(--accent)}
   .rail,.panel{border:0;border-top:1px solid var(--line)}
-  .mapwrap{height:62vh;min-height:380px}
+  .mapwrap{height:62vh;height:62dvh;min-height:380px}
   .plist{max-height:none}
   .app>*[hidden]{display:none}
 }
@@ -191,7 +192,7 @@ a{color:var(--accent)}
   <aside class="rail" id="pane-rail">
     <div class="grp">
       <h3>Search</h3>
-      <input class="fld" id="q" type="search" placeholder="Practice, town, owner, postcode…" autocomplete="off">
+      <input class="fld" id="q" type="search" placeholder="Practice, town, owner, postcode&#x2026;" autocomplete="off">
     </div>
 
     <div class="grp">
@@ -218,12 +219,12 @@ a{color:var(--accent)}
       </div>
       <label class="chk" style="margin-top:7px"><input type="checkbox" id="onlyemail">
         <span class="lab">Only show ones I can email</span></label>
-      <p class="hint">“No site found” is an unverified signal — my search could not confidently match a website, which is often exactly the gap worth a call.</p>
+      <p class="hint">&#x201C;No site found&#x201D; is an unverified signal &#x2014; my search could not confidently match a website, which is often exactly the gap worth a call.</p>
     </div>
 
     <div class="grp">
       <h3>Distance from a point</h3>
-      <input class="fld" id="near" type="search" placeholder="Postcode, town or district…" autocomplete="off" list="places">
+      <input class="fld" id="near" type="search" placeholder="Postcode, town or district&#x2026;" autocomplete="off" list="places">
       <datalist id="places"></datalist>
       <div class="row" style="margin-top:7px"><input class="rng" id="radius" type="range" min="5" max="300" step="5" value="40"></div>
       <div class="row" style="justify-content:space-between">
@@ -258,30 +259,30 @@ a{color:var(--accent)}
     <canvas id="map"></canvas>
     <div class="mapbtns">
       <button id="zin" title="Zoom in" aria-label="Zoom in">+</button>
-      <button id="zout" title="Zoom out" aria-label="Zoom out">−</button>
-      <button id="zfit" title="Fit to United Kingdom" aria-label="Fit to United Kingdom">⤢</button>
+      <button id="zout" title="Zoom out" aria-label="Zoom out">&#x2212;</button>
+      <button id="zfit" title="Fit to United Kingdom" aria-label="Fit to United Kingdom">&#x2922;</button>
     </div>
     <div class="legend">
       <h4>Ownership</h4>
       <div id="legend-items"></div>
     </div>
     <div class="tip" id="tip"></div>
-    <div class="scalebar" id="scalebar">—</div>
+    <div class="scalebar" id="scalebar">&#x2014;</div>
   </div>
 
   <aside class="panel" id="pane-panel">
     <div class="ptop">
       <div class="t">
         <h2 id="ptitle">Targets</h2>
-        <button class="iconbtn" id="back" hidden style="margin-left:auto;padding:4px 9px;font-size:11.5px">← List</button>
+        <button class="iconbtn" id="back" hidden style="margin-left:auto;padding:4px 9px;font-size:11.5px">&#x2190; List</button>
       </div>
       <div class="row" id="sortrow">
         <select class="fld" id="sort" style="padding:6px 8px;font-size:12.5px">
           <option value="score">Sort: opportunity</option>
           <option value="dist">Sort: nearest</option>
           <option value="outlets">Sort: most outlets</option>
-          <option value="name">Sort: name A–Z</option>
-          <option value="town">Sort: town A–Z</option>
+          <option value="name">Sort: name A&#x2013;Z</option>
+          <option value="town">Sort: town A&#x2013;Z</option>
         </select>
         <button class="iconbtn" id="copy" style="white-space:nowrap;padding:6px 10px;font-size:12px">Copy emails</button>
       </div>
@@ -298,6 +299,16 @@ a{color:var(--accent)}
 <script>
 (function(){
 "use strict";
+function fatal(e){
+  try{
+    var d=document.createElement('div');
+    d.style.cssText='padding:22px;font:14px/1.5 system-ui;color:#8a2f1a;background:#fdf1ec';
+    d.textContent='The map could not start in this browser ('+(e&&e.message?e.message:e)+
+      '). Please try a different browser, or let me know what you are using.';
+    document.body.insertBefore(d,document.body.firstChild);
+  }catch(_){}
+}
+try{
 const DATA = JSON.parse(document.getElementById('DATA').textContent);
 const BASE = JSON.parse(document.getElementById('BASE').textContent);
 const D = DATA.d, ROWS = DATA.rows, CATS = DATA.cats, PLACES = DATA.places;
@@ -326,7 +337,7 @@ function scoreParts(r){
   p.push([r[WEB]?'Website found':'No website found', r[WEB]?4:30]);
   if(r[EMAIL]) p.push(['Email address available',12]);
   const o=r[OUT];
-  p.push([o>=2&&o<=5?('Group of '+o+' — budget, still independent'):(o===1?'Single site':'Large group'), o>=2&&o<=5?10:(o===1?4:0)]);
+  p.push([o>=2&&o<=5?('Group of '+o+' \u2014 budget, still independent'):(o===1?'Single site':'Large group'), o>=2&&o<=5?10:(o===1?4:0)]);
   return p;
 }
 const SCORE = ROWS.map(score);
@@ -395,7 +406,7 @@ function setNearFromText(){
         || Object.keys(PLACES).find(k=>k.toLowerCase().startsWith(v.toLowerCase()));
   if(key){ S.near={lat:PLACES[key][0],lon:PLACES[key][1],label:key};
     el('nearmsg').textContent='Centred on '+key+'.'; }
-  else { S.near=null; el('nearmsg').textContent='No match for “'+v+'”. Try a postcode district like SW1 or a town.'; }
+  else { S.near=null; el('nearmsg').textContent='No match for \u201C'+v+'\u201D. Try a postcode district like SW1 or a town.'; }
   apply();
 }
 el('clearnear').addEventListener('click',()=>{S.near=null;el('near').value='';
@@ -487,7 +498,7 @@ function render(){
     if(r[EMAIL]) bits.push('<span class="pill ok">email</span>');
     if(DIST) bits.push('<span class="pill">'+DIST[i].toFixed(0)+' mi</span>');
     d.innerHTML='<div class="nm">'+esc(r[N])+'</div>'+
-      '<div class="mt">'+esc(D.town[r[TOWN]]||'')+(r[PC]?' · '+esc(r[PC]):'')+'</div>'+
+      '<div class="mt">'+esc(D.town[r[TOWN]]||'')+(r[PC]?' \u00B7 '+esc(r[PC]):'')+'</div>'+
       '<div class="foot">'+bits.join('')+'<span class="score num" style="color:var('+CC[r[CAT]]+')">'+SCORE[i]+'</span></div>';
     frag.appendChild(d);
   });
@@ -513,15 +524,15 @@ function renderDetail(i){
   const addr=[r[ADDR],D.town[r[TOWN]],r[PC]].filter(Boolean).map(esc).join(', ');
   const kv=[
     ['Ownership',esc(CATS[r[CAT]])],
-    ['Brand / group',esc(D.grp[r[GRP]]||'—')],
-    ['Ultimate owner',esc(D.own[r[OWN]]||'—')],
+    ['Brand / group',esc(D.grp[r[GRP]]||'\u2014')],
+    ['Ultimate owner',esc(D.own[r[OWN]]||'\u2014')],
     ['Outlets',r[OUT]+(r[OUT]===1?' (standalone)':' under this owner')],
-    ['Operating co.',esc(D.hq[r[HQ]]||'—')],
-    ['Legal form',esc(D.leg[r[LEG]]||'—')],
-    ['Company no.', r[CNUM]?'<a href="https://find-and-update.company-information.service.gov.uk/company/'+esc(r[CNUM])+'" target="_blank" rel="noopener">'+esc(r[CNUM])+'</a>':'—'],
-    ['Region',esc(D.reg[r[REG]]||'—')],
-    ['District',esc(D.dis[r[DIS]]||'—')],
-    ['Address',addr||'—'],
+    ['Operating co.',esc(D.hq[r[HQ]]||'\u2014')],
+    ['Legal form',esc(D.leg[r[LEG]]||'\u2014')],
+    ['Company no.', r[CNUM]?'<a href="https://find-and-update.company-information.service.gov.uk/company/'+esc(r[CNUM])+'" target="_blank" rel="noopener">'+esc(r[CNUM])+'</a>':'\u2014'],
+    ['Region',esc(D.reg[r[REG]]||'\u2014')],
+    ['District',esc(D.dis[r[DIS]]||'\u2014')],
+    ['Address',addr||'\u2014'],
     ['Website', web?'<a href="'+esc(web)+'" target="_blank" rel="noopener">'+esc(r[WEB])+'</a>':'<span style="color:var(--muted)">none found</span>'],
     ['Email', r[EMAIL]?'<a href="mailto:'+esc(r[EMAIL])+'">'+esc(r[EMAIL])+'</a>':'<span style="color:var(--muted)">none found</span>']
   ];
@@ -529,13 +540,13 @@ function renderDetail(i){
   el('plist').innerHTML=
     '<div class="detail">'+
       '<h2>'+esc(r[N])+'</h2>'+
-      '<div class="loc">'+esc(D.town[r[TOWN]]||'')+(r[PC]?' · '+esc(r[PC]):'')+'</div>'+
+      '<div class="loc">'+esc(D.town[r[TOWN]]||'')+(r[PC]?' \u00B7 '+esc(r[PC]):'')+'</div>'+
       '<div class="acts">'+
-        (web?'<a class="btn pri" href="'+esc(web)+'" target="_blank" rel="noopener">Open website ↗</a>'
+        (web?'<a class="btn pri" href="'+esc(web)+'" target="_blank" rel="noopener">Open website \u2197</a>'
             :'<span class="btn" aria-disabled="true">No website found</span>')+
         (r[EMAIL]?'<a class="btn" href="mailto:'+esc(r[EMAIL])+'">Email</a>':'')+
         '<a class="btn" target="_blank" rel="noopener" href="https://www.google.com/search?q='+
-          encodeURIComponent(r[N]+' opticians '+(D.town[r[TOWN]]||'')+' '+r[PC])+'">Search ↗</a>'+
+          encodeURIComponent(r[N]+' opticians '+(D.town[r[TOWN]]||'')+' '+r[PC])+'">Search \u2197</a>'+
       '</div>'+
       '<div class="scorebox">'+
         '<div class="hd"><span class="big" style="color:var('+CC[r[CAT]]+')">'+SCORE[i]+'</span>'+
@@ -559,7 +570,7 @@ el('copy').addEventListener('click',()=>{
 function fallback(txt,done){
   const t=document.createElement('textarea'); t.value=txt; t.style.position='fixed'; t.style.opacity='0';
   document.body.appendChild(t); t.select();
-  try{document.execCommand('copy'); done();}catch(e){toast('Copy failed — select the list manually.');}
+  try{document.execCommand('copy'); done();}catch(e){toast('Copy failed \u2014 select the list manually.');}
   t.remove();
 }
 let toastT;
@@ -570,12 +581,17 @@ function toast(m){const t=el('toast');t.textContent=m;t.classList.add('on');
 const cv=el('map'), ctx=cv.getContext('2d');
 const view={cx:mx(-3.2),cy:my(54.6),k:1200};
 let W=0,H=0,DPR=1;
+let sized=false;
 function resize(){
   const b=cv.parentElement.getBoundingClientRect();
+  const w=Math.round(b.width), h=Math.round(b.height);
+  if(w<40||h<40){ return; }              // container not laid out yet - wait for the observer
   DPR=Math.min(2,window.devicePixelRatio||1);
-  W=Math.max(120,b.width); H=Math.max(120,b.height);
-  cv.width=W*DPR; cv.height=H*DPR; cv.style.width=W+'px'; cv.style.height=H+'px';
-  ctx.setTransform(DPR,0,0,DPR,0,0); draw();
+  W=w; H=h;
+  cv.width=Math.round(W*DPR); cv.height=Math.round(H*DPR);
+  cv.style.width=W+'px'; cv.style.height=H+'px';
+  ctx.setTransform(DPR,0,0,DPR,0,0);
+  if(!sized){ sized=true; fit(); } else { draw(); }
 }
 const px = (lon,lat) => [ (mx(lon)-view.cx)*view.k + W/2, -(my(lat)-view.cy)*view.k + H/2 ];
 function unpx(x,y){
@@ -652,7 +668,7 @@ function draw(){
   const [lo1]=unpx(0,H/2), [lo2]=unpx(100,H/2);
   const [,la]=unpx(0,H/2);
   const miles=haversine(la,lo1,la,lo2);
-  el('scalebar').textContent='100 px ≈ '+(miles<10?miles.toFixed(1):Math.round(miles))+' mi';
+  el('scalebar').textContent='100 px \u2248 '+(miles<10?miles.toFixed(1):Math.round(miles))+' mi';
 }
 /* interaction */
 let drag=null;
@@ -676,8 +692,8 @@ cv.addEventListener('pointermove',e=>{
   const i=pick(mxp,myp);
   if(i===null){hideTip();return;}
   const r=ROWS[i], t=el('tip');
-  t.innerHTML='<b>'+esc(r[N])+'</b><small>'+esc(D.town[r[TOWN]]||'')+' · '+esc(CATS[r[CAT]])+
-    (r[OUT]>1?' · '+r[OUT]+' outlets':'')+'</small>';
+  t.innerHTML='<b>'+esc(r[N])+'</b><small>'+esc(D.town[r[TOWN]]||'')+' \u00B7 '+esc(CATS[r[CAT]])+
+    (r[OUT]>1?' \u00B7 '+r[OUT]+' outlets':'')+'</small>';
   t.style.opacity='1';
   t.style.left=Math.min(W-235,mxp+14)+'px'; t.style.top=Math.max(4,myp-10)+'px';
 });
@@ -718,22 +734,34 @@ el('zfit').addEventListener('click',fit);
 const panes={rail:el('pane-rail'),map:el('pane-map'),panel:el('pane-panel')};
 function setPane(name){
   const mob=matchMedia('(max-width:900px)').matches;
-  Object.entries(panes).forEach(([k,v])=>{ v.hidden = mob && k!==name; });
+  Object.keys(panes).forEach(k=>{ panes[k].hidden = mob && k!==name; });
   [...document.querySelectorAll('.mobtabs button')].forEach(b=>b.setAttribute('aria-pressed',b.dataset.pane===name));
   if(name==='map') requestAnimationFrame(resize);
 }
 document.querySelector('.mobtabs').addEventListener('click',e=>{
   const b=e.target.closest('button'); if(b) setPane(b.dataset.pane);
 });
-matchMedia('(max-width:900px)').addEventListener('change',()=>{
-  const mob=matchMedia('(max-width:900px)').matches;
-  if(!mob) Object.values(panes).forEach(v=>v.hidden=false); else setPane('map');
+const mq=matchMedia('(max-width:900px)');
+const onMQ=()=>{
+  if(!mq.matches) Object.values(panes).forEach(v=>v.hidden=false); else setPane('map');
   requestAnimationFrame(resize);
-});
+};
+if(mq.addEventListener) mq.addEventListener('change',onMQ);
+else if(mq.addListener) mq.addListener(onMQ);
 
 window.addEventListener('resize',()=>requestAnimationFrame(resize));
+if(typeof ResizeObserver!=='undefined'){
+  new ResizeObserver(()=>requestAnimationFrame(resize)).observe(cv.parentElement);
+}else{
+  let tries=0; const iv=setInterval(()=>{resize(); if(++tries>40||sized) clearInterval(iv);},150);
+}
+window.addEventListener('load',()=>requestAnimationFrame(resize));
+if(document.fonts&&document.fonts.ready) document.fonts.ready.then(()=>requestAnimationFrame(resize));
+
 syncOut();
-resize(); fit(); apply();
+apply();
+resize();
 if(matchMedia('(max-width:900px)').matches) setPane('map');
+}catch(e){ fatal(e); if(window.console) console.error(e); }
 })();
 </script>
