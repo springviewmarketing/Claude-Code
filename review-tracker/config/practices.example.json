@@ -1,0 +1,20 @@
+{
+  "agency": {
+    "name": "Spring View Marketing",
+    "regionCode": "GB",
+    "languageCode": "en-GB"
+  },
+  "clients": [
+    {
+      "id": "hillsborough-eyecare",
+      "name": "Hillsborough Eyecare",
+      "placeId": "PASTE_THE_PLACE_ID_HERE",
+      "area": "Hillsborough, Sheffield",
+      "searchTerm": "opticians near me",
+      "competitors": [
+        { "name": "Rival practice one", "placeId": "PASTE_THE_PLACE_ID_HERE" },
+        { "name": "Rival practice two", "placeId": "PASTE_THE_PLACE_ID_HERE" }
+      ]
+    }
+  ]
+}

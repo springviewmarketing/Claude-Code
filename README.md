@@ -1,14 +1,28 @@
-# Spring View · Opticians landing page
+# Spring View · Opticians
 
-A single-page, long-form landing page for the independent-optician offer.
-Static HTML, no build step, no dependencies.
+Two things live here.
+
+**The landing page.** A single-page, long-form landing page for the
+independent-optician offer. Static HTML, no build step, no dependencies.
 
 - `index.html`, the page
 - `OFFER.md`, the commercial reasoning: the outcome reframe, StoryBrand audit, pricing, value stack, bonuses, guarantees
 - `fonts/`, Bricolage Grotesque and Instrument Sans, self-hosted (OFL)
 - `img/`, five practice photographs, cropped and encoded to WebP at two widths each
 
-## Deploying
+**The review tracker.** A tool that reads the Google review count for a set of
+practices and their local rivals once a week, and writes a report per practice
+showing what they gained against what the competition gained. Built to make
+review generation a habit the practice can see itself keeping, which is what
+feeds the geogrid rankings reported on monthly.
+
+- `review-tracker/`, the tool and its own README
+- `.github/workflows/review-tracker.yml`, the Monday morning schedule
+
+Run `npm run demo` inside `review-tracker/` to see the output without needing a
+Google API key.
+
+## Deploying the landing page
 
 Drop `index.html` and `fonts/` onto the server together, keeping the relative
 path. Suggested URL is `/opticians`; if it goes somewhere else, update the
@@ -17,7 +31,7 @@ path. Suggested URL is `/opticians`; if it goes somewhere else, update the
 Nothing else is required. No JavaScript framework, one inline script for the
 sticky bar, no third-party requests at all.
 
-## Before it goes live
+## Before the landing page goes live
 
 Six things, in order of how much they matter.
 

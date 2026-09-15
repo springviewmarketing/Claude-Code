@@ -1,0 +1,59 @@
+name: Weekly review tracker
+
+on:
+  schedule:
+    # 07:00 UTC every Monday, so the reports are waiting first thing.
+    # That is 08:00 in British Summer Time and 07:00 in winter.
+    - cron: '0 7 * * 1'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: review-tracker
+  cancel-in-progress: false
+
+jobs:
+  run:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+
+      - name: Read every profile and build the reports
+        working-directory: review-tracker
+        env:
+          GOOGLE_MAPS_API_KEY: ${{ secrets.GOOGLE_MAPS_API_KEY }}
+        # Keep going on a partial failure: a week's reading for the profiles
+        # that did answer is worth more than no reading at all, and the report
+        # names the ones that did not.
+        continue-on-error: true
+        run: node src/cli.js weekly
+
+      - name: Commit this week's reading
+        run: |
+          git config user.name  "review-tracker"
+          git config user.email "review-tracker@users.noreply.github.com"
+          git add review-tracker/data review-tracker/reports
+          if git diff --staged --quiet; then
+            echo "Nothing changed this week."
+            exit 0
+          fi
+          git commit -m "Weekly review reading, $(date -u '+%d %b %Y') [skip ci]"
+          for attempt in 1 2 3 4; do
+            git pull --rebase origin "${GITHUB_REF_NAME}" && git push origin "HEAD:${GITHUB_REF_NAME}" && exit 0
+            echo "Push failed, retrying in $((2 ** attempt))s"
+            sleep $((2 ** attempt))
+          done
+          exit 1
+
+      - name: Publish the reports as a downloadable bundle
+        uses: actions/upload-artifact@v4
+        with:
+          name: review-reports
+          path: review-tracker/reports
+          retention-days: 90

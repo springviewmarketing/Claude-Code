@@ -1,0 +1,329 @@
+<!doctype html>
+<html lang="en-GB">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Ecclesall Eye Centre (demo), Google reviews to 15 Sept 2026</title>
+<style>
+  :root {
+    --plane: #f9f9f7;
+    --surface: #fcfcfb;
+    --text-primary: #0b0b0b;
+    --text-secondary: #52514e;
+    --muted: #898781;
+    --grid: #e1e0d9;
+    --baseline: #c3c2b7;
+    --border: rgba(11, 11, 11, 0.10);
+    --series-you: #2a78d6;
+    --series-them: #898781;
+    --good-ink: #006300;
+    --warn: #fab219;
+    --critical: #d03b3b;
+    --you-wash: rgba(42, 120, 214, 0.07);
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:where(:not([data-theme="light"])) {
+      --plane: #0d0d0d;
+      --surface: #1a1a19;
+      --text-primary: #ffffff;
+      --text-secondary: #c3c2b7;
+      --muted: #898781;
+      --grid: #2c2c2a;
+      --baseline: #383835;
+      --border: rgba(255, 255, 255, 0.10);
+      --series-you: #3987e5;
+      --series-them: #898781;
+      --good-ink: #0ca30c;
+      --warn: #fab219;
+      --critical: #d03b3b;
+      --you-wash: rgba(57, 135, 229, 0.12);
+    }
+  }
+  :root[data-theme="dark"] {
+    --plane: #0d0d0d;
+    --surface: #1a1a19;
+    --text-primary: #ffffff;
+    --text-secondary: #c3c2b7;
+    --muted: #898781;
+    --grid: #2c2c2a;
+    --baseline: #383835;
+    --border: rgba(255, 255, 255, 0.10);
+    --series-you: #3987e5;
+    --series-them: #898781;
+    --good-ink: #0ca30c;
+    --warn: #fab219;
+    --critical: #d03b3b;
+    --you-wash: rgba(57, 135, 229, 0.12);
+  }
+
+  :root { color-scheme: light dark; }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    padding: 24px 16px 56px;
+    background: var(--plane);
+    color: var(--text-primary);
+    font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
+    font-size: 16px;
+    line-height: 1.5;
+  }
+  .sheet {
+    max-width: 780px;
+    margin: 0 auto;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 32px 28px 28px;
+  }
+  header { border-bottom: 1px solid var(--grid); padding-bottom: 18px; margin-bottom: 26px; }
+  .eyebrow { margin: 0 0 4px; font-size: 12px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); }
+  h1 { margin: 0; font-size: 26px; line-height: 1.2; letter-spacing: -0.01em; }
+  header p.sub { margin: 6px 0 0; color: var(--text-secondary); font-size: 14px; }
+  h2 { font-size: 15px; letter-spacing: 0.04em; text-transform: uppercase; color: var(--muted); margin: 34px 0 12px; font-weight: 600; }
+  h3 { font-size: 16px; margin: 0 0 4px; }
+
+  .hero { margin: 0 0 22px; }
+  .hero-label { margin: 0; font-size: 13px; color: var(--text-secondary); }
+  .hero-figure { margin: 2px 0 2px; font-size: 62px; line-height: 1; font-weight: 600; letter-spacing: -0.03em; }
+  .hero-figure.up { color: var(--good-ink); }
+  .hero-note { margin: 0; color: var(--text-secondary); font-size: 15px; max-width: 46ch; }
+
+  .tiles { display: grid; grid-template-columns: repeat(3, 1fr); background: var(--surface); border: 1px solid var(--grid); border-radius: 10px; overflow: hidden; }
+  .tile { padding: 12px 14px; border-right: 1px solid var(--grid); border-bottom: 1px solid var(--grid); }
+  .tiles .tile:nth-child(3n) { border-right: 0; }
+  .tiles .tile:nth-last-child(-n+3) { border-bottom: 0; }
+  .tile-label { display: block; font-size: 12px; color: var(--muted); }
+  .tile-value { display: block; font-size: 22px; font-weight: 600; margin-top: 2px; letter-spacing: -0.01em; }
+
+  .panel { margin: 26px 0 0; padding: 16px 18px; border: 1px solid var(--grid); border-left: 3px solid var(--series-you); border-radius: 8px; background: var(--surface); }
+  .panel-good { border-left-color: var(--good-ink); }
+  .panel p { margin: 4px 0 0; color: var(--text-secondary); font-size: 15px; }
+  .panel strong { color: var(--text-primary); }
+
+  .chart { margin: 26px 0 0; }
+  .chart figcaption { margin-bottom: 8px; }
+  .scroller { overflow-x: auto; overflow-y: hidden; -webkit-overflow-scrolling: touch; }
+  .chart svg { width: 100%; height: auto; display: block; min-width: 580px; }
+  .chart .scroller { padding: 2px 2px 4px; }
+  .legend { margin: 4px 0 0; font-size: 12px; color: var(--text-secondary); display: flex; gap: 16px; flex-wrap: wrap; }
+  .key { display: inline-flex; align-items: center; gap: 6px; }
+  .swatch { width: 10px; height: 10px; border-radius: 2px; display: inline-block; }
+  .swatch-you { background: var(--series-you); }
+  .swatch-them { background: var(--series-them); }
+  .axis-label { font-size: 12px; fill: var(--text-secondary); }
+  .axis-label.is-you { fill: var(--text-primary); font-weight: 600; }
+  .bar-value { font-size: 12px; font-weight: 600; fill: var(--text-primary); font-variant-numeric: tabular-nums; }
+  .tick { font-size: 11px; fill: var(--muted); font-variant-numeric: tabular-nums; }
+  .bar-row:hover path, .bar-row:hover rect { opacity: 0.82; }
+
+  table.board { width: 100%; border-collapse: collapse; margin-top: 10px; font-size: 14px; min-width: 460px; }
+  table.board caption { text-align: left; font-size: 12px; color: var(--muted); padding-bottom: 8px; }
+  .board th { text-align: left; font-weight: 600; font-size: 12px; letter-spacing: 0.03em; text-transform: uppercase; color: var(--muted); padding: 6px 8px; border-bottom: 1px solid var(--grid); }
+  .board td { padding: 9px 8px; border-bottom: 1px solid var(--grid); }
+  .board .numeric { text-align: right; font-variant-numeric: tabular-nums; }
+  .board .rank { color: var(--muted); font-variant-numeric: tabular-nums; width: 28px; }
+  .board tr.is-you td { background: var(--you-wash); font-weight: 600; }
+  .board .up { color: var(--good-ink); }
+  .you-tag { font-size: 10px; letter-spacing: 0.06em; text-transform: uppercase; color: var(--surface); background: var(--series-you); border-radius: 3px; padding: 2px 5px; vertical-align: 2px; font-weight: 700; }
+
+  .notice { margin-top: 26px; padding: 14px 16px; border: 1px solid var(--grid); border-left: 3px solid var(--warn); border-radius: 8px; }
+  .notice ul { margin: 6px 0 0; padding-left: 18px; color: var(--text-secondary); font-size: 14px; }
+
+  .message { margin-top: 12px; white-space: pre-wrap; font-size: 14px; line-height: 1.6; color: var(--text-secondary); background: var(--you-wash); border: 1px solid var(--grid); border-radius: 8px; padding: 16px 18px; }
+
+  footer { margin-top: 34px; padding-top: 16px; border-top: 1px solid var(--grid); font-size: 12px; line-height: 1.6; color: var(--muted); }
+  footer p { margin: 0 0 8px; }
+  footer strong { color: var(--text-secondary); }
+
+  @media print {
+    body { background: #fff; padding: 0; }
+    .sheet { border: 0; max-width: none; }
+    .bar-row:hover path { opacity: 1; }
+  }
+  @media (max-width: 560px) {
+    .sheet { padding: 22px 16px; }
+    .hero-figure { font-size: 48px; }
+    .tiles { grid-template-columns: repeat(2, 1fr); }
+    .tiles .tile:nth-child(3n) { border-right: 1px solid var(--grid); }
+    .tiles .tile:nth-child(2n) { border-right: 0; }
+    .tiles .tile:nth-last-child(-n+3) { border-bottom: 1px solid var(--grid); }
+    .tiles .tile:nth-last-child(-n+2) { border-bottom: 0; }
+  }
+  @media print {
+    .scroller { overflow: visible; }
+  }
+</style>
+</head>
+<body>
+<main class="sheet">
+  <header>
+    <p class="eyebrow">Spring View Marketing &middot; weekly review report</p>
+    <h1>Ecclesall Eye Centre (demo)</h1>
+    <p class="sub">Google reviews, week ending 15 Sept 2026 &middot; Ecclesall Road, Sheffield</p>
+  </header>
+
+  <div class="hero">
+    <p class="hero-label">Reviews gained this week</p>
+    <p class="hero-figure up">+5</p>
+    <p class="hero-note">new reviews on Google, taking Ecclesall Eye Centre (demo) to 41 in total at 5.0 stars.</p>
+  </div>
+  <div class="tiles"><div class="tile"><span class="tile-label">Reviews in total</span><span class="tile-value">41</span></div><div class="tile"><span class="tile-label">Star rating</span><span class="tile-value">5.0</span></div><div class="tile"><span class="tile-label">Position locally</span><span class="tile-value">2 of 2</span></div><div class="tile"><span class="tile-label">Share of the area&#39;s new reviews</span><span class="tile-value">83%</span></div><div class="tile"><span class="tile-label">Weeks in a row</span><span class="tile-value">2</span></div><div class="tile"><span class="tile-label">Your recent pace</span><span class="tile-value">4/wk</span></div></div>
+  <section class="panel">
+    <h3>Next one to catch: Sharrow Opticians (demo)</h3>
+    <p><strong>22 reviews</strong> behind, on 63 to your 41. At the pace of the last month you overtake them in about 9 weeks.</p>
+  </section>
+  
+  <figure class="chart">
+    <figcaption>
+      <h3>Reviews gained this week</h3>
+      <p class="legend">
+        <span class="key"><span class="swatch swatch-you"></span>Ecclesall Eye Centre (demo)</span>
+        <span class="key"><span class="swatch swatch-them"></span>Other opticians nearby</span>
+      </p>
+    </figcaption>
+    <div class="scroller"><svg viewBox="-10 -2 720 98" role="img" aria-label="Reviews gained this period by practice. Every value is listed in the table below.">
+      <line x1="196" y1="2" x2="196" y2="72" stroke="var(--baseline)" stroke-width="1" />
+      
+      <g class="bar-row">
+        <title>Ecclesall Eye Centre (demo): +5 this period, 41 reviews in total</title>
+        <text class="axis-label is-you" x="186" y="23" text-anchor="end">Ecclesall Eye Centre (demo)</text>
+        <path d="M196,8 H650 A4,4 0 0 1 654,12 V26 A4,4 0 0 1 650,30 H196 Z" fill="var(--series-you)" />
+        <text class="bar-value" x="662" y="23" text-anchor="start">+5</text>
+      </g>
+      <g class="bar-row">
+        <title>Sharrow Opticians (demo): +1 this period, 63 reviews in total</title>
+        <text class="axis-label" x="186" y="57" text-anchor="end">Sharrow Opticians (demo)</text>
+        <path d="M196,42 H283.6 A4,4 0 0 1 287.6,46 V60 A4,4 0 0 1 283.6,64 H196 Z" fill="var(--series-them)" />
+        <text class="bar-value" x="295.6" y="57" text-anchor="start">+1</text>
+      </g>
+    </svg></div>
+  </figure>
+  
+  <figure class="chart">
+    <figcaption><h3>Ecclesall Eye Centre (demo), new reviews week by week</h3></figcaption>
+    <div class="scroller"><svg viewBox="-10 -2 720 214" role="img" aria-label="New reviews per week for Ecclesall Eye Centre (demo). Every value is listed in the table below.">
+      
+      <line x1="32" y1="176" x2="688" y2="176" stroke="var(--baseline)" stroke-width="1" />
+      <text class="tick" x="24" y="180" text-anchor="end">0</text>
+      <line x1="32" y1="97" x2="688" y2="97" stroke="var(--grid)" stroke-width="1" />
+      <text class="tick" x="24" y="101" text-anchor="end">3</text>
+      <line x1="32" y1="18" x2="688" y2="18" stroke="var(--grid)" stroke-width="1" />
+      <text class="tick" x="24" y="22" text-anchor="end">6</text>
+      
+        <g class="bar-row">
+          <title>Week to 30 Jun: no reading taken</title>
+          <rect x="47.33333333333333" y="174" width="24" height="2" fill="var(--muted)" opacity="0.5" />
+          <text class="tick" x="59.33333333333333" y="196" text-anchor="middle">30 Jun</text>
+        </g>
+        <g class="bar-row">
+          <title>Week to 7 Jul: no reading taken</title>
+          <rect x="101.99999999999999" y="174" width="24" height="2" fill="var(--muted)" opacity="0.5" />
+          <text class="tick" x="113.99999999999999" y="196" text-anchor="middle">7 Jul</text>
+        </g>
+        <g class="bar-row">
+          <title>Week to 14 Jul: no reading taken</title>
+          <rect x="156.66666666666666" y="174" width="24" height="2" fill="var(--muted)" opacity="0.5" />
+          <text class="tick" x="168.66666666666666" y="196" text-anchor="middle">14 Jul</text>
+        </g>
+        <g class="bar-row">
+          <title>Week to 21 Jul: no reading taken</title>
+          <rect x="211.33333333333334" y="174" width="24" height="2" fill="var(--muted)" opacity="0.5" />
+          <text class="tick" x="223.33333333333334" y="196" text-anchor="middle">21 Jul</text>
+        </g>
+        <g class="bar-row">
+          <title>Week to 28 Jul: no reading taken</title>
+          <rect x="266" y="174" width="24" height="2" fill="var(--muted)" opacity="0.5" />
+          <text class="tick" x="278" y="196" text-anchor="middle">28 Jul</text>
+        </g>
+        <g class="bar-row">
+          <title>Week to 4 Aug: no reading taken</title>
+          <rect x="320.66666666666663" y="174" width="24" height="2" fill="var(--muted)" opacity="0.5" />
+          <text class="tick" x="332.66666666666663" y="196" text-anchor="middle">4 Aug</text>
+        </g>
+        <g class="bar-row">
+          <title>Week to 11 Aug: no reading taken</title>
+          <rect x="375.3333333333333" y="174" width="24" height="2" fill="var(--muted)" opacity="0.5" />
+          <text class="tick" x="387.3333333333333" y="196" text-anchor="middle">11 Aug</text>
+        </g>
+        <g class="bar-row">
+          <title>Week to 18 Aug: no reading taken</title>
+          <rect x="429.99999999999994" y="174" width="24" height="2" fill="var(--muted)" opacity="0.5" />
+          <text class="tick" x="441.99999999999994" y="196" text-anchor="middle">18 Aug</text>
+        </g>
+        <g class="bar-row">
+          <title>Week to 25 Aug: no reading taken</title>
+          <rect x="484.66666666666663" y="174" width="24" height="2" fill="var(--muted)" opacity="0.5" />
+          <text class="tick" x="496.66666666666663" y="196" text-anchor="middle">25 Aug</text>
+        </g>
+        <g class="bar-row">
+          <title>Week to 1 Sept: no reading taken</title>
+          <rect x="539.3333333333334" y="174" width="24" height="2" fill="var(--muted)" opacity="0.5" />
+          <text class="tick" x="551.3333333333334" y="196" text-anchor="middle">1 Sept</text>
+        </g>
+      <g class="bar-row">
+        <title>Week to 8 Sept: +3 reviews, 36 in total</title>
+        <path d="M594,176 V101 A4,4 0 0 1 598,97 H614 A4,4 0 0 1 618,101 V176 Z" fill="var(--series-you)" />
+        
+        <text class="tick" x="606" y="196" text-anchor="middle">8 Sept</text>
+      </g>
+      <g class="bar-row">
+        <title>Week to 15 Sept: +5 reviews, 41 in total</title>
+        <path d="M648.6666666666666,176 V48.333333333333314 A4,4 0 0 1 652.6666666666666,44.333333333333314 H668.6666666666666 A4,4 0 0 1 672.6666666666666,48.333333333333314 V176 Z" fill="var(--series-you)" />
+        <text class="bar-value" x="660.6666666666666" y="37.333333333333314" text-anchor="middle">5</text>
+        <text class="tick" x="660.6666666666666" y="196" text-anchor="middle">15 Sept</text>
+      </g>
+    </svg></div>
+  </figure>
+
+  <h2>The local table</h2>
+  
+  <div class="scroller"><table class="board">
+    <caption>Every tracked practice, ranked on total reviews</caption>
+    <thead>
+      <tr>
+        <th scope="col">#</th>
+        <th scope="col">Practice</th>
+        <th scope="col" class="numeric">Reviews</th>
+        <th scope="col" class="numeric">Rating</th>
+        <th scope="col" class="numeric">This week</th>
+        <th scope="col" class="numeric">Per week</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td class="rank">1</td>
+        <td>Sharrow Opticians (demo)</td>
+        <td class="numeric">63</td>
+        <td class="numeric">4.5</td>
+        <td class="numeric up">+1</td>
+        <td class="numeric">1.5</td>
+      </tr>
+      <tr class="is-you">
+        <td class="rank">2</td>
+        <td>Ecclesall Eye Centre (demo) <span class="you-tag">you</span></td>
+        <td class="numeric">41</td>
+        <td class="numeric">5.0</td>
+        <td class="numeric up">+5</td>
+        <td class="numeric">4.0</td>
+      </tr></tbody>
+  </table></div>
+  
+
+  <h2>Ready to send</h2><div class="message">Ecclesall Eye Centre (demo), Google reviews to 15 Sept 2026
+
+You picked up 5 new reviews this week. That takes you to 41 reviews at 5 stars.
+
+That is more than any other optician we track near you. 83% of every new review in the area this week came to you.
+
+That is 2 weeks in a row with at least one new review. Worth keeping going.
+
+Next up the table is Sharrow Opticians (demo) on 63 reviews, so you are 22 reviews behind. At the pace of the last month you pass them in about 9 weeks.</div>
+
+  <footer>
+    <p><strong>How these numbers are produced.</strong> Totals come from the Google Places API, read once a week. Google publishes a live review count rather than a dated list, so a weekly figure is the difference between two readings. It is a net figure: if Google removes a review it judges to be spam in the same week one arrives, the two cancel out. The count includes star-only ratings left without written text.</p>
+    <p><strong>A note on asking.</strong> Ask every patient, in person, at the point they say they are happy. Never offer anything in return for a review and never filter who gets asked based on how pleased they seem. Both breach Google's policies and UK consumer law, and both are enforced. A spread of ratings reads as more credible than an unbroken wall of fives.</p>
+    <p>Prepared by Spring View Marketing. For the practice's own use, not for publication.</p>
+  </footer>
+</main>
+</body>
+</html>
