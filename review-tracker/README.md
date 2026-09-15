@@ -40,14 +40,41 @@ official route. Scraping Google Maps would get it and would breach their terms.
 Third-party services sell it. For the job here, which is week-on-week momentum
 against named rivals, the count difference is the right instrument.
 
+## Running it without installing anything
+
+Everything below can be done from the GitHub website. You never need Node, a
+terminal, or a copy of this repository on your machine.
+
+1. **Make the key** (Google Cloud console, see the next section). Google
+   requires a card on the account even though you will not be charged.
+2. **Add the key to GitHub.** Repository, Settings, Secrets and variables,
+   Actions, New repository secret. Name it `GOOGLE_MAPS_API_KEY`.
+3. **Find the place IDs.** Actions tab, "Find place IDs", "Run workflow", type
+   a search such as `opticians in Hillsborough Sheffield`. The results appear in
+   the run summary with a `placeId` for each match.
+4. **Write the config.** In the repository, open
+   `review-tracker/config/practices.example.json`, press the pencil icon, save
+   it as `review-tracker/config/practices.json` with the real names and place
+   IDs, and commit.
+5. **Run it.** Actions tab, "Weekly review tracker", "Run workflow". It reads
+   every profile, commits the reading, and attaches the reports to the run as a
+   download. After that it runs itself every Monday.
+
+The local route below is faster to iterate on if you do have Node installed, but
+it is optional.
+
 ## Setting it up
 
 ### 1. Get a key
 
 In the [Google Cloud console](https://console.cloud.google.com/), create a
 project, enable **Places API (New)**, and create an API key. Restrict the key to
-the Places API. Billing has to be enabled on the project even though you will
-almost certainly pay nothing, see the cost section below.
+the Places API.
+
+Google has required a billing account with a card on it since 2018, and that
+still applies to the free allowance. You will be asked for card details. At the
+volume this tool uses you should never be charged, but put a budget alert on the
+project anyway, at say £5, so you find out if that ever stops being true.
 
 ```bash
 cp .env.example .env
@@ -55,6 +82,8 @@ cp .env.example .env
 ```
 
 ### 2. Find the place IDs
+
+From the Actions tab, run "Find place IDs" and type the search. Or locally:
 
 ```bash
 npm run discover -- "opticians in Hillsborough Sheffield"
