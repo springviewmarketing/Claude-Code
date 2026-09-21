@@ -20,7 +20,7 @@ on:
       limit:
         description: 'How many competitors to shortlist'
         required: false
-        default: '5'
+        default: '10'
         type: string
       include_chains:
         description: 'Include Specsavers, Boots and the like. Only for a large practice.'

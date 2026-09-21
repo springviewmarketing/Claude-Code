@@ -19,9 +19,9 @@ on:
         default: '5'
         type: string
       limit:
-        description: 'How many competitors to track'
+        description: 'How many competitors to track (it takes what it finds, up to this)'
         required: false
-        default: '5'
+        default: '10'
         type: string
       include_chains:
         description: 'Include Specsavers, Boots and the like. Only for a large practice.'
