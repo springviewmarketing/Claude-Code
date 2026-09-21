@@ -1,0 +1,52 @@
+{
+  "version": 1,
+  "snapshots": [
+    {
+      "takenAt": "2026-09-21T20:38:52.125Z",
+      "places": {
+        "ChIJQwZWJ05zeUgRQ714j_cNuSM": {
+          "name": "Murgatroyd Opticians Ltd",
+          "totalReviews": 11,
+          "rating": 4.9,
+          "businessStatus": "OPERATIONAL",
+          "status": "ok"
+        },
+        "ChIJUdUfea51eUgR9tfX5Fuxdn0": {
+          "name": "T English Opticians",
+          "totalReviews": 11,
+          "rating": 4.2,
+          "businessStatus": "OPERATIONAL",
+          "status": "ok"
+        },
+        "ChIJ7Z3iX9ANeUgRPi_c6Z-jkpE": {
+          "name": "Priority Eyecare",
+          "totalReviews": 16,
+          "rating": 5,
+          "businessStatus": "OPERATIONAL",
+          "status": "ok"
+        },
+        "ChIJOaFZLbxzeUgRDMzyAp3OWdE": {
+          "name": "Parkhurst and Co Styling Opticians",
+          "totalReviews": 21,
+          "rating": 4.8,
+          "businessStatus": "OPERATIONAL",
+          "status": "ok"
+        },
+        "ChIJdafi-D10eUgRKVSJHZfud-s": {
+          "name": "ASDA Opticians",
+          "totalReviews": 32,
+          "rating": 4,
+          "businessStatus": "OPERATIONAL",
+          "status": "ok"
+        },
+        "ChIJowdhiaJzeUgR71WBv8ktbTA": {
+          "name": "Moorhouse Opticians",
+          "totalReviews": 39,
+          "rating": 5,
+          "businessStatus": "OPERATIONAL",
+          "status": "ok"
+        }
+      }
+    }
+  ]
+}

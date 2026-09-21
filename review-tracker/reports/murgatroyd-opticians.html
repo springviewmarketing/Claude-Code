@@ -1,0 +1,255 @@
+<!doctype html>
+<html lang="en-GB">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Murgatroyd Opticians, Google reviews to 21 Sept 2026</title>
+<style>
+  :root {
+    --plane: #f9f9f7;
+    --surface: #fcfcfb;
+    --text-primary: #0b0b0b;
+    --text-secondary: #52514e;
+    --muted: #898781;
+    --grid: #e1e0d9;
+    --baseline: #c3c2b7;
+    --border: rgba(11, 11, 11, 0.10);
+    --series-you: #2a78d6;
+    --series-them: #898781;
+    --good-ink: #006300;
+    --warn: #fab219;
+    --critical: #d03b3b;
+    --you-wash: rgba(42, 120, 214, 0.07);
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:where(:not([data-theme="light"])) {
+      --plane: #0d0d0d;
+      --surface: #1a1a19;
+      --text-primary: #ffffff;
+      --text-secondary: #c3c2b7;
+      --muted: #898781;
+      --grid: #2c2c2a;
+      --baseline: #383835;
+      --border: rgba(255, 255, 255, 0.10);
+      --series-you: #3987e5;
+      --series-them: #898781;
+      --good-ink: #0ca30c;
+      --warn: #fab219;
+      --critical: #d03b3b;
+      --you-wash: rgba(57, 135, 229, 0.12);
+    }
+  }
+  :root[data-theme="dark"] {
+    --plane: #0d0d0d;
+    --surface: #1a1a19;
+    --text-primary: #ffffff;
+    --text-secondary: #c3c2b7;
+    --muted: #898781;
+    --grid: #2c2c2a;
+    --baseline: #383835;
+    --border: rgba(255, 255, 255, 0.10);
+    --series-you: #3987e5;
+    --series-them: #898781;
+    --good-ink: #0ca30c;
+    --warn: #fab219;
+    --critical: #d03b3b;
+    --you-wash: rgba(57, 135, 229, 0.12);
+  }
+
+  :root { color-scheme: light dark; }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    padding: 24px 16px 56px;
+    background: var(--plane);
+    color: var(--text-primary);
+    font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
+    font-size: 16px;
+    line-height: 1.5;
+  }
+  .sheet {
+    max-width: 780px;
+    margin: 0 auto;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 32px 28px 28px;
+  }
+  header { border-bottom: 1px solid var(--grid); padding-bottom: 18px; margin-bottom: 26px; }
+  .eyebrow { margin: 0 0 4px; font-size: 12px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); }
+  h1 { margin: 0; font-size: 26px; line-height: 1.2; letter-spacing: -0.01em; }
+  header p.sub { margin: 6px 0 0; color: var(--text-secondary); font-size: 14px; }
+  h2 { font-size: 15px; letter-spacing: 0.04em; text-transform: uppercase; color: var(--muted); margin: 34px 0 12px; font-weight: 600; }
+  h3 { font-size: 16px; margin: 0 0 4px; }
+
+  .hero { margin: 0 0 22px; }
+  .hero-label { margin: 0; font-size: 13px; color: var(--text-secondary); }
+  .hero-figure { margin: 2px 0 2px; font-size: 62px; line-height: 1; font-weight: 600; letter-spacing: -0.03em; }
+  .hero-figure.up { color: var(--good-ink); }
+  .hero-note { margin: 0; color: var(--text-secondary); font-size: 15px; max-width: 46ch; }
+
+  .tiles { display: grid; grid-template-columns: repeat(3, 1fr); background: var(--surface); border: 1px solid var(--grid); border-radius: 10px; overflow: hidden; }
+  .tile { padding: 12px 14px; border-right: 1px solid var(--grid); border-bottom: 1px solid var(--grid); }
+  .tiles .tile:nth-child(3n) { border-right: 0; }
+  .tiles .tile:nth-last-child(-n+3) { border-bottom: 0; }
+  .tile-label { display: block; font-size: 12px; color: var(--muted); }
+  .tile-value { display: block; font-size: 22px; font-weight: 600; margin-top: 2px; letter-spacing: -0.01em; }
+
+  .panel { margin: 26px 0 0; padding: 16px 18px; border: 1px solid var(--grid); border-left: 3px solid var(--series-you); border-radius: 8px; background: var(--surface); }
+  .panel-good { border-left-color: var(--good-ink); }
+  .panel p { margin: 4px 0 0; color: var(--text-secondary); font-size: 15px; }
+  .panel strong { color: var(--text-primary); }
+
+  .chart { margin: 26px 0 0; }
+  .chart figcaption { margin-bottom: 8px; }
+  .scroller { overflow-x: auto; overflow-y: hidden; -webkit-overflow-scrolling: touch; }
+  .chart svg { width: 100%; height: auto; display: block; min-width: 580px; }
+  .chart .scroller { padding: 2px 2px 4px; }
+  .legend { margin: 4px 0 0; font-size: 12px; color: var(--text-secondary); display: flex; gap: 16px; flex-wrap: wrap; }
+  .key { display: inline-flex; align-items: center; gap: 6px; }
+  .swatch { width: 10px; height: 10px; border-radius: 2px; display: inline-block; }
+  .swatch-you { background: var(--series-you); }
+  .swatch-them { background: var(--series-them); }
+  .axis-label { font-size: 12px; fill: var(--text-secondary); }
+  .axis-label.is-you { fill: var(--text-primary); font-weight: 600; }
+  .bar-value { font-size: 12px; font-weight: 600; fill: var(--text-primary); font-variant-numeric: tabular-nums; }
+  .tick { font-size: 11px; fill: var(--muted); font-variant-numeric: tabular-nums; }
+  .bar-row:hover path, .bar-row:hover rect { opacity: 0.82; }
+
+  table.board { width: 100%; border-collapse: collapse; margin-top: 10px; font-size: 14px; min-width: 460px; }
+  table.board caption { text-align: left; font-size: 12px; color: var(--muted); padding-bottom: 8px; }
+  .board th { text-align: left; font-weight: 600; font-size: 12px; letter-spacing: 0.03em; text-transform: uppercase; color: var(--muted); padding: 6px 8px; border-bottom: 1px solid var(--grid); }
+  .board td { padding: 9px 8px; border-bottom: 1px solid var(--grid); }
+  .board .numeric { text-align: right; font-variant-numeric: tabular-nums; }
+  .board .rank { color: var(--muted); font-variant-numeric: tabular-nums; width: 28px; }
+  .board tr.is-you td { background: var(--you-wash); font-weight: 600; }
+  .board .up { color: var(--good-ink); }
+  .you-tag { font-size: 10px; letter-spacing: 0.06em; text-transform: uppercase; color: var(--surface); background: var(--series-you); border-radius: 3px; padding: 2px 5px; vertical-align: 2px; font-weight: 700; }
+
+  .notice { margin-top: 26px; padding: 14px 16px; border: 1px solid var(--grid); border-left: 3px solid var(--warn); border-radius: 8px; }
+  .notice ul { margin: 6px 0 0; padding-left: 18px; color: var(--text-secondary); font-size: 14px; }
+
+  .message { margin-top: 12px; white-space: pre-wrap; font-size: 14px; line-height: 1.6; color: var(--text-secondary); background: var(--you-wash); border: 1px solid var(--grid); border-radius: 8px; padding: 16px 18px; }
+
+  footer { margin-top: 34px; padding-top: 16px; border-top: 1px solid var(--grid); font-size: 12px; line-height: 1.6; color: var(--muted); }
+  footer p { margin: 0 0 8px; }
+  footer strong { color: var(--text-secondary); }
+
+  @media print {
+    body { background: #fff; padding: 0; }
+    .sheet { border: 0; max-width: none; }
+    .bar-row:hover path { opacity: 1; }
+  }
+  @media (max-width: 560px) {
+    .sheet { padding: 22px 16px; }
+    .hero-figure { font-size: 48px; }
+    .tiles { grid-template-columns: repeat(2, 1fr); }
+    .tiles .tile:nth-child(3n) { border-right: 1px solid var(--grid); }
+    .tiles .tile:nth-child(2n) { border-right: 0; }
+    .tiles .tile:nth-last-child(-n+3) { border-bottom: 1px solid var(--grid); }
+    .tiles .tile:nth-last-child(-n+2) { border-bottom: 0; }
+  }
+  @media print {
+    .scroller { overflow: visible; }
+  }
+</style>
+</head>
+<body>
+<main class="sheet">
+  <header>
+    <p class="eyebrow">Spring View Marketing &middot; weekly review report</p>
+    <h1>Murgatroyd Opticians</h1>
+    <p class="sub">Google reviews, week ending 21 Sept 2026 &middot; Conisbrough, Doncaster</p>
+  </header>
+
+  <div class="hero">
+      <p class="hero-label">First reading</p>
+      <p class="hero-figure">11</p>
+      <p class="hero-note">reviews on the board today. From next week this shows what has been added.</p>
+    </div>
+  <div class="tiles"><div class="tile"><span class="tile-label">Reviews in total</span><span class="tile-value">11</span></div><div class="tile"><span class="tile-label">Star rating</span><span class="tile-value">4.9</span></div><div class="tile"><span class="tile-label">Position locally</span><span class="tile-value">5 of 6</span></div><div class="tile"><span class="tile-label">Share of the area&#39;s new reviews</span><span class="tile-value">n/a</span></div><div class="tile"><span class="tile-label">Weeks in a row</span><span class="tile-value">0</span></div><div class="tile"><span class="tile-label">Your recent pace</span><span class="tile-value">n/a</span></div></div>
+  <section class="panel">
+    <h3>Next one to catch: Priority Eyecare</h3>
+    <p><strong>5 reviews</strong> behind, on 16 to your 11. Not enough history yet to say how long it takes to close.</p>
+  </section>
+  
+  
+
+  <h2>The local table</h2>
+  
+  <div class="scroller"><table class="board">
+    <caption>Every tracked practice, ranked on total reviews</caption>
+    <thead>
+      <tr>
+        <th scope="col">#</th>
+        <th scope="col">Practice</th>
+        <th scope="col" class="numeric">Reviews</th>
+        <th scope="col" class="numeric">Rating</th>
+        <th scope="col" class="numeric">This week</th>
+        <th scope="col" class="numeric">Per week</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td class="rank">1</td>
+        <td>Moorhouse Opticians</td>
+        <td class="numeric">39</td>
+        <td class="numeric">5.0</td>
+        <td class="numeric ">n/a</td>
+        <td class="numeric">n/a</td>
+      </tr>
+      <tr>
+        <td class="rank">2</td>
+        <td>ASDA Opticians</td>
+        <td class="numeric">32</td>
+        <td class="numeric">4.0</td>
+        <td class="numeric ">n/a</td>
+        <td class="numeric">n/a</td>
+      </tr>
+      <tr>
+        <td class="rank">3</td>
+        <td>Parkhurst and Co Styling Opticians</td>
+        <td class="numeric">21</td>
+        <td class="numeric">4.8</td>
+        <td class="numeric ">n/a</td>
+        <td class="numeric">n/a</td>
+      </tr>
+      <tr>
+        <td class="rank">4</td>
+        <td>Priority Eyecare</td>
+        <td class="numeric">16</td>
+        <td class="numeric">5.0</td>
+        <td class="numeric ">n/a</td>
+        <td class="numeric">n/a</td>
+      </tr>
+      <tr class="is-you">
+        <td class="rank">5</td>
+        <td>Murgatroyd Opticians Ltd <span class="you-tag">you</span></td>
+        <td class="numeric">11</td>
+        <td class="numeric">4.9</td>
+        <td class="numeric ">n/a</td>
+        <td class="numeric">n/a</td>
+      </tr>
+      <tr>
+        <td class="rank">6</td>
+        <td>T English Opticians</td>
+        <td class="numeric">11</td>
+        <td class="numeric">4.2</td>
+        <td class="numeric ">n/a</td>
+        <td class="numeric">n/a</td>
+      </tr></tbody>
+  </table></div>
+  
+
+  <h2>Ready to send</h2><div class="message">Murgatroyd Opticians, Google reviews to 21 Sept 2026
+
+First reading taken. You are on 11 reviews with a 4.9 star average. From next week this report shows what you have added.</div>
+
+  <footer>
+    <p><strong>How these numbers are produced.</strong> Totals come from the Google Places API, read once a week. Google publishes a live review count rather than a dated list, so a weekly figure is the difference between two readings. It is a net figure: if Google removes a review it judges to be spam in the same week one arrives, the two cancel out. The count includes star-only ratings left without written text.</p>
+    <p><strong>A note on asking.</strong> Ask every patient, in person, at the point they say they are happy. Never offer anything in return for a review and never filter who gets asked based on how pleased they seem. Both breach Google's policies and UK consumer law, and both are enforced. A spread of ratings reads as more credible than an unbroken wall of fives.</p>
+    <p>Prepared by Spring View Marketing. For the practice's own use, not for publication.</p>
+  </footer>
+</main>
+</body>
+</html>
