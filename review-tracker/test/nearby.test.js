@@ -148,3 +148,36 @@ test('a brand new practice still gets a ladder, via the floor on the ceiling', (
   assert.deepEqual(result.ladder.map((p) => p.placeId), ['a', 'b']);
   assert.equal(result.tooBig[0].placeId, 'huge');
 });
+
+test('two branches under one name are told apart by their town', async () => {
+  const { disambiguateNames, townFrom } = await import('../src/nearby.js');
+  const out = disambiguateNames([
+    { name: 'Portland Optical Group', address: '12 Market St, Bolsover, Chesterfield S44 6PN', miles: 2.8 },
+    { name: 'Portland Optical Group', address: '5 Low Pavement, Chesterfield S40 1PB', miles: 3.7 },
+    { name: 'Parker Opticians', address: '7 Park St, Chesterfield S40 1DD', miles: 3.8 },
+  ]);
+  assert.deepEqual(out.map((p) => p.name), [
+    'Portland Optical Group (Bolsover)',
+    'Portland Optical Group (Chesterfield)',
+    'Parker Opticians',
+  ]);
+  assert.equal(townFrom('33 High St, Staveley, Chesterfield S43 3UU'), 'Staveley');
+  assert.equal(townFrom('5 Low Pavement, Chesterfield S40 1PB'), 'Chesterfield');
+  assert.equal(townFrom(''), null);
+});
+
+test('two branches in the same town fall back to distance', async () => {
+  const { disambiguateNames } = await import('../src/nearby.js');
+  const out = disambiguateNames([
+    { name: 'Boots Opticians', address: '1 A St, Leeds LS1 1AA', miles: 1.1 },
+    { name: 'Boots Opticians', address: '2 B St, Leeds LS2 2BB', miles: 2.2 },
+  ]);
+  assert.deepEqual(out.map((p) => p.name), ['Boots Opticians (1.1mi)', 'Boots Opticians (2.2mi)']);
+});
+
+test('a single practice keeps its name untouched', async () => {
+  const { disambiguateNames } = await import('../src/nearby.js');
+  const out = disambiguateNames([{ name: 'Murgatroyd Opticians', address: 'x', miles: 0 }]);
+  assert.deepEqual(out.map((p) => p.name), ['Murgatroyd Opticians']);
+  assert.equal('_base' in out[0], false, 'no internal bookkeeping leaks into the config');
+});

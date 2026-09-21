@@ -28,11 +28,14 @@ export const DEFAULT_QUERIES = ['opticians', 'optometrist', 'eye care'];
 const OPTICAL_PATTERNS = [
   /\boptician/i,
   /\boptometr/i,
-  /\boptical\b/i,
+  // Prefix, not a whole word: Opticalia, Visionplus, Visioncare and Visionworks
+  // are all opticians, and a closing \b threw every one of them away.
+  /\boptical/i,
+  /\bvision/i,
   /\beye\s*care\b/i,
   /\beyewear\b/i,
   /\beye\s+(clinic|centre|center|test|practice|specialist)/i,
-  /\bvision\b/i,
+  /\bmyopia\b/i,
   /\bspecsavers\b/i,
   /\bspectacle/i,
   /\bsight\s*care\b/i,
@@ -162,6 +165,44 @@ export async function findNearby(client, { center, radiusMetres, queries = DEFAU
   }
 
   return [...found.values()].sort((a, b) => a.metres - b.metres);
+}
+
+/**
+ * Two branches of the same group come back under one name. Left alone they
+ * become two identical rows in the weekly table, so the town is added to both.
+ */
+const UK_POSTCODE = /\s*[A-Z]{1,2}\d[A-Z\d]?\s*\d[A-Z]{2}\s*$/i;
+
+/** The town out of a UK formatted address, or null if it cannot be found. */
+export function townFrom(address) {
+  const parts = (address ?? '').split(',').map((part) => part.trim()).filter(Boolean);
+  if (parts.length === 0) return null;
+  // "33 High St, Staveley, Chesterfield S43 3UU" has the locality in the middle;
+  // "5 Low Pavement, Chesterfield S40 1PB" keeps it in the last, behind the postcode.
+  if (parts.length >= 3) return parts[parts.length - 2];
+  const withoutPostcode = parts[parts.length - 1].replace(UK_POSTCODE, '').trim();
+  return withoutPostcode || null;
+}
+
+export function disambiguateNames(places) {
+  const count = (list, key) => list.filter((p) => key(p) === key(list[0])).length;
+  const tally = new Map();
+  for (const place of places) tally.set(place.name, (tally.get(place.name) ?? 0) + 1);
+
+  const labelled = places.map((place) => {
+    if ((tally.get(place.name) ?? 0) < 2) return place;
+    const town = townFrom(place.address);
+    return { ...place, name: town ? `${place.name} (${town})` : place.name, _base: place.name };
+  });
+
+  // Two branches in the same town, or with no usable address, still collide.
+  const after = new Map();
+  for (const place of labelled) after.set(place.name, (after.get(place.name) ?? 0) + 1);
+  return labelled.map((place) => {
+    const { _base, ...rest } = place;
+    if ((after.get(place.name) ?? 0) < 2) return rest;
+    return { ...rest, name: `${_base ?? place.name} (${place.miles}mi)` };
+  });
 }
 
 /**

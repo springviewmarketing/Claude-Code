@@ -1,0 +1,142 @@
+name: Add a client
+
+# The whole of setting up a new practice, in one button. Finds the practice,
+# picks its local competitors, saves them to the config, commits, and takes the
+# first reading so next Monday's report has something to compare against.
+#
+# Actions tab, "Add a client", "Run workflow", type the practice name.
+
+on:
+  workflow_dispatch:
+    inputs:
+      practice:
+        description: 'Practice name and town, e.g. Murgatroyd Holmes Opticians Staveley'
+        required: true
+        type: string
+      miles:
+        description: 'How far around it to look for competitors'
+        required: false
+        default: '5'
+        type: string
+      limit:
+        description: 'How many competitors to track'
+        required: false
+        default: '5'
+        type: string
+      include_chains:
+        description: 'Include Specsavers, Boots and the like. Only for a large practice.'
+        required: false
+        default: false
+        type: boolean
+      show_everything:
+        description: 'Also list every business the search looked at'
+        required: false
+        default: false
+        type: boolean
+
+permissions:
+  contents: write
+
+concurrency:
+  # The config is one file, so two of these at once would lose a client.
+  group: review-tracker-config
+  cancel-in-progress: false
+
+jobs:
+  add:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+
+      # Inputs reach the shell through the environment, never spliced into the
+      # command line, so what someone types cannot run as a command here.
+      - name: Find the practice and its competitors
+        id: add
+        working-directory: review-tracker
+        env:
+          GOOGLE_MAPS_API_KEY: ${{ secrets.GOOGLE_MAPS_API_KEY }}
+          PRACTICE: ${{ inputs.practice }}
+          MILES: ${{ inputs.miles }}
+          LIMIT: ${{ inputs.limit }}
+          CHAINS: ${{ inputs.include_chains }}
+          EVERYTHING: ${{ inputs.show_everything }}
+        run: |
+          # Actions runs this under bash -e, so a false [ ] test as the last
+          # command on a line would end the step. Hence full if blocks.
+          set -o pipefail
+          args=(add-client "$PRACTICE" --miles "$MILES" --limit "$LIMIT")
+          if [ "$CHAINS" = "true" ]; then
+            args+=(--include-chains yes)
+          fi
+          if [ "$EVERYTHING" = "true" ]; then
+            args+=(--verbose)
+          fi
+          node src/cli.js "${args[@]}" | tee add.txt
+
+      - name: Take the first reading
+        id: reading
+        if: steps.add.outcome == 'success'
+        working-directory: review-tracker
+        continue-on-error: true
+        env:
+          GOOGLE_MAPS_API_KEY: ${{ secrets.GOOGLE_MAPS_API_KEY }}
+        run: node src/cli.js weekly --quiet | tee reading.txt
+
+      - name: Commit the new client and its first reading
+        if: steps.add.outcome == 'success'
+        env:
+          PRACTICE: ${{ inputs.practice }}
+        run: |
+          git config user.name  "review-tracker"
+          git config user.email "review-tracker@users.noreply.github.com"
+          git add review-tracker/config review-tracker/data review-tracker/reports
+          if git diff --staged --quiet; then
+            echo "Nothing changed."
+            exit 0
+          fi
+          git commit -m "Add ${PRACTICE} to the review tracker"
+          for attempt in 1 2 3 4; do
+            git pull --rebase origin "${GITHUB_REF_NAME}" && git push origin "HEAD:${GITHUB_REF_NAME}" && exit 0
+            echo "Push failed, retrying in $((2 ** attempt))s"
+            sleep $((2 ** attempt))
+          done
+          exit 1
+
+      - name: Write the summary
+        if: always()
+        working-directory: review-tracker
+        env:
+          PRACTICE: ${{ inputs.practice }}
+        run: |
+          {
+            printf '## %s\n\n' "$PRACTICE"
+            echo '```'
+            cat add.txt 2>/dev/null || echo 'The search failed. Check the step above for the reason.'
+            echo '```'
+            if [ -s reading.txt ]; then
+              echo ''
+              echo '### First reading'
+              echo '```'
+              cat reading.txt
+              echo '```'
+              echo ''
+              echo 'The report will say "First reading" with no weekly number. That is correct.'
+              echo 'The first real comparison comes with next Mondays run.'
+            fi
+          } >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Fail the run if the search failed
+        if: steps.add.outcome == 'failure'
+        run: exit 1
+
+      - name: Upload the reports
+        if: steps.reading.outcome == 'success'
+        uses: actions/upload-artifact@v4
+        with:
+          name: review-reports
+          path: review-tracker/reports
+          retention-days: 90
