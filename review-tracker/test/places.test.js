@@ -18,7 +18,7 @@ test('place details asks for the fields we bill for, and nothing more', async ()
 
   assert.match(seen.url, /^https:\/\/places\.googleapis\.com\/v1\/places\/abc\?/);
   assert.equal(seen.init.headers['X-Goog-Api-Key'], 'test-key');
-  assert.equal(seen.init.headers['X-Goog-FieldMask'], 'id,displayName,rating,userRatingCount,businessStatus,formattedAddress,googleMapsUri');
+  assert.equal(seen.init.headers['X-Goog-FieldMask'], 'id,displayName,location,rating,userRatingCount,businessStatus,formattedAddress,googleMapsUri');
   assert.match(seen.url, /languageCode=en-GB/);
   assert.match(seen.url, /regionCode=GB/);
   assert.equal(result.totalReviews, 128);
@@ -87,11 +87,12 @@ test('text search posts the query and returns candidates with their place IDs', 
   const results = await client.searchText('opticians in Hillsborough');
 
   assert.equal(seen.init.method, 'POST');
+  // pageSize, not the deprecated maxResultCount.
   assert.deepEqual(JSON.parse(seen.init.body), {
     textQuery: 'opticians in Hillsborough',
     regionCode: 'GB',
     languageCode: 'en-GB',
-    maxResultCount: 20,
+    pageSize: 20,
   });
   assert.equal(results.length, 2);
   assert.equal(results[0].placeId, 'p1');

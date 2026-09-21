@@ -1,0 +1,68 @@
+name: Find nearby competitors
+
+# Searching by town name only finds practices named after that town. This
+# searches a radius around a practice instead, and writes the config block.
+#
+# Actions tab, "Find nearby competitors", "Run workflow", fill in the boxes.
+
+on:
+  workflow_dispatch:
+    inputs:
+      practice:
+        description: 'The practice name with its town, or its place ID'
+        required: true
+        type: string
+      miles:
+        description: 'How far around it to search'
+        required: false
+        default: '5'
+        type: string
+      limit:
+        description: 'How many competitors to shortlist'
+        required: false
+        default: '5'
+        type: string
+
+jobs:
+  nearby:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+
+      # Inputs reach the shell through the environment, never spliced into the
+      # command line, so what someone types cannot run as a command here.
+      - name: Search
+        id: search
+        working-directory: review-tracker
+        continue-on-error: true
+        env:
+          GOOGLE_MAPS_API_KEY: ${{ secrets.GOOGLE_MAPS_API_KEY }}
+          PRACTICE: ${{ inputs.practice }}
+          MILES: ${{ inputs.miles }}
+          LIMIT: ${{ inputs.limit }}
+        run: node src/cli.js nearby "$PRACTICE" --miles "$MILES" --limit "$LIMIT" | tee results.txt
+
+      - name: Put the results in the run summary
+        if: always()
+        working-directory: review-tracker
+        env:
+          PRACTICE: ${{ inputs.practice }}
+          MILES: ${{ inputs.miles }}
+        run: |
+          {
+            printf '## Opticians within %s miles of: %s\n\n' "$MILES" "$PRACTICE"
+            echo 'A star marks the practice itself. A plus marks a shortlisted competitor.'
+            echo 'The config block at the bottom is ready to paste.'
+            echo ''
+            echo '```'
+            cat results.txt 2>/dev/null || echo 'The search failed. Check the Search step above for the reason.'
+            echo '```'
+          } >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Fail the run if the search failed
+        if: steps.search.outcome == 'failure'
+        run: exit 1
