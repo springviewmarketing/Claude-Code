@@ -6,6 +6,56 @@
   },
   "clients": [
     {
+      "id": "kemp-kerrigan-opticians",
+      "name": "Kemp & Kerrigan Opticians",
+      "placeId": "ChIJ1ZvvVgCBeUgRqcCb0rHUDLI",
+      "area": "8 Brooklands Ave, Sheffield S10 4GA",
+      "searchTerm": "opticians near me",
+      "competitors": [
+        {
+          "name": "Martyn Kemp Opticians (4.5mi)",
+          "placeId": "ChIJU810U1h4eUgR200onRs8cRI"
+        },
+        {
+          "name": "Northern General Eye Centre NGEC",
+          "placeId": "ChIJ54rgP_p5eUgReyR2G1AlTmg"
+        },
+        {
+          "name": "Sheffield Vision Centre",
+          "placeId": "ChIJs4v883aCeUgRQTNYM4M3MBQ"
+        },
+        {
+          "name": "Premier Eyecare Opticians Sheffield",
+          "placeId": "ChIJJypqR5N4eUgR3FByjSTsBh0"
+        },
+        {
+          "name": "Harveys Opticians",
+          "placeId": "ChIJWyp6wGKCeUgRgVScnxZh_28"
+        },
+        {
+          "name": "Martin Johnson Opticians Ltd",
+          "placeId": "ChIJKaT7tOp4eUgRCnIta4ae73A"
+        },
+        {
+          "name": "Zest Optical Recruitment Consultants",
+          "placeId": "ChIJU8zom4d4eUgR32KBgHNRMh0"
+        },
+        {
+          "name": "Emergency Eye Clinic - Royal Hallamshire Hospital",
+          "placeId": "ChIJK9tcnXKDeUgRRgLgDJErYB0"
+        },
+        {
+          "name": "Alex Gage Family Optometrist (Sheffield)",
+          "placeId": "ChIJfzmz3HSCeUgRJsr4_0QD86E"
+        },
+        {
+          "name": "David Inman Bespoke Opticians (1.6mi)",
+          "placeId": "ChIJAZaWbhaCeUgRmWFBFovLrto"
+        }
+      ],
+      "token": "1tSua9a17CtN"
+    },
+    {
       "id": "murgatroyd-holmes-opticians",
       "name": "Murgatroyd Holmes Opticians",
       "placeId": "ChIJHbD_FLubeUgRvos7zInLEm0",

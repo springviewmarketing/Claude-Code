@@ -2,7 +2,7 @@
   "version": 1,
   "snapshots": [
     {
-      "takenAt": "2026-09-21T20:59:51.625Z",
+      "takenAt": "2026-09-21T21:36:25.143Z",
       "places": {
         "ChIJQwZWJ05zeUgRQ714j_cNuSM": {
           "name": "Murgatroyd Opticians Ltd",
@@ -85,6 +85,83 @@
           "name": "Oculi Opticians",
           "totalReviews": 23,
           "rating": 5,
+          "businessStatus": "OPERATIONAL",
+          "status": "ok"
+        },
+        "ChIJ1ZvvVgCBeUgRqcCb0rHUDLI": {
+          "name": "Kemp & Kerrigan Opticians",
+          "totalReviews": 23,
+          "rating": 5,
+          "businessStatus": "OPERATIONAL",
+          "status": "ok"
+        },
+        "ChIJU810U1h4eUgR200onRs8cRI": {
+          "name": "Martyn Kemp Opticians",
+          "totalReviews": 25,
+          "rating": 4.5,
+          "businessStatus": "OPERATIONAL",
+          "status": "ok"
+        },
+        "ChIJ54rgP_p5eUgReyR2G1AlTmg": {
+          "name": "Northern General Eye Centre NGEC",
+          "totalReviews": 26,
+          "rating": 4.8,
+          "businessStatus": "OPERATIONAL",
+          "status": "ok"
+        },
+        "ChIJs4v883aCeUgRQTNYM4M3MBQ": {
+          "name": "Sheffield Vision Centre",
+          "totalReviews": 27,
+          "rating": 4.9,
+          "businessStatus": "OPERATIONAL",
+          "status": "ok"
+        },
+        "ChIJJypqR5N4eUgR3FByjSTsBh0": {
+          "name": "Premier Eyecare Opticians Sheffield",
+          "totalReviews": 27,
+          "rating": 4.9,
+          "businessStatus": "OPERATIONAL",
+          "status": "ok"
+        },
+        "ChIJWyp6wGKCeUgRgVScnxZh_28": {
+          "name": "Harveys Opticians",
+          "totalReviews": 28,
+          "rating": 4.8,
+          "businessStatus": "OPERATIONAL",
+          "status": "ok"
+        },
+        "ChIJKaT7tOp4eUgRCnIta4ae73A": {
+          "name": "Martin Johnson Opticians Ltd",
+          "totalReviews": 34,
+          "rating": 4.6,
+          "businessStatus": "OPERATIONAL",
+          "status": "ok"
+        },
+        "ChIJU8zom4d4eUgR32KBgHNRMh0": {
+          "name": "Zest Optical Recruitment Consultants",
+          "totalReviews": 48,
+          "rating": 5,
+          "businessStatus": "OPERATIONAL",
+          "status": "ok"
+        },
+        "ChIJK9tcnXKDeUgRRgLgDJErYB0": {
+          "name": "Emergency Eye Clinic - Royal Hallamshire Hospital",
+          "totalReviews": 51,
+          "rating": 4.7,
+          "businessStatus": "OPERATIONAL",
+          "status": "ok"
+        },
+        "ChIJfzmz3HSCeUgRJsr4_0QD86E": {
+          "name": "Alex Gage Family Optometrist",
+          "totalReviews": 54,
+          "rating": 4.9,
+          "businessStatus": "OPERATIONAL",
+          "status": "ok"
+        },
+        "ChIJAZaWbhaCeUgRmWFBFovLrto": {
+          "name": "David Inman Bespoke Opticians",
+          "totalReviews": 56,
+          "rating": 4.8,
           "businessStatus": "OPERATIONAL",
           "status": "ok"
         }
