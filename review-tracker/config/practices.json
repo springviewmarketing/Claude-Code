@@ -17,10 +17,6 @@
           "placeId": "ChIJU810U1h4eUgR200onRs8cRI"
         },
         {
-          "name": "Northern General Eye Centre NGEC",
-          "placeId": "ChIJ54rgP_p5eUgReyR2G1AlTmg"
-        },
-        {
           "name": "Sheffield Vision Centre",
           "placeId": "ChIJs4v883aCeUgRQTNYM4M3MBQ"
         },
@@ -37,20 +33,24 @@
           "placeId": "ChIJKaT7tOp4eUgRCnIta4ae73A"
         },
         {
-          "name": "Zest Optical Recruitment Consultants",
-          "placeId": "ChIJU8zom4d4eUgR32KBgHNRMh0"
-        },
-        {
-          "name": "Emergency Eye Clinic - Royal Hallamshire Hospital",
-          "placeId": "ChIJK9tcnXKDeUgRRgLgDJErYB0"
-        },
-        {
           "name": "Alex Gage Family Optometrist (Sheffield)",
           "placeId": "ChIJfzmz3HSCeUgRJsr4_0QD86E"
         },
         {
           "name": "David Inman Bespoke Opticians (1.6mi)",
           "placeId": "ChIJAZaWbhaCeUgRmWFBFovLrto"
+        },
+        {
+          "name": "David Inman Bespoke Opticians (2mi)",
+          "placeId": "ChIJh_iRSAuCeUgR5wP9mZLoP4E"
+        },
+        {
+          "name": "Bird Opticians",
+          "placeId": "ChIJe6OIEIKCeUgRAAoaGmo_Y68"
+        },
+        {
+          "name": "Lorraine Bonete Opticians",
+          "placeId": "ChIJjzLae4uDeUgRljOwiL8z3QU"
         }
       ],
       "token": "1tSua9a17CtN"

@@ -2,7 +2,7 @@
   "version": 1,
   "snapshots": [
     {
-      "takenAt": "2026-09-21T21:37:13.019Z",
+      "takenAt": "2026-09-21T21:40:05.433Z",
       "places": {
         "ChIJQwZWJ05zeUgRQ714j_cNuSM": {
           "name": "Murgatroyd Opticians Ltd",
@@ -218,6 +218,27 @@
           "name": "Martyn Kemp Opticians",
           "totalReviews": 9,
           "rating": 4.6,
+          "businessStatus": "OPERATIONAL",
+          "status": "ok"
+        },
+        "ChIJh_iRSAuCeUgR5wP9mZLoP4E": {
+          "name": "David Inman Bespoke Opticians",
+          "totalReviews": 57,
+          "rating": 4.9,
+          "businessStatus": "OPERATIONAL",
+          "status": "ok"
+        },
+        "ChIJe6OIEIKCeUgRAAoaGmo_Y68": {
+          "name": "Bird Opticians",
+          "totalReviews": 63,
+          "rating": 4.8,
+          "businessStatus": "OPERATIONAL",
+          "status": "ok"
+        },
+        "ChIJjzLae4uDeUgRljOwiL8z3QU": {
+          "name": "Lorraine Bonete Opticians",
+          "totalReviews": 78,
+          "rating": 5,
           "businessStatus": "OPERATIONAL",
           "status": "ok"
         }
