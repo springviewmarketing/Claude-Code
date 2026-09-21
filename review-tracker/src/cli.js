@@ -12,7 +12,8 @@ import { practiceMessage, terminalSummary, formatDate } from './render/text.js';
 import { toCsv } from './render/csv.js';
 import { demoConfig, demoHistory } from './demo-data.js';
 import { resolveAnchor, findNearby, shortlist, disambiguateNames } from './nearby.js';
-import { readClientFile, upsertClient, writeClientFile, slugify } from './client-file.js';
+import { readClientFile, upsertClient, writeClientFile, slugify, reportPath } from './client-file.js';
+import { buildEmail } from './render/email.js';
 import { milesToMetres } from './geo.js';
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
@@ -39,6 +40,8 @@ Options
   --limit <n>       how many competitors to track, default 10
   --id <slug>       the client id to write, default taken from the name
   --include-chains yes   put Specsavers, Boots and the rest back in
+  --site <dir>      where to publish the linkable reports, default docs/
+  --site-url <url>  the address the site is served from
   --quiet           print less
   --verbose         list every business the search looked at
 `;
@@ -60,6 +63,45 @@ function parseArgs(argv) {
 }
 
 const resolve = (value, fallback) => path.resolve(ROOT, value ?? fallback);
+
+/**
+ * Publish each report to the site folder under its unguessable filename, and
+ * write the email that links to it. Both are skipped without a site URL, since
+ * a link to nowhere is worse than no link.
+ */
+async function publishSite(reports, config, { siteDir, siteUrl, agencyName, senderName }) {
+  await mkdir(path.join(siteDir, 'r'), { recursive: true });
+  const byId = new Map(config.clients.map((client) => [client.id, client]));
+  const published = [];
+
+  for (const report of reports) {
+    const client = byId.get(report.client.id);
+    if (!client?.token) continue;
+    const relative = reportPath(client);
+    await writeFile(
+      path.join(siteDir, relative),
+      renderReport(report, { agencyName, message: null }),
+      'utf8'
+    );
+
+    const url = siteUrl ? `${siteUrl.replace(/\/$/, '')}/${relative}` : null;
+    const email = buildEmail(report, { reportUrl: url, agencyName, senderName });
+    published.push({ id: client.id, name: client.name, to: client.contactEmail ?? null, url, email });
+  }
+
+  // The outbox is what the send step reads. It is written even with no
+  // addresses configured, so a dry run shows exactly what would go out.
+  await writeFile(
+    path.join(siteDir, 'outbox.json'),
+    `${JSON.stringify(
+      published.map(({ id, name, to, url, email }) => ({ id, name, to, url, ...(email ?? {}) })),
+      null,
+      2
+    )}\n`,
+    'utf8'
+  );
+  return published;
+}
 
 async function writeReports(reports, { outDir, agencyName, quiet }) {
   await mkdir(outDir, { recursive: true });
@@ -158,6 +200,23 @@ async function commandReport(options, preloaded) {
     agencyName: config.agency?.name ?? 'Spring View Marketing',
     quiet: options.quiet,
   });
+
+  const siteUrl = options['site-url'] ?? config.agency?.siteUrl ?? null;
+  const published = await publishSite(reports, config, {
+    siteDir: resolve(options.site, '../docs'),
+    siteUrl,
+    agencyName: config.agency?.name ?? 'Spring View Marketing',
+    senderName: config.agency?.senderName ?? 'Tom',
+  });
+
+  if (!options.quiet) {
+    const addressed = published.filter((entry) => entry.to && entry.email).length;
+    console.log(`  Published ${published.length} report${published.length === 1 ? '' : 's'} to the site.`);
+    console.log(
+      `  ${addressed} of ${published.length} ${addressed === 1 ? 'has' : 'have'} a contact address and an email ready to send.`
+    );
+    if (!siteUrl) console.log('  No siteUrl set, so the emails carry no link. Add it to "agency" in the config.');
+  }
 }
 
 async function commandDiscover(options) {

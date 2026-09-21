@@ -7,7 +7,7 @@ No dependencies, no build step, no database. Node 22 or newer.
 
 ```
 npm run demo        # see the output before you have a key or a config
-npm test            # 71 tests, no network
+npm test            # 83 tests, no network
 npm run weekly      # the real thing: read the profiles, write the reports
 ```
 
@@ -221,6 +221,55 @@ Reports land in `reports/`:
 Readings accumulate in `data/snapshots.json`. Commit that file. It is the whole
 history and there is no other copy.
 
+## The weekly email
+
+Each Monday the workflow publishes every report to the site folder and emails
+the practice a short note: the number, one line of context, and a link.
+
+Three things have to be in place.
+
+**A contact address per client.** Add `contactEmail` to a client in
+`practices.json`. A client without one still gets a report, just no email.
+
+**The site URL.** Add `siteUrl` to the `agency` block, for example
+`https://springviewmarketing.github.io/Claude-Code`. Without it the emails go
+out with no link rather than a broken one.
+
+**Four repository secrets**, under Settings, Secrets and variables, Actions:
+
+| Secret | What it is |
+| --- | --- |
+| `GMAIL_USER` | The Google Workspace address that authenticates, e.g. `tom@springviewmarketing.co.uk` |
+| `GMAIL_APP_PASSWORD` | A Google app password, not the account password |
+| `MAIL_FROM` | The address the client sees and replies to |
+| `MAIL_FROM_NAME` | The name beside it, e.g. `Tom at Spring View Marketing` |
+
+A scheduled Monday run always emails. A manual run only emails if you tick
+**Send emails**, so testing the workflow can never put an unintended message in
+front of a client. Each client is sent by its own job, so one bad address does
+not stop the others.
+
+### Why the links are ugly
+
+Each report is published at `r/<client-id>-<token>.html`, where the token is
+random. A Pages site is public even when its repository is private, so that
+token is the only thing keeping a report away from the competitors it names.
+`robots.txt` and a noindex keep search engines out, which stops the report being
+found, not someone who has the link.
+
+The token is generated once per client and kept through later runs, so a link
+already sitting in a client's inbox keeps working.
+
+### What the email says
+
+It picks one line of context, in this order: a quiet spell of three weeks or
+more, then beating the area this week, then a run of three good weeks, then a
+rival within ten reviews, then the position in the table. Only one appears, so
+the email stays to four lines.
+
+Nothing in it suggests offering anything for a review or choosing who to ask.
+Both breach Google policy and the DMCCA, and the tests check the copy for it.
+
 ## Running it weekly without remembering to
 
 `.github/workflows/review-tracker.yml` runs it every Monday at 07:00 UTC,
@@ -295,13 +344,14 @@ src/
   nearby.js       the radius search, the optician test, the shortlist
   client-file.js  merging a practice into practices.json without losing the rest
   render/
+    email.js      the weekly email to the practice
     html.js       the report and the index
     text.js       the terminal summary and the message for the practice
     csv.js        the spreadsheet export
 config/           practices.json lives here
 data/             snapshots.json, the history, commit it
 reports/          generated output
-test/             71 tests, no network
+test/             83 tests, no network
 ```
 
 ## Commands

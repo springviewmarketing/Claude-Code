@@ -8,6 +8,7 @@
 
 import { readFile, writeFile, mkdir } from 'node:fs/promises';
 import path from 'node:path';
+import { randomBytes } from 'node:crypto';
 import { validateConfig } from './config.js';
 
 const DEFAULT_AGENCY = { name: 'Spring View Marketing', regionCode: 'GB', languageCode: 'en-GB' };
@@ -21,6 +22,16 @@ export function slugify(name) {
       .slice(0, 40) || 'practice'
   );
 }
+
+/**
+ * A short random tag for the published report's filename. The repository is
+ * private, so this is the only thing standing between a competitor and a page
+ * naming them; it needs to be unguessable, not merely untidy.
+ */
+export const newToken = () => randomBytes(9).toString('base64url');
+
+/** Where a client's report is published, relative to the site root. */
+export const reportPath = (client) => `r/${client.id}-${client.token}.html`;
 
 export async function readClientFile(file) {
   try {
@@ -42,11 +53,20 @@ export async function readClientFile(file) {
  * same place ID so re-running updates a practice rather than duplicating it.
  */
 export function upsertClient(config, client) {
+  const previous = config.clients.find(
+    (existing) => existing.id === client.id || existing.placeId === client.placeId
+  );
   const clients = config.clients.filter(
     (existing) => existing.id !== client.id && existing.placeId !== client.placeId
   );
-  const replaced = clients.length !== config.clients.length;
-  clients.push(client);
+  const replaced = Boolean(previous);
+  // Keep the token and the contact address across a re-run, or an already
+  // circulated link would break and the address would have to be typed again.
+  clients.push({
+    ...client,
+    token: client.token ?? previous?.token ?? newToken(),
+    ...(previous?.contactEmail && !client.contactEmail ? { contactEmail: previous.contactEmail } : {}),
+  });
   clients.sort((a, b) => a.name.localeCompare(b.name));
   return { config: { ...config, clients }, replaced };
 }

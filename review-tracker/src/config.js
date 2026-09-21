@@ -65,6 +65,9 @@ export function validateConfig(config) {
     }
     if (!client.name) fail(`${where} ("${client.id}") is missing "name".`);
     if (!client.placeId) fail(`${where} ("${client.id}") is missing "placeId". Run: npm run discover -- "<practice name and town>"`);
+    if (client.contactEmail && !/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(client.contactEmail)) {
+      fail(`${where} ("${client.id}") has a contactEmail that is not an email address: ${client.contactEmail}`);
+    }
 
     const competitors = client.competitors ?? [];
     if (!Array.isArray(competitors)) fail(`${where}.competitors must be an array.`);
