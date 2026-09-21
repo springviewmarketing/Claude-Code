@@ -7,7 +7,7 @@ No dependencies, no build step, no database. Node 22 or newer.
 
 ```
 npm run demo        # see the output before you have a key or a config
-npm test            # 87 tests, no network
+npm test            # 89 tests, no network
 npm run weekly      # the real thing: read the profiles, write the reports
 ```
 
@@ -368,7 +368,7 @@ src/
 config/           practices.json lives here
 data/             snapshots.json, the history, commit it
 reports/          generated output
-test/             87 tests, no network
+test/             89 tests, no network
 ```
 
 ## Commands
