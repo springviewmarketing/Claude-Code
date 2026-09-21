@@ -12,6 +12,57 @@ import { boundingRectangle, distanceMetres, metresToMiles } from './geo.js';
 
 export const DEFAULT_QUERIES = ['opticians', 'optometrist', 'eye care'];
 
+/**
+ * Deciding what is actually an optician.
+ *
+ * Google has no optician place type, in either filterable table, so it cannot
+ * be asked for one. Text Search is loose: searching "eye care" near a town
+ * returns health centres, an NHS commissioning body, supermarkets with a
+ * concession inside, and on one occasion a car park. Ranking a practice against
+ * a GP surgery is worse than useless, so the name is the gate.
+ *
+ * UK opticians name themselves consistently enough for this to be reliable.
+ * Google's own type label is checked too, which catches a practice whose name
+ * gives nothing away.
+ */
+const OPTICAL_PATTERNS = [
+  /\boptician/i,
+  /\boptometr/i,
+  /\boptical\b/i,
+  /\beye\s*care\b/i,
+  /\beyewear\b/i,
+  /\beye\s+(clinic|centre|center|test|practice|specialist)/i,
+  /\bvision\b/i,
+  /\bspecsavers\b/i,
+  /\bspectacle/i,
+  /\bsight\s*care\b/i,
+];
+
+/**
+ * Types that are never an optician whatever the name says, so a supermarket
+ * with a concession inside cannot enter the table as the whole supermarket.
+ */
+const BLOCKED_TYPES = new Set([
+  'supermarket',
+  'hypermarket',
+  'discount_supermarket',
+  'grocery_store',
+  'department_store',
+  'parking',
+  'government_office',
+  'hospital',
+  'general_hospital',
+  'pharmacy',
+  'drugstore',
+]);
+
+/** Whether a search result is plausibly an opticians practice. */
+export function looksLikeOptician(place) {
+  if (place.primaryType && BLOCKED_TYPES.has(place.primaryType)) return false;
+  const haystack = `${place.name ?? ''} ${place.primaryTypeLabel ?? ''}`;
+  return OPTICAL_PATTERNS.some((pattern) => pattern.test(haystack));
+}
+
 /** A place ID rather than something to search for. */
 const looksLikePlaceId = (value) => /^[A-Za-z0-9_-]{20,}$/.test(value.trim());
 
@@ -63,7 +114,12 @@ export async function findNearby(client, { center, radiusMetres, queries = DEFAU
       if (!place.location) continue;
       const metres = distanceMetres(center, place.location);
       if (metres > radiusMetres) continue;
-      found.set(place.placeId, { ...place, metres, miles: Number(metresToMiles(metres).toFixed(1)) });
+      found.set(place.placeId, {
+        ...place,
+        metres,
+        miles: Number(metresToMiles(metres).toFixed(1)),
+        isOptician: looksLikeOptician(place),
+      });
     }
   }
 
@@ -84,9 +140,13 @@ export function shortlist(places, { anchorPlaceId, anchorTotal, maxMultiple = 12
   const comparable = [];
   const tooBig = [];
   const tooSmall = [];
+  const notOpticians = [];
 
   for (const place of rivals) {
-    if (place.totalReviews < minReviews) tooSmall.push(place);
+    // Anything that is not an opticians practice is out before size is even
+    // considered. A health centre with 89 reviews is not a rival, at any size.
+    if (place.isOptician === false) notOpticians.push(place);
+    else if (place.totalReviews < minReviews) tooSmall.push(place);
     else if (place.totalReviews > ceiling) tooBig.push(place);
     else comparable.push(place);
   }
@@ -102,5 +162,5 @@ export function shortlist(places, { anchorPlaceId, anchorTotal, maxMultiple = 12
     })
     .slice(0, limit);
 
-  return { ladder, comparable, tooBig, tooSmall, ceiling };
+  return { ladder, comparable, tooBig, tooSmall, notOpticians, ceiling };
 }

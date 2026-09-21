@@ -18,7 +18,7 @@ test('place details asks for the fields we bill for, and nothing more', async ()
 
   assert.match(seen.url, /^https:\/\/places\.googleapis\.com\/v1\/places\/abc\?/);
   assert.equal(seen.init.headers['X-Goog-Api-Key'], 'test-key');
-  assert.equal(seen.init.headers['X-Goog-FieldMask'], 'id,displayName,location,rating,userRatingCount,businessStatus,formattedAddress,googleMapsUri');
+  assert.equal(seen.init.headers['X-Goog-FieldMask'], 'id,displayName,location,rating,userRatingCount,businessStatus,primaryTypeDisplayName,primaryType,formattedAddress,googleMapsUri');
   assert.match(seen.url, /languageCode=en-GB/);
   assert.match(seen.url, /regionCode=GB/);
   assert.equal(result.totalReviews, 128);

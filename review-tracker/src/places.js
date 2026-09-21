@@ -18,6 +18,8 @@ const DETAILS_FIELDS = [
   'rating',
   'userRatingCount',
   'businessStatus',
+  'primaryTypeDisplayName',
+  'primaryType',
   'formattedAddress',
   'googleMapsUri',
 ].join(',');
@@ -30,6 +32,8 @@ const SEARCH_FIELDS = [
   'places.rating',
   'places.userRatingCount',
   'places.businessStatus',
+  'places.primaryTypeDisplayName',
+  'places.primaryType',
 ].join(',');
 
 const SEARCH_FIELDS_PAGED = `${SEARCH_FIELDS},nextPageToken`;
@@ -107,6 +111,8 @@ export class PlacesClient {
       address: data.formattedAddress ?? null,
       mapsUri: data.googleMapsUri ?? null,
       businessStatus: data.businessStatus ?? null,
+      primaryType: data.primaryType ?? null,
+      primaryTypeLabel: data.primaryTypeDisplayName?.text ?? null,
       location: data.location ?? null,
       rating: typeof data.rating === 'number' ? data.rating : null,
       // A place with no reviews omits the field entirely; that is a real zero.
@@ -150,6 +156,8 @@ export class PlacesClient {
           rating: typeof place.rating === 'number' ? place.rating : null,
           totalReviews: typeof place.userRatingCount === 'number' ? place.userRatingCount : 0,
           businessStatus: place.businessStatus ?? null,
+          primaryType: place.primaryType ?? null,
+          primaryTypeLabel: place.primaryTypeDisplayName?.text ?? null,
         });
       }
 

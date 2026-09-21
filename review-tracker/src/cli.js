@@ -230,15 +230,19 @@ async function commandNearby(options) {
   const places = await findNearby(client, { center: anchor.location, radiusMetres: radius });
   const anchorTotal = places.find((p) => p.placeId === anchor.placeId)?.totalReviews ?? anchor.totalReviews ?? 0;
 
-  const { ladder, tooBig, tooSmall, ceiling } = shortlist(places, {
+  const { ladder, tooBig, tooSmall, notOpticians, ceiling } = shortlist(places, {
     anchorPlaceId: anchor.placeId,
     anchorTotal,
     limit: Number(options.limit ?? 5),
   });
 
   const chosen = new Set(ladder.map((p) => p.placeId));
-  console.log(`  ${places.length} found within ${miles} miles. A tick marks the ones shortlisted.\n`);
-  for (const place of places) {
+  const line = (place, mark) =>
+    `  ${mark} ${String(place.miles).padStart(4)}mi  ${String(place.totalReviews).padStart(5)} reviews  ${String(place.rating ?? 'n/a').padStart(3)}*  ${place.name}`;
+
+  const opticians = places.filter((place) => place.isOptician !== false);
+  console.log(`  ${opticians.length} opticians within ${miles} miles. A + marks the ones shortlisted.\n`);
+  for (const place of opticians) {
     const mark = place.placeId === anchor.placeId ? ' *' : chosen.has(place.placeId) ? ' +' : '  ';
     const why =
       place.placeId === anchor.placeId
@@ -246,14 +250,20 @@ async function commandNearby(options) {
         : chosen.has(place.placeId)
           ? ''
           : place.totalReviews > ceiling
-            ? `too far ahead to chase (over ${ceiling})`
+            ? `too far ahead to chase, over ${ceiling}`
             : place.totalReviews < 5
               ? 'too few reviews to be a benchmark'
               : 'comparable, but outside the shortlist';
-    console.log(
-      `  ${mark} ${String(place.miles).padStart(4)}mi  ${String(place.totalReviews).padStart(5)} reviews  ${String(place.rating ?? 'n/a').padStart(3)}*  ${place.name}`
-    );
+    console.log(line(place, mark));
     if (why) console.log(`          ${why}`);
+  }
+
+  // Shown rather than silently dropped: the name test is a judgement call, and
+  // a genuine practice with an unusual name would otherwise vanish unnoticed.
+  if (notOpticians.length > 0) {
+    console.log(`\n  Ignored, because they do not look like opticians:\n`);
+    for (const place of notOpticians) console.log(line(place, '  '));
+    console.log('\n  If a real practice is in that list, add it to the block below by hand.');
   }
 
   if (ladder.length === 0) {
@@ -261,7 +271,7 @@ async function commandNearby(options) {
     return;
   }
 
-  console.log(`\n  ${tooBig.length} skipped as too far ahead, ${tooSmall.length} as too small.`);
+  console.log(`\n  Shortlisted ${ladder.length}. Skipped ${tooBig.length} as too far ahead, ${tooSmall.length} as too small, ${notOpticians.length} as not opticians.`);
   console.log(`\n  Paste this into the "clients" array in config/practices.json:\n`);
   console.log(configBlock(anchor, ladder, options.id ?? slug(anchor.name)));
   console.log(`\n  ${client.callCount} API calls used.\n`);
