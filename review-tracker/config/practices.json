@@ -1,0 +1,19 @@
+{
+  "agency": { "name": "Spring View Marketing", "regionCode": "GB", "languageCode": "en-GB" },
+  "clients": [
+    {
+      "id": "murgatroyd-opticians",
+      "name": "Murgatroyd Opticians",
+      "placeId": "ChIJQwZWJ05zeUgRQ714j_cNuSM",
+      "area": "Conisbrough, Doncaster",
+      "searchTerm": "opticians near me",
+      "competitors": [
+        { "name": "T English Opticians", "placeId": "ChIJUdUfea51eUgR9tfX5Fuxdn0" },
+        { "name": "Priority Eyecare", "placeId": "ChIJ7Z3iX9ANeUgRPi_c6Z-jkpE" },
+        { "name": "Parkhurst and Co Styling Opticians", "placeId": "ChIJOaFZLbxzeUgRDMzyAp3OWdE" },
+        { "name": "ASDA Opticians", "placeId": "ChIJdafi-D10eUgRKVSJHZfud-s" },
+        { "name": "Moorhouse Opticians", "placeId": "ChIJowdhiaJzeUgR71WBv8ktbTA" }
+      ]
+    }
+  ]
+}
