@@ -6,6 +6,12 @@ on:
     # That is 08:00 in British Summer Time and 07:00 in winter.
     - cron: '0 7 * * 1'
   workflow_dispatch:
+    inputs:
+      send_emails:
+        description: 'Also email the clients. Off by default so a test run never does.'
+        required: false
+        default: false
+        type: boolean
 
 permissions:
   contents: write
@@ -17,6 +23,9 @@ concurrency:
 jobs:
   run:
     runs-on: ubuntu-latest
+    outputs:
+      outbox: ${{ steps.outbox.outputs.emails }}
+      count: ${{ steps.outbox.outputs.count }}
     steps:
       - uses: actions/checkout@v4
 
@@ -34,11 +43,27 @@ jobs:
         continue-on-error: true
         run: node src/cli.js weekly
 
+      # A scheduled run always mails; a manual one only when asked, so testing
+      # the workflow cannot put an unintended email in front of a client.
+      - name: Work out what to send
+        id: outbox
+        if: github.event_name == 'schedule' || inputs.send_emails
+        run: |
+          node -e '
+            const fs = require("node:fs");
+            let all = [];
+            try { all = JSON.parse(fs.readFileSync("docs/outbox.json", "utf8")); } catch {}
+            const ready = all.filter((e) => e.to && e.subject);
+            fs.appendFileSync(process.env.GITHUB_OUTPUT, "emails=" + JSON.stringify(ready) + "\n");
+            fs.appendFileSync(process.env.GITHUB_OUTPUT, "count=" + ready.length + "\n");
+            console.log(`${ready.length} of ${all.length} reports have a contact address.`);
+          '
+
       - name: Commit this week's reading
         run: |
           git config user.name  "review-tracker"
           git config user.email "review-tracker@users.noreply.github.com"
-          git add review-tracker/data review-tracker/reports
+          git add review-tracker/data review-tracker/reports docs
           if git diff --staged --quiet; then
             echo "Nothing changed this week."
             exit 0
@@ -57,3 +82,28 @@ jobs:
           name: review-reports
           path: review-tracker/reports
           retention-days: 90
+
+  # One job per client, so one bad address cannot stop the rest going out.
+  email:
+    needs: run
+    if: needs.run.outputs.count && needs.run.outputs.count != '0'
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        client: ${{ fromJSON(needs.run.outputs.outbox) }}
+    steps:
+      - name: Send the weekly email
+        uses: dawidd6/action-send-mail@v3
+        with:
+          server_address: smtp.gmail.com
+          server_port: 465
+          secure: true
+          username: ${{ secrets.GMAIL_USER }}
+          password: ${{ secrets.GMAIL_APP_PASSWORD }}
+          from: ${{ secrets.MAIL_FROM_NAME }} <${{ secrets.MAIL_FROM }}>
+          to: ${{ matrix.client.to }}
+          reply_to: ${{ secrets.MAIL_FROM }}
+          subject: ${{ matrix.client.subject }}
+          body: ${{ matrix.client.text }}
+          html_body: ${{ matrix.client.html }}

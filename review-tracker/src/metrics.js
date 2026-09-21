@@ -157,6 +157,19 @@ export function currentStreak(series) {
   return streak;
 }
 
+/**
+ * Consecutive most-recent weeks with nothing new. The mirror of the streak, and
+ * the thing worth saying out loud when a practice has gone quiet.
+ */
+export function currentDrought(series) {
+  let weeks = 0;
+  for (const week of series) {
+    if (week.newReviews === null || week.newReviews > 0) break;
+    weeks += 1;
+  }
+  return weeks;
+}
+
 /** Mean new reviews per week over the last `weeks` weeks that have a figure. */
 export function pace(series, weeks = 4) {
   const known = series.filter((week) => week.newReviews !== null).slice(0, weeks);
@@ -195,6 +208,7 @@ function buildRow(entry, { snapshots, anchors, asOf, isClient }) {
     baseline: headline.status === 'baseline',
     series,
     streak: currentStreak(series),
+    drought: currentDrought(series),
     pace: pace(series, 4),
   };
 }
