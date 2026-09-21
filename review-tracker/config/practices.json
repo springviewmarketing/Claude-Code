@@ -94,10 +94,10 @@
       "token": "cbkgrqDNQMQy"
     },
     {
-      "id": "murgatroyd-opticians",
-      "name": "Murgatroyd Opticians",
+      "id": "murgatroyd-opticians-ltd",
+      "name": "Murgatroyd Opticians Ltd",
       "placeId": "ChIJQwZWJ05zeUgRQ714j_cNuSM",
-      "area": "Conisbrough, Doncaster",
+      "area": "The Old Surgery, March St, Conisbrough, Doncaster DN12 2LY",
       "searchTerm": "opticians near me",
       "competitors": [
         {
@@ -109,18 +109,39 @@
           "placeId": "ChIJ7Z3iX9ANeUgRPi_c6Z-jkpE"
         },
         {
-          "name": "Parkhurst and Co Styling Opticians",
+          "name": "Parkhurst and Co Styling Opticians (Mexborough)",
           "placeId": "ChIJOaFZLbxzeUgRDMzyAp3OWdE"
-        },
-        {
-          "name": "ASDA Opticians",
-          "placeId": "ChIJdafi-D10eUgRKVSJHZfud-s"
         },
         {
           "name": "Moorhouse Opticians",
           "placeId": "ChIJowdhiaJzeUgR71WBv8ktbTA"
+        },
+        {
+          "name": "Wickersley Eye Clinic",
+          "placeId": "ChIJ14hlG651eUgRlKygWMbRsXs"
+        },
+        {
+          "name": "Staples Opticians & Hearing Care",
+          "placeId": "ChIJv3h2FnBxeUgR_LSl2KObTzA"
+        },
+        {
+          "name": "Cotler & Bell Opticians",
+          "placeId": "ChIJmVWDaNANeUgRWTnO4aRrRY0"
+        },
+        {
+          "name": "Dudley & Severn Opticians",
+          "placeId": "ChIJOzbSYd4KeUgRFQlQhdWA86I"
+        },
+        {
+          "name": "BRUMPTON OPTICIANS LTD",
+          "placeId": "ChIJJ2nHst4KeUgRGh3ajwA0Gg4"
+        },
+        {
+          "name": "Martyn Kemp Opticians",
+          "placeId": "ChIJTw4EG7J2eUgRrxaHKXorEDg"
         }
-      ]
+      ],
+      "token": "PnbiEAIl7xcY"
     }
   ]
 }

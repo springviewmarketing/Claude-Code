@@ -2,7 +2,7 @@
   "version": 1,
   "snapshots": [
     {
-      "takenAt": "2026-09-21T21:36:57.363Z",
+      "takenAt": "2026-09-21T21:37:13.019Z",
       "places": {
         "ChIJQwZWJ05zeUgRQ714j_cNuSM": {
           "name": "Murgatroyd Opticians Ltd",
@@ -176,6 +176,48 @@
           "name": "Portland Optical Group",
           "totalReviews": 8,
           "rating": 5,
+          "businessStatus": "OPERATIONAL",
+          "status": "ok"
+        },
+        "ChIJ14hlG651eUgRlKygWMbRsXs": {
+          "name": "Wickersley Eye Clinic",
+          "totalReviews": 47,
+          "rating": 4.9,
+          "businessStatus": "OPERATIONAL",
+          "status": "ok"
+        },
+        "ChIJv3h2FnBxeUgR_LSl2KObTzA": {
+          "name": "Staples Opticians & Hearing Care",
+          "totalReviews": 91,
+          "rating": 4.9,
+          "businessStatus": "OPERATIONAL",
+          "status": "ok"
+        },
+        "ChIJmVWDaNANeUgRWTnO4aRrRY0": {
+          "name": "Cotler & Bell Opticians",
+          "totalReviews": 101,
+          "rating": 4.8,
+          "businessStatus": "OPERATIONAL",
+          "status": "ok"
+        },
+        "ChIJOzbSYd4KeUgRFQlQhdWA86I": {
+          "name": "Dudley & Severn Opticians",
+          "totalReviews": 10,
+          "rating": 4.9,
+          "businessStatus": "OPERATIONAL",
+          "status": "ok"
+        },
+        "ChIJJ2nHst4KeUgRGh3ajwA0Gg4": {
+          "name": "BRUMPTON OPTICIANS LTD",
+          "totalReviews": 9,
+          "rating": 4.4,
+          "businessStatus": "OPERATIONAL",
+          "status": "ok"
+        },
+        "ChIJTw4EG7J2eUgRrxaHKXorEDg": {
+          "name": "Martyn Kemp Opticians",
+          "totalReviews": 9,
+          "rating": 4.6,
           "businessStatus": "OPERATIONAL",
           "status": "ok"
         }
