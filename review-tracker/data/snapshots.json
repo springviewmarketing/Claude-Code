@@ -2,7 +2,7 @@
   "version": 1,
   "snapshots": [
     {
-      "takenAt": "2026-09-21T20:38:52.125Z",
+      "takenAt": "2026-09-21T20:59:51.625Z",
       "places": {
         "ChIJQwZWJ05zeUgRQ714j_cNuSM": {
           "name": "Murgatroyd Opticians Ltd",
@@ -42,6 +42,48 @@
         "ChIJowdhiaJzeUgR71WBv8ktbTA": {
           "name": "Moorhouse Opticians",
           "totalReviews": 39,
+          "rating": 5,
+          "businessStatus": "OPERATIONAL",
+          "status": "ok"
+        },
+        "ChIJHbD_FLubeUgRvos7zInLEm0": {
+          "name": "Murgatroyd Holmes Opticians",
+          "totalReviews": 26,
+          "rating": 5,
+          "businessStatus": "OPERATIONAL",
+          "status": "ok"
+        },
+        "ChIJB_nTkcaaeUgRuIx6BgWFTl8": {
+          "name": "The Chesterfield Eye Centre",
+          "totalReviews": 33,
+          "rating": 3.9,
+          "businessStatus": "OPERATIONAL",
+          "status": "ok"
+        },
+        "ChIJf4shtjqFeUgRaIEqMy3cru0": {
+          "name": "Elliott & Heath Opticians and Audiologists",
+          "totalReviews": 35,
+          "rating": 4.7,
+          "businessStatus": "OPERATIONAL",
+          "status": "ok"
+        },
+        "ChIJM1M5b-qZeUgRzdmRq0NRK9I": {
+          "name": "Parker Opticians",
+          "totalReviews": 76,
+          "rating": 4.9,
+          "businessStatus": "OPERATIONAL",
+          "status": "ok"
+        },
+        "ChIJ_VrTJjeFeUgRR-xNjCdtCMk": {
+          "name": "Insight Opticians",
+          "totalReviews": 108,
+          "rating": 5,
+          "businessStatus": "OPERATIONAL",
+          "status": "ok"
+        },
+        "ChIJI7dXEMWFeUgR9YN8jf3-ZQc": {
+          "name": "Oculi Opticians",
+          "totalReviews": 23,
           "rating": 5,
           "businessStatus": "OPERATIONAL",
           "status": "ok"

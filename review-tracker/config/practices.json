@@ -1,6 +1,39 @@
 {
-  "agency": { "name": "Spring View Marketing", "regionCode": "GB", "languageCode": "en-GB" },
+  "agency": {
+    "name": "Spring View Marketing",
+    "regionCode": "GB",
+    "languageCode": "en-GB"
+  },
   "clients": [
+    {
+      "id": "murgatroyd-holmes-opticians",
+      "name": "Murgatroyd Holmes Opticians",
+      "placeId": "ChIJHbD_FLubeUgRvos7zInLEm0",
+      "area": "33 High St, Staveley, Chesterfield S43 3UU",
+      "searchTerm": "opticians near me",
+      "competitors": [
+        {
+          "name": "The Chesterfield Eye Centre",
+          "placeId": "ChIJB_nTkcaaeUgRuIx6BgWFTl8"
+        },
+        {
+          "name": "Elliott & Heath Opticians and Audiologists",
+          "placeId": "ChIJf4shtjqFeUgRaIEqMy3cru0"
+        },
+        {
+          "name": "Parker Opticians",
+          "placeId": "ChIJM1M5b-qZeUgRzdmRq0NRK9I"
+        },
+        {
+          "name": "Insight Opticians",
+          "placeId": "ChIJ_VrTJjeFeUgRR-xNjCdtCMk"
+        },
+        {
+          "name": "Oculi Opticians",
+          "placeId": "ChIJI7dXEMWFeUgR9YN8jf3-ZQc"
+        }
+      ]
+    },
     {
       "id": "murgatroyd-opticians",
       "name": "Murgatroyd Opticians",
@@ -8,11 +41,26 @@
       "area": "Conisbrough, Doncaster",
       "searchTerm": "opticians near me",
       "competitors": [
-        { "name": "T English Opticians", "placeId": "ChIJUdUfea51eUgR9tfX5Fuxdn0" },
-        { "name": "Priority Eyecare", "placeId": "ChIJ7Z3iX9ANeUgRPi_c6Z-jkpE" },
-        { "name": "Parkhurst and Co Styling Opticians", "placeId": "ChIJOaFZLbxzeUgRDMzyAp3OWdE" },
-        { "name": "ASDA Opticians", "placeId": "ChIJdafi-D10eUgRKVSJHZfud-s" },
-        { "name": "Moorhouse Opticians", "placeId": "ChIJowdhiaJzeUgR71WBv8ktbTA" }
+        {
+          "name": "T English Opticians",
+          "placeId": "ChIJUdUfea51eUgR9tfX5Fuxdn0"
+        },
+        {
+          "name": "Priority Eyecare",
+          "placeId": "ChIJ7Z3iX9ANeUgRPi_c6Z-jkpE"
+        },
+        {
+          "name": "Parkhurst and Co Styling Opticians",
+          "placeId": "ChIJOaFZLbxzeUgRDMzyAp3OWdE"
+        },
+        {
+          "name": "ASDA Opticians",
+          "placeId": "ChIJdafi-D10eUgRKVSJHZfud-s"
+        },
+        {
+          "name": "Moorhouse Opticians",
+          "placeId": "ChIJowdhiaJzeUgR71WBv8ktbTA"
+        }
       ]
     }
   ]
