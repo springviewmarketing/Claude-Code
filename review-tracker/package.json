@@ -4,14 +4,19 @@
   "private": true,
   "description": "Weekly Google review tracker for optician practices and their local competitors",
   "type": "module",
-  "engines": { "node": ">=20" },
-  "bin": { "review-tracker": "./src/cli.js" },
+  "engines": {
+    "node": ">=20"
+  },
+  "bin": {
+    "review-tracker": "./src/cli.js"
+  },
   "scripts": {
     "snapshot": "node src/cli.js snapshot",
     "report": "node src/cli.js report",
     "weekly": "node src/cli.js weekly",
     "discover": "node src/cli.js discover",
     "demo": "node src/cli.js demo",
-    "test": "node --test test/"
+    "test": "node --test test/",
+    "add-client": "node src/cli.js add-client"
   }
 }

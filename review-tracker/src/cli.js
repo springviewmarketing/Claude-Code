@@ -11,7 +11,8 @@ import { renderReport, renderIndex } from './render/html.js';
 import { practiceMessage, terminalSummary, formatDate } from './render/text.js';
 import { toCsv } from './render/csv.js';
 import { demoConfig, demoHistory } from './demo-data.js';
-import { resolveAnchor, findNearby, shortlist } from './nearby.js';
+import { resolveAnchor, findNearby, shortlist, disambiguateNames } from './nearby.js';
+import { readClientFile, upsertClient, writeClientFile, slugify } from './client-file.js';
 import { milesToMetres } from './geo.js';
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
@@ -23,8 +24,9 @@ review-tracker, weekly Google review counts for practices and their local rivals
   report              rebuild the reports from stored history, no API calls
   weekly              snapshot, then report (this is what the schedule runs)
   discover "<query>"  find place IDs by name, for setting a practice up
-  nearby "<practice>" find every optician within a radius of a practice, and
-                      write the config block for it. Takes --miles, --limit
+  add-client "<practice>"  find a practice, pick its competitors and add it to
+                      the config. One command, nothing to copy by hand.
+  nearby "<practice>" the same search, but printed rather than saved
   demo                write a worked example report from sample data, no API key
 
 Options
@@ -38,6 +40,7 @@ Options
   --id <slug>       the client id to write, default taken from the name
   --include-chains yes   put Specsavers, Boots and the rest back in
   --quiet           print less
+  --verbose         list every business the search looked at
 `;
 
 function parseArgs(argv) {
@@ -290,6 +293,125 @@ async function commandNearby(options) {
   console.log(`\n  ${client.callCount} API calls used.\n`);
 }
 
+/** The shared search: resolve the practice, find rivals, pick the ladder. */
+async function findClient(client, target, options) {
+  const miles = Number(options.miles ?? 5);
+  if (!Number.isFinite(miles) || miles <= 0 || miles > 31) {
+    const error = new Error('--miles must be between 0 and 31. Google will not restrict a search wider than 50km.');
+    error.expected = true;
+    throw error;
+  }
+
+  const anchor = await resolveAnchor(client, target);
+  const found = await findNearby(client, { center: anchor.location, radiusMetres: milesToMetres(miles) });
+  const places = disambiguateNames(found);
+  const anchorTotal = places.find((p) => p.placeId === anchor.placeId)?.totalReviews ?? anchor.totalReviews ?? 0;
+
+  const buckets = shortlist(places, {
+    anchorPlaceId: anchor.placeId,
+    anchorTotal,
+    limit: Number(options.limit ?? 5),
+    includeChains: options['include-chains'] === 'yes' || options['include-chains'] === true,
+  });
+
+  return { anchor, anchorTotal, places, miles, ...buckets };
+}
+
+const reviewLine = (place, mark = '  ') =>
+  `  ${mark} ${String(place.miles ?? 0).padStart(4)}mi  ${String(place.totalReviews).padStart(5)} reviews  ${String(place.rating ?? 'n/a').padStart(3)}*  ${place.name}`;
+
+/** The short version: what was added, who it is up against, what to check. */
+function printSummary(result, { clientCount, replaced, file }) {
+  const { anchor, anchorTotal, ladder, chains, notOpticians, tooBig, tooSmall, miles } = result;
+
+  console.log(`\n  ${replaced ? 'Updated' : 'Added'} ${anchor.name}.\n`);
+  console.log('  CHECK THIS IS THE RIGHT PRACTICE');
+  console.log(`    ${anchor.name}`);
+  console.log(`    ${anchor.address ?? 'no address returned'}`);
+  console.log(`    ${anchorTotal} reviews, ${anchor.rating ?? 'n/a'} stars`);
+  console.log(`    https://www.google.com/maps/place/?q=place_id:${anchor.placeId}`);
+
+  const table = [...ladder, { ...anchor, totalReviews: anchorTotal, isAnchor: true }].sort(
+    (a, b) => b.totalReviews - a.totalReviews
+  );
+  console.log(`\n  Tracking it against ${ladder.length} nearby ${ladder.length === 1 ? 'practice' : 'practices'}:\n`);
+  for (const place of table) {
+    const mark = place.isAnchor ? '>>' : '  ';
+    const distance = place.isAnchor ? '     ' : `${String(place.miles).padStart(4)}mi`;
+    console.log(`  ${mark} ${String(place.totalReviews).padStart(5)}  ${distance}  ${place.name}`);
+  }
+
+  const above = table.filter((p) => !p.isAnchor && p.totalReviews > anchorTotal);
+  const next = above.at(-1);
+  console.log('');
+  if (next) {
+    const gap = next.totalReviews - anchorTotal;
+    console.log(`  Next one to catch: ${next.name}, ${gap} review${gap === 1 ? '' : 's'} ahead.`);
+  } else if (ladder.length > 0) {
+    console.log('  Already top of this table. The job is holding the lead.');
+  } else {
+    console.log(`  No comparable practices found within ${miles} miles. Try a wider radius.`);
+  }
+
+  const skipped = chains.length + notOpticians.length + tooBig.length + tooSmall.length;
+  console.log(
+    `\n  ${skipped} other nearby businesses were left out: ${chains.length} chains, ${notOpticians.length} not opticians, ${tooBig.length} too far ahead, ${tooSmall.length} too few reviews.`
+  );
+  console.log('  Run again with --verbose to see them listed.');
+  console.log(`\n  Saved to ${file}. ${clientCount} ${clientCount === 1 ? 'practice' : 'practices'} now tracked.`);
+}
+
+/** The long version, for when a judgement call needs checking. */
+function printDetail(result) {
+  const { places, chains, notOpticians, ladder, miles } = result;
+  const chosen = new Set(ladder.map((p) => p.placeId));
+  const excluded = new Set([...chains, ...notOpticians].map((p) => p.placeId));
+
+  console.log(`\n  Opticians within ${miles} miles. A + marks the ones picked.\n`);
+  for (const place of places.filter((p) => p.isOptician !== false && !excluded.has(p.placeId))) {
+    console.log(reviewLine(place, place.placeId === result.anchor.placeId ? ' *' : chosen.has(place.placeId) ? ' +' : '  '));
+  }
+  if (chains.length > 0) {
+    console.log('\n  Chains and supermarket concessions, left out on purpose:\n');
+    for (const place of chains) console.log(reviewLine(place));
+  }
+  if (notOpticians.length > 0) {
+    console.log('\n  Not opticians, so ignored:\n');
+    for (const place of notOpticians) console.log(reviewLine(place));
+    console.log('\n  If a real practice is in that list, add it to the config by hand.');
+  }
+}
+
+async function commandAddClient(options) {
+  const target = options.positional.join(' ');
+  if (!target) {
+    console.error('  Give it a practice, e.g. add-client "Murgatroyd Holmes Opticians Staveley"');
+    process.exitCode = 1;
+    return;
+  }
+
+  const file = resolve(options.config, 'config/practices.json');
+  const client = new PlacesClient({ apiKey: process.env.GOOGLE_MAPS_API_KEY });
+  const result = await findClient(client, target, options);
+
+  const entry = {
+    id: options.id ?? slugify(result.anchor.name),
+    name: result.anchor.name,
+    placeId: result.anchor.placeId,
+    area: result.anchor.address ?? null,
+    searchTerm: options['search-term'] ?? 'opticians near me',
+    competitors: result.ladder.map(({ name, placeId }) => ({ name, placeId })),
+  };
+
+  const existing = await readClientFile(file);
+  const { config, replaced } = upsertClient(existing, entry);
+  await writeClientFile(file, config);
+
+  if (options.verbose !== undefined) printDetail(result);
+  printSummary(result, { clientCount: config.clients.length, replaced, file: path.relative(ROOT, file) });
+  console.log(`  ${client.callCount} API calls used.\n`);
+}
+
 async function commandDemo(options) {
   const outDir = resolve(options.out, 'reports/demo');
   const reports = buildAllReports(demoConfig, demoHistory(), { weeks: 12 });
@@ -321,6 +443,9 @@ async function main() {
       break;
     case 'nearby':
       await commandNearby(options);
+      break;
+    case 'add-client':
+      await commandAddClient(options);
       break;
     case 'demo':
       await commandDemo(options);

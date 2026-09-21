@@ -209,3 +209,22 @@ test('chains can be put back deliberately, for a practice big enough to want the
   const { ladder } = shortlist(places, { anchorPlaceId: 'us', anchorTotal: 400, limit: 5, includeChains: true });
   assert.deepEqual(ladder.map((p) => p.name), ['Specsavers']);
 });
+
+test('names the closing word boundary used to throw away are recognised', () => {
+  // All four came back from a live Chesterfield search and were binned as
+  // "not opticians" because /\bvision\b/ and /\boptical\b/ need a word end.
+  for (const name of ['Visionplus', 'Visioncare At Home', 'Opticalia Leeds', 'Midlands Myopia']) {
+    assert.equal(looksLikeOptician({ name }), true, `${name} is an optician`);
+  }
+});
+
+test('the looser patterns do not start letting the neighbourhood in', () => {
+  const rejects = [
+    'Holywell Cross Car Park - CBC', 'Royal Primary Care Grangewood', 'The Surgery @ Wheatbridge',
+    "Sainsbury's", 'Superdrug', 'B&M Store', 'Witham', 'CHEC Chesterfield',
+    'Cohens Chemist, Stubbing Road, Chesterfield',
+    'Newmedica Eye Health Clinic & Surgical Centre - Barlborough',
+  ];
+  const wrong = rejects.filter((name) => looksLikeOptician({ name }));
+  assert.deepEqual(wrong, []);
+});

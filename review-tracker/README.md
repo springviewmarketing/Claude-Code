@@ -7,7 +7,7 @@ No dependencies, no build step, no database. Node 22 or newer.
 
 ```
 npm run demo        # see the output before you have a key or a config
-npm test            # 57 tests, no network
+npm test            # 71 tests, no network
 npm run weekly      # the real thing: read the profiles, write the reports
 ```
 
@@ -64,6 +64,29 @@ terminal, or a copy of this repository on your machine.
 
 The local route below is faster to iterate on if you do have Node installed, but
 it is optional.
+
+## Adding a practice, after the first time
+
+One button. Actions tab, **"Add a client"**, type the practice name and town,
+press Run. It finds the practice, picks its local competitors, saves them to the
+config, commits, and takes the first reading. Nothing to copy by hand.
+
+```bash
+npm run add-client -- "Murgatroyd Holmes Opticians Staveley" --miles 5
+```
+
+It prints a short summary rather than the whole search: what it added, the table
+the practice now sits in, who is next to catch, and a count of what was left
+out. Add `--verbose` to see every business it looked at.
+
+**The one thing worth checking** is the practice it centred on. It matches by
+name, and a chain or a practice with branches can match the wrong one. The
+summary leads with the address and a Google Maps link for exactly that reason.
+Everything downstream is wrong if the anchor is wrong. Re-run with the place ID
+if it picked the wrong branch.
+
+Running it again for the same practice updates that practice rather than adding
+a second copy, whether it is matched by id or by place ID.
 
 ## Setting it up
 
@@ -270,6 +293,7 @@ src/
   demo-data.js    invented data for the worked example
   geo.js          distances, and the box that contains a circle
   nearby.js       the radius search, the optician test, the shortlist
+  client-file.js  merging a practice into practices.json without losing the rest
   render/
     html.js       the report and the index
     text.js       the terminal summary and the message for the practice
@@ -277,7 +301,7 @@ src/
 config/           practices.json lives here
 data/             snapshots.json, the history, commit it
 reports/          generated output
-test/             57 tests, no network
+test/             71 tests, no network
 ```
 
 ## Commands
@@ -288,7 +312,8 @@ test/             57 tests, no network
 | `npm run snapshot` | Read and store, without writing reports |
 | `npm run report` | Rebuild the reports from stored history, no API calls |
 | `npm run discover -- "<query>"` | Find a place ID by name |
-| `npm run nearby -- "<practice>" --miles 5` | Find every optician within a radius, and write the config block |
+| `npm run add-client -- "<practice>" --miles 5` | Find a practice and its rivals, and save it to the config |
+| `npm run nearby -- "<practice>" --miles 5` | The same search, printed rather than saved |
 | `npm run nearby -- "<practice>" --include-chains yes` | The same, but with the chains left in |
 | `npm run demo` | Write the worked example, no key needed |
 | `npm test` | Run the tests |
