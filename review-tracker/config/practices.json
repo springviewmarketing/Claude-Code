@@ -81,8 +81,17 @@
         {
           "name": "Oculi Opticians",
           "placeId": "ChIJI7dXEMWFeUgR9YN8jf3-ZQc"
+        },
+        {
+          "name": "Watson & Jenkins Opticians Ltd",
+          "placeId": "ChIJP380ZjeFeUgRyjZJTcs382E"
+        },
+        {
+          "name": "Portland Optical Group (Clowne)",
+          "placeId": "ChIJu6_iO-CYeUgRyrqYua_esYE"
         }
-      ]
+      ],
+      "token": "cbkgrqDNQMQy"
     },
     {
       "id": "murgatroyd-opticians",

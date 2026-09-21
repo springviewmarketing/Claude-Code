@@ -2,7 +2,7 @@
   "version": 1,
   "snapshots": [
     {
-      "takenAt": "2026-09-21T21:36:25.143Z",
+      "takenAt": "2026-09-21T21:36:57.363Z",
       "places": {
         "ChIJQwZWJ05zeUgRQ714j_cNuSM": {
           "name": "Murgatroyd Opticians Ltd",
@@ -162,6 +162,20 @@
           "name": "David Inman Bespoke Opticians",
           "totalReviews": 56,
           "rating": 4.8,
+          "businessStatus": "OPERATIONAL",
+          "status": "ok"
+        },
+        "ChIJP380ZjeFeUgRyjZJTcs382E": {
+          "name": "Watson & Jenkins Opticians Ltd",
+          "totalReviews": 21,
+          "rating": 4.6,
+          "businessStatus": "OPERATIONAL",
+          "status": "ok"
+        },
+        "ChIJu6_iO-CYeUgRyrqYua_esYE": {
+          "name": "Portland Optical Group",
+          "totalReviews": 8,
+          "rating": 5,
           "businessStatus": "OPERATIONAL",
           "status": "ok"
         }
