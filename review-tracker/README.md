@@ -244,10 +244,14 @@ out with no link rather than a broken one.
 | `MAIL_FROM` | The address the client sees and replies to |
 | `MAIL_FROM_NAME` | The name beside it, e.g. `Tom at Spring View Marketing` |
 
-A scheduled Monday run always emails. A manual run only emails if you tick
-**Send emails**, so testing the workflow can never put an unintended message in
-front of a client. Each client is sent by its own job, so one bad address does
-not stop the others.
+**Nothing is emailed automatically.** The Monday run writes the drafts to
+`docs/outbox.json` and stops. They go out by hand, after a person has read them
+and added the things only a person knows. Ticking **Send emails** on a manual
+run is the only way anything leaves here, and each client is sent by its own job
+so one bad address does not stop the others.
+
+That switch exists for later, when the client list is long enough that writing
+each one by hand stops being worth it. Until then the draft is the deliverable.
 
 ### Why the links are ugly
 
@@ -269,6 +273,16 @@ the email stays to four lines.
 
 Nothing in it suggests offering anything for a review or choosing who to ask.
 Both breach Google policy and the DMCCA, and the tests check the copy for it.
+
+## The Monday briefing
+
+A scheduled Claude routine fires at 08:15 UTC every Monday, an hour and a
+quarter after the tracker runs. It reads the week's reading and reports back:
+what each practice gained, where they sit locally, who they are chasing, and a
+draft email per client to rewrite and send. It also checks the tracker actually
+ran, and says so loudly if it did not.
+
+It never emails a client and never commits anything. It reads and reports.
 
 ## Running it weekly without remembering to
 
