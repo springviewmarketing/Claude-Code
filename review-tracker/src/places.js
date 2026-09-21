@@ -14,6 +14,7 @@
 const DETAILS_FIELDS = [
   'id',
   'displayName',
+  'location',
   'rating',
   'userRatingCount',
   'businessStatus',
@@ -24,11 +25,14 @@ const DETAILS_FIELDS = [
 const SEARCH_FIELDS = [
   'places.id',
   'places.displayName',
+  'places.location',
   'places.formattedAddress',
   'places.rating',
   'places.userRatingCount',
   'places.businessStatus',
 ].join(',');
+
+const SEARCH_FIELDS_PAGED = `${SEARCH_FIELDS},nextPageToken`;
 
 const BASE = 'https://places.googleapis.com/v1';
 const RETRYABLE = new Set([408, 429, 500, 502, 503, 504]);
@@ -103,32 +107,57 @@ export class PlacesClient {
       address: data.formattedAddress ?? null,
       mapsUri: data.googleMapsUri ?? null,
       businessStatus: data.businessStatus ?? null,
+      location: data.location ?? null,
       rating: typeof data.rating === 'number' ? data.rating : null,
       // A place with no reviews omits the field entirely; that is a real zero.
       totalReviews: typeof data.userRatingCount === 'number' ? data.userRatingCount : 0,
     };
   }
 
-  /** Free-text place lookup, for finding place IDs during setup. */
-  async searchText(textQuery, { maxResultCount = 20 } = {}) {
-    const data = await this.#request(`${BASE}/places:searchText`, {
-      method: 'POST',
-      fieldMask: SEARCH_FIELDS,
-      body: {
-        textQuery,
-        regionCode: this.regionCode,
-        languageCode: this.languageCode,
-        maxResultCount,
-      },
-    });
-    return (data.places ?? []).map((place) => ({
-      placeId: place.id,
-      name: place.displayName?.text ?? null,
-      address: place.formattedAddress ?? null,
-      rating: typeof place.rating === 'number' ? place.rating : null,
-      totalReviews: typeof place.userRatingCount === 'number' ? place.userRatingCount : 0,
-      businessStatus: place.businessStatus ?? null,
-    }));
+  /**
+   * Free-text place lookup, for finding place IDs during setup.
+   *
+   * `locationRestriction` takes a rectangle only; a circle is not accepted here,
+   * which is why a radius search boxes the circle first and filters afterwards.
+   * Google caps a search at 60 results across all pages.
+   */
+  async searchText(textQuery, { pageSize = 20, locationRestriction, maxPages = 1 } = {}) {
+    const results = [];
+    let pageToken;
+
+    for (let page = 0; page < maxPages; page += 1) {
+      const data = await this.#request(`${BASE}/places:searchText`, {
+        method: 'POST',
+        fieldMask: maxPages > 1 ? SEARCH_FIELDS_PAGED : SEARCH_FIELDS,
+        body: {
+          textQuery,
+          regionCode: this.regionCode,
+          languageCode: this.languageCode,
+          pageSize,
+          ...(locationRestriction ? { locationRestriction } : {}),
+          // Every other field has to match the first call for a page token to
+          // be accepted, so the token is the only thing that changes.
+          ...(pageToken ? { pageToken } : {}),
+        },
+      });
+
+      for (const place of data.places ?? []) {
+        results.push({
+          placeId: place.id,
+          name: place.displayName?.text ?? null,
+          address: place.formattedAddress ?? null,
+          location: place.location ?? null,
+          rating: typeof place.rating === 'number' ? place.rating : null,
+          totalReviews: typeof place.userRatingCount === 'number' ? place.userRatingCount : 0,
+          businessStatus: place.businessStatus ?? null,
+        });
+      }
+
+      pageToken = data.nextPageToken;
+      if (!pageToken) break;
+    }
+
+    return results;
   }
 }
 

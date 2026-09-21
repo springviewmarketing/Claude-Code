@@ -11,6 +11,8 @@ import { renderReport, renderIndex } from './render/html.js';
 import { practiceMessage, terminalSummary, formatDate } from './render/text.js';
 import { toCsv } from './render/csv.js';
 import { demoConfig, demoHistory } from './demo-data.js';
+import { resolveAnchor, findNearby, shortlist } from './nearby.js';
+import { milesToMetres } from './geo.js';
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 
@@ -20,7 +22,9 @@ review-tracker, weekly Google review counts for practices and their local rivals
   snapshot            read every tracked profile and store this week's totals
   report              rebuild the reports from stored history, no API calls
   weekly              snapshot, then report (this is what the schedule runs)
-  discover "<query>"  find place IDs, for setting a practice up
+  discover "<query>"  find place IDs by name, for setting a practice up
+  nearby "<practice>" find every optician within a radius of a practice, and
+                      write the config block for it. Takes --miles, --limit
   demo                write a worked example report from sample data, no API key
 
 Options
@@ -29,6 +33,9 @@ Options
   --out <dir>       default reports/
   --as-of <date>    treat this ISO date as "now" when reporting
   --weeks <n>       weeks of history to chart, default 12
+  --miles <n>       radius for the nearby search, default 5
+  --limit <n>       how many competitors the nearby search shortlists, default 5
+  --id <slug>       the client id to write, default taken from the name
   --quiet           print less
 `;
 
@@ -173,6 +180,93 @@ async function commandDiscover(options) {
   console.log('  Paste the placeId lines into config/practices.json.\n');
 }
 
+const slug = (name) =>
+  name
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, '-')
+    .replace(/^-|-$/g, '')
+    .slice(0, 40) || 'practice';
+
+function configBlock(anchor, rivals, id) {
+  return JSON.stringify(
+    {
+      id,
+      name: anchor.name,
+      placeId: anchor.placeId,
+      area: anchor.address ?? null,
+      searchTerm: 'opticians near me',
+      competitors: rivals.map((rival) => ({ name: rival.name, placeId: rival.placeId })),
+    },
+    null,
+    2
+  );
+}
+
+async function commandNearby(options) {
+  const target = options.positional.join(' ');
+  if (!target) {
+    console.error('  Give it a practice, e.g. nearby "Murgatroyd Opticians Conisbrough" --miles 5');
+    process.exitCode = 1;
+    return;
+  }
+
+  const miles = Number(options.miles ?? 5);
+  if (!Number.isFinite(miles) || miles <= 0 || miles > 31) {
+    console.error('  --miles must be between 0 and 31. Google will not restrict a search wider than 50km.');
+    process.exitCode = 1;
+    return;
+  }
+
+  const client = new PlacesClient({ apiKey: process.env.GOOGLE_MAPS_API_KEY });
+  const anchor = await resolveAnchor(client, target);
+
+  console.log(`\n  Centred on ${anchor.name}`);
+  console.log(`    ${anchor.address ?? ''}`);
+  console.log(`    ${anchor.totalReviews ?? '?'} reviews, ${anchor.rating ?? 'n/a'} stars`);
+  if (anchor.matched) console.log('    (matched by name. If that is the wrong branch, re-run with its place ID.)');
+  console.log(`\n  Searching ${miles} miles around it...\n`);
+
+  const radius = milesToMetres(miles);
+  const places = await findNearby(client, { center: anchor.location, radiusMetres: radius });
+  const anchorTotal = places.find((p) => p.placeId === anchor.placeId)?.totalReviews ?? anchor.totalReviews ?? 0;
+
+  const { ladder, tooBig, tooSmall, ceiling } = shortlist(places, {
+    anchorPlaceId: anchor.placeId,
+    anchorTotal,
+    limit: Number(options.limit ?? 5),
+  });
+
+  const chosen = new Set(ladder.map((p) => p.placeId));
+  console.log(`  ${places.length} found within ${miles} miles. A tick marks the ones shortlisted.\n`);
+  for (const place of places) {
+    const mark = place.placeId === anchor.placeId ? ' *' : chosen.has(place.placeId) ? ' +' : '  ';
+    const why =
+      place.placeId === anchor.placeId
+        ? 'the practice itself'
+        : chosen.has(place.placeId)
+          ? ''
+          : place.totalReviews > ceiling
+            ? `too far ahead to chase (over ${ceiling})`
+            : place.totalReviews < 5
+              ? 'too few reviews to be a benchmark'
+              : 'comparable, but outside the shortlist';
+    console.log(
+      `  ${mark} ${String(place.miles).padStart(4)}mi  ${String(place.totalReviews).padStart(5)} reviews  ${String(place.rating ?? 'n/a').padStart(3)}*  ${place.name}`
+    );
+    if (why) console.log(`          ${why}`);
+  }
+
+  if (ladder.length === 0) {
+    console.log('\n  Nothing comparable found. Widen the radius with --miles, or check the anchor is right.');
+    return;
+  }
+
+  console.log(`\n  ${tooBig.length} skipped as too far ahead, ${tooSmall.length} as too small.`);
+  console.log(`\n  Paste this into the "clients" array in config/practices.json:\n`);
+  console.log(configBlock(anchor, ladder, options.id ?? slug(anchor.name)));
+  console.log(`\n  ${client.callCount} API calls used.\n`);
+}
+
 async function commandDemo(options) {
   const outDir = resolve(options.out, 'reports/demo');
   const reports = buildAllReports(demoConfig, demoHistory(), { weeks: 12 });
@@ -201,6 +295,9 @@ async function main() {
     }
     case 'discover':
       await commandDiscover(options);
+      break;
+    case 'nearby':
+      await commandNearby(options);
       break;
     case 'demo':
       await commandDemo(options);

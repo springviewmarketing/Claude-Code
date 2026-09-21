@@ -7,7 +7,7 @@ No dependencies, no build step, no database. Node 22 or newer.
 
 ```
 npm run demo        # see the output before you have a key or a config
-npm test            # 30 tests, no network
+npm test            # 45 tests, no network
 npm run weekly      # the real thing: read the profiles, write the reports
 ```
 
@@ -49,9 +49,11 @@ terminal, or a copy of this repository on your machine.
    requires a card on the account even though you will not be charged.
 2. **Add the key to GitHub.** Repository, Settings, Secrets and variables,
    Actions, New repository secret. Name it `GOOGLE_MAPS_API_KEY`.
-3. **Find the place IDs.** Actions tab, "Find place IDs", "Run workflow", type
-   a search such as `opticians in Hillsborough Sheffield`. The results appear in
-   the run summary with a `placeId` for each match.
+3. **Find the competitors.** Actions tab, "Find nearby competitors", "Run
+   workflow", give it the practice name and a radius in miles. The run summary
+   lists everything nearby with its distance and ends with a config block ready
+   to paste. ("Find place IDs" is the older, name-only search, still there for
+   looking up one specific practice.)
 4. **Write the config.** In the repository, open
    `review-tracker/config/practices.example.json`, press the pencil icon, save
    it as `review-tracker/config/practices.json` with the real names and place
@@ -83,11 +85,32 @@ cp .env.example .env
 
 ### 2. Find the place IDs
 
-From the Actions tab, run "Find place IDs" and type the search. Or locally:
+Two ways, and the second is usually the one you want.
+
+**By radius, when you want the competitor list.** Text search only matches the
+words you type, so "opticians Conisbrough" finds practices named after
+Conisbrough rather than practices near it. This searches a circle around the
+client instead, and writes the config block for you:
 
 ```bash
-npm run discover -- "opticians in Hillsborough Sheffield"
-npm run discover -- "Hillsborough Eyecare Sheffield"
+npm run nearby -- "Murgatroyd Opticians Conisbrough" --miles 5
+```
+
+It prints everything it found with its distance, marks the ones it would
+shortlist, and ends with a block ready to paste. From the Actions tab the same
+thing is "Find nearby competitors".
+
+Because Google has no "optician" place type, the search stays keyword-driven and
+tries several wordings (opticians, optometrist, eye care), merging the results.
+The radius is real: Text Search restricts only to a rectangle, so the tool asks
+for the box around the circle and then drops anything outside the circle by
+actual distance.
+
+**By name, when you want one specific practice.** From the Actions tab, run
+"Find place IDs". Or locally:
+
+```bash
+npm run discover -- "Murgatroyd Opticians Conisbrough"
 ```
 
 It prints each match with its address, review count and a `"placeId"` line ready
@@ -120,10 +143,25 @@ cp config/practices.example.json config/practices.json
 }
 ```
 
-`id` becomes the report filename, so keep it lowercase with hyphens. Pick
-competitors that actually rank for the terms you report on in the geogrid, not
-just the nearest practices. Four or five is the useful number: enough to be a
-real table, few enough that the client can hold it in their head.
+`id` becomes the report filename, so keep it lowercase with hyphens.
+
+One file holds every client. A second practice is another entry in the same
+`clients` array, not a second file.
+
+**Who to put in the competitor list matters more than anything else in the
+config.** Four or five is the useful number: enough to be a real table, few
+enough that the client can hold it in their head. Pick practices in the same
+league, not simply the nearest doors.
+
+A national chain with a decade of reviews is the wrong target. If the client has
+11 reviews and the chain has 1,195, the client is last every week forever, the
+gap never closes, and the chain's weekly intake swamps the share-of-new-reviews
+figure so it never moves either. That is a scoreboard, not a game, and it does
+the opposite of what this tool is for. `npm run nearby` applies that rule
+automatically: anything more than about twelve times the client's total is
+excluded, as is anything with almost no reviews, because neither is a benchmark
+the client can act on. Override it with `--limit`, or by editing the block it
+prints.
 
 ### 4. Run it
 
@@ -214,6 +252,8 @@ src/
   store.js        the snapshot history
   metrics.js      weekly deltas, ranks, streaks, pace, the chase
   demo-data.js    invented data for the worked example
+  geo.js          distances, and the box that contains a circle
+  nearby.js       the radius search and the competitor shortlist
   render/
     html.js       the report and the index
     text.js       the terminal summary and the message for the practice
@@ -221,7 +261,7 @@ src/
 config/           practices.json lives here
 data/             snapshots.json, the history, commit it
 reports/          generated output
-test/             30 tests, no network
+test/             45 tests, no network
 ```
 
 ## Commands
@@ -231,7 +271,8 @@ test/             30 tests, no network
 | `npm run weekly` | Read every profile, store the reading, write the reports |
 | `npm run snapshot` | Read and store, without writing reports |
 | `npm run report` | Rebuild the reports from stored history, no API calls |
-| `npm run discover -- "<query>"` | Find place IDs |
+| `npm run discover -- "<query>"` | Find a place ID by name |
+| `npm run nearby -- "<practice>" --miles 5` | Find every optician within a radius, and write the config block |
 | `npm run demo` | Write the worked example, no key needed |
 | `npm test` | Run the tests |
 
