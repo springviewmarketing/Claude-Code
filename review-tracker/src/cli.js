@@ -36,7 +36,7 @@ Options
   --as-of <date>    treat this ISO date as "now" when reporting
   --weeks <n>       weeks of history to chart, default 12
   --miles <n>       radius for the nearby search, default 5
-  --limit <n>       how many competitors the nearby search shortlists, default 5
+  --limit <n>       how many competitors to track, default 10
   --id <slug>       the client id to write, default taken from the name
   --include-chains yes   put Specsavers, Boots and the rest back in
   --quiet           print less
@@ -238,7 +238,7 @@ async function commandNearby(options) {
   const { ladder, tooBig, tooSmall, notOpticians, chains, ceiling } = shortlist(places, {
     anchorPlaceId: anchor.placeId,
     anchorTotal,
-    limit: Number(options.limit ?? 5),
+    limit: Number(options.limit ?? 10),
     includeChains,
   });
 
@@ -310,7 +310,7 @@ async function findClient(client, target, options) {
   const buckets = shortlist(places, {
     anchorPlaceId: anchor.placeId,
     anchorTotal,
-    limit: Number(options.limit ?? 5),
+    limit: Number(options.limit ?? 10),
     includeChains: options['include-chains'] === 'yes' || options['include-chains'] === true,
   });
 
