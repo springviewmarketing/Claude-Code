@@ -93,7 +93,9 @@ jobs:
         run: |
           git config user.name  "review-tracker"
           git config user.email "review-tracker@users.noreply.github.com"
-          git add review-tracker/config review-tracker/data review-tracker/reports
+          # docs carries the drafts the Monday briefing reads, so it has to
+          # be committed here too, not only by the weekly run.
+          git add review-tracker/config review-tracker/data review-tracker/reports docs
           if git diff --staged --quiet; then
             echo "Nothing changed."
             exit 0
