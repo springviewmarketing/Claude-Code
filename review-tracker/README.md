@@ -244,10 +244,14 @@ out with no link rather than a broken one.
 | `MAIL_FROM` | The address the client sees and replies to |
 | `MAIL_FROM_NAME` | The name beside it, e.g. `Tom at Spring View Marketing` |
 
-A scheduled Monday run always emails. A manual run only emails if you tick
-**Send emails**, so testing the workflow can never put an unintended message in
-front of a client. Each client is sent by its own job, so one bad address does
-not stop the others.
+**Nothing is emailed automatically.** The Monday run writes the drafts to
+`docs/outbox.json` and stops. They go out by hand, after a person has read them
+and added the things only a person knows. Ticking **Send emails** on a manual
+run is the only way anything leaves here, and each client is sent by its own job
+so one bad address does not stop the others.
+
+That switch exists for later, when the client list is long enough that writing
+each one by hand stops being worth it. Until then the draft is the deliverable.
 
 ### Why the links are ugly
 
@@ -270,9 +274,21 @@ the email stays to four lines.
 Nothing in it suggests offering anything for a review or choosing who to ask.
 Both breach Google policy and the DMCCA, and the tests check the copy for it.
 
+## The Monday briefing
+
+A scheduled Claude routine fires at 10:00 UTC every Monday, a good two and a
+half hours after the tracker runs. The gap is deliberately generous: GitHub can
+delay a scheduled workflow under load, and a briefing that reads yesterday's
+numbers is worse than one that arrives late. It reads the week's reading and reports back:
+what each practice gained, where they sit locally, who they are chasing, and a
+draft email per client to rewrite and send. It also checks the tracker actually
+ran, and says so loudly if it did not.
+
+It never emails a client and never commits anything. It reads and reports.
+
 ## Running it weekly without remembering to
 
-`.github/workflows/review-tracker.yml` runs it every Monday at 07:00 UTC,
+`.github/workflows/review-tracker.yml` runs it every Monday at 07:23 UTC,
 commits the reading and the reports back, and attaches the reports to the run as
 a download. It needs one repository secret, `GOOGLE_MAPS_API_KEY`, under
 Settings, Secrets and variables, Actions.

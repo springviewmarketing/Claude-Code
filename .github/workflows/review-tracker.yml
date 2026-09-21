@@ -2,13 +2,16 @@ name: Weekly review tracker
 
 on:
   schedule:
-    # 07:00 UTC every Monday, so the reports are waiting first thing.
-    # That is 08:00 in British Summer Time and 07:00 in winter.
-    - cron: '0 7 * * 1'
+    # 07:23 UTC every Monday, so the reports are waiting first thing.
+    #
+    # Deliberately not on the hour. GitHub queues every scheduled workflow in
+    # the world at :00, and its own documentation says runs can be delayed and,
+    # under enough load, dropped outright. An odd minute avoids the crush.
+    - cron: '23 7 * * 1'
   workflow_dispatch:
     inputs:
       send_emails:
-        description: 'Also email the clients. Off by default so a test run never does.'
+        description: 'Also email the clients directly. Normally left off: the drafts are written either way, and sent by hand.'
         required: false
         default: false
         type: boolean
@@ -43,11 +46,12 @@ jobs:
         continue-on-error: true
         run: node src/cli.js weekly
 
-      # A scheduled run always mails; a manual one only when asked, so testing
-      # the workflow cannot put an unintended email in front of a client.
+      # Nothing is ever mailed automatically. The Monday run writes the drafts
+      # and stops; they go out by hand, after a person has read them. Ticking
+      # "Send emails" on a manual run is the only way anything leaves here.
       - name: Work out what to send
         id: outbox
-        if: github.event_name == 'schedule' || inputs.send_emails
+        if: inputs.send_emails
         run: |
           node -e '
             const fs = require("node:fs");
