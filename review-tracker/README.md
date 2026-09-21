@@ -7,7 +7,7 @@ No dependencies, no build step, no database. Node 22 or newer.
 
 ```
 npm run demo        # see the output before you have a key or a config
-npm test            # 45 tests, no network
+npm test            # 52 tests, no network
 npm run weekly      # the real thing: read the profiles, write the reports
 ```
 
@@ -100,11 +100,19 @@ It prints everything it found with its distance, marks the ones it would
 shortlist, and ends with a block ready to paste. From the Actions tab the same
 thing is "Find nearby competitors".
 
-Because Google has no "optician" place type, the search stays keyword-driven and
-tries several wordings (opticians, optometrist, eye care), merging the results.
-The radius is real: Text Search restricts only to a rectangle, so the tool asks
-for the box around the circle and then drops anything outside the circle by
-actual distance.
+Because Google has no "optician" place type, in either of its filterable tables,
+the search stays keyword-driven and tries several wordings (opticians,
+optometrist, eye care), merging the results. The radius is real: Text Search
+restricts only to a rectangle, so the tool asks for the box around the circle
+and then drops anything outside the circle by actual distance.
+
+Text Search is loose about what it considers a match. A live run around one
+Conisbrough practice returned two supermarkets, a car park, an NHS commissioning
+body and a GP health centre alongside the actual opticians. Ranking a practice
+against a health centre is worse than not reporting at all, so results are
+filtered on the name and on Google's own type label before anything reaches the
+shortlist. The ones rejected are printed rather than hidden, because the test is
+a judgement call and a practice with an unusual name could be missed.
 
 **By name, when you want one specific practice.** From the Actions tab, run
 "Find place IDs". Or locally:
@@ -253,7 +261,7 @@ src/
   metrics.js      weekly deltas, ranks, streaks, pace, the chase
   demo-data.js    invented data for the worked example
   geo.js          distances, and the box that contains a circle
-  nearby.js       the radius search and the competitor shortlist
+  nearby.js       the radius search, the optician test, the shortlist
   render/
     html.js       the report and the index
     text.js       the terminal summary and the message for the practice
@@ -261,7 +269,7 @@ src/
 config/           practices.json lives here
 data/             snapshots.json, the history, commit it
 reports/          generated output
-test/             45 tests, no network
+test/             52 tests, no network
 ```
 
 ## Commands
