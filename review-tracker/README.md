@@ -7,7 +7,7 @@ No dependencies, no build step, no database. Node 22 or newer.
 
 ```
 npm run demo        # see the output before you have a key or a config
-npm test            # 83 tests, no network
+npm test            # 87 tests, no network
 npm run weekly      # the real thing: read the profiles, write the reports
 ```
 
@@ -129,9 +129,10 @@ optometrist, eye care), merging the results. The radius is real: Text Search
 restricts only to a rectangle, so the tool asks for the box around the circle
 and then drops anything outside the circle by actual distance.
 
-Text Search is loose about what it considers a match. A live run around one
-Conisbrough practice returned two supermarkets, a car park, an NHS commissioning
-body and a GP health centre alongside the actual opticians. Ranking a practice
+Text Search is loose about what it considers a match. Live runs have returned
+two supermarkets, a car park, an NHS commissioning body, a GP health centre, a
+recruitment agency for the optical trade, a hospital A&E eye clinic and a
+hospital eye department, all alongside the actual opticians. Ranking a practice
 against a health centre is worse than not reporting at all, so results are
 filtered on the name and on Google's own type label before anything reaches the
 shortlist. The ones rejected are printed rather than hidden, because the test is
@@ -367,7 +368,7 @@ src/
 config/           practices.json lives here
 data/             snapshots.json, the history, commit it
 reports/          generated output
-test/             83 tests, no network
+test/             87 tests, no network
 ```
 
 ## Commands

@@ -228,3 +228,39 @@ test('the looser patterns do not start letting the neighbourhood in', () => {
   const wrong = rejects.filter((name) => looksLikeOptician({ name }));
   assert.deepEqual(wrong, []);
 });
+
+// --- things that carry optical words but are not a practice ----------------
+
+test('a recruitment agency for the optical trade is not a competitor', () => {
+  assert.equal(looksLikeOptician({ name: 'Zest Optical Recruitment Consultants' }), false);
+});
+
+test('hospital eye services are not competitors, however they are named', () => {
+  // All three came back from live searches and were shortlisted against real
+  // practices. A hospital in a practice's league table is worse than no table.
+  for (const name of [
+    'Emergency Eye Clinic - Royal Hallamshire Hospital',
+    'Northern General Eye Centre NGEC',
+    'Royal Hallamshire Eye Department',
+    'Newmedica Eye Health Clinic & Surgical Centre - Barlborough',
+  ]) {
+    assert.equal(looksLikeOptician({ name }), false, `${name} must not be a competitor`);
+  }
+});
+
+test('the hospital patterns need both halves, so ordinary practices survive', () => {
+  // "General" and "Royal" appear in plenty of legitimate business names. Only
+  // the combination with "eye" marks out a hospital eye service.
+  for (const name of ['Royal Opticians', 'General Optical Co', 'The Chesterfield Eye Centre', 'Wickersley Eye Clinic']) {
+    assert.equal(looksLikeOptician({ name }), true, `${name} is a practice`);
+  }
+});
+
+test('every real Sheffield practice from the live search still gets through', () => {
+  const real = [
+    'Kemp & Kerrigan Opticians', 'Sheffield Vision Centre', 'Premier Eyecare Opticians Sheffield',
+    'Harveys Opticians', 'Martin Johnson Opticians Ltd', 'Alex Gage Family Optometrist',
+    'David Inman Bespoke Opticians', 'Martyn Kemp Opticians',
+  ];
+  assert.deepEqual(real.filter((name) => !looksLikeOptician({ name })), []);
+});

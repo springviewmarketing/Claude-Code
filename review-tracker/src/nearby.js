@@ -90,6 +90,38 @@ const KNOWN_CHAINS = [
   /\bvisionexpress\b/i,
 ];
 
+/**
+ * Things that carry optical words but are not a practice anyone competes with.
+ *
+ * A live Sheffield search shortlisted a recruitment agency for the optical
+ * trade, a hospital A&E eye clinic and a hospital eye department, all because
+ * their names contain "optical" or "eye clinic". None of them takes a patient
+ * from an independent optician, and putting a hospital in a practice's league
+ * table is worse than leaving the table empty.
+ *
+ * These are checked before the optical patterns, so a negative always wins.
+ */
+const NOT_A_PRACTICE = [
+  /\brecruit/i,
+  /\bhospital\b/i,
+  /\bnhs\b/i,
+  /\bfoundation trust\b/i,
+  /\bcommissioning\b/i,
+  /\bemergency\b/i,
+  /\bophthalmolog/i,
+  /\bsurgical\b/i,
+  /\bwholesal/i,
+  /\bsuppli(er|es)\b/i,
+  /\blaborator/i,
+  /\bdepartment\b/i,
+  // UK hospital eye services are named after the hospital, and the hospital is
+  // usually a General, a Royal or an Infirmary. "Northern General Eye Centre"
+  // carries no other clue that it is secondary care. Both halves are required,
+  // so an ordinary practice with one of these words in its name is safe.
+  /\b(general|royal|infirmary|teaching hospital|university)\b[^,]*\beye\b/i,
+  /\beye\b[^,]*\b(general|royal|infirmary)\b/i,
+];
+
 /** Whether a result is a national chain or a supermarket concession. */
 export function isChain(place) {
   const name = place.name ?? '';
@@ -100,6 +132,7 @@ export function isChain(place) {
 export function looksLikeOptician(place) {
   if (place.primaryType && BLOCKED_TYPES.has(place.primaryType)) return false;
   const haystack = `${place.name ?? ''} ${place.primaryTypeLabel ?? ''}`;
+  if (NOT_A_PRACTICE.some((pattern) => pattern.test(haystack))) return false;
   return OPTICAL_PATTERNS.some((pattern) => pattern.test(haystack));
 }
 
