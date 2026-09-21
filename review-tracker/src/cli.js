@@ -1,0 +1,222 @@
+#!/usr/bin/env node
+import path from 'node:path';
+import { fileURLToPath } from 'node:url';
+import { mkdir, writeFile } from 'node:fs/promises';
+
+import { loadConfig, loadEnv, allPlaces } from './config.js';
+import { PlacesClient, fetchAll } from './places.js';
+import { loadHistory, saveHistory, addSnapshot, toPlaceMap } from './store.js';
+import { buildAllReports } from './metrics.js';
+import { renderReport, renderIndex } from './render/html.js';
+import { practiceMessage, terminalSummary, formatDate } from './render/text.js';
+import { toCsv } from './render/csv.js';
+import { demoConfig, demoHistory } from './demo-data.js';
+
+const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
+
+const USAGE = `
+review-tracker, weekly Google review counts for practices and their local rivals
+
+  snapshot            read every tracked profile and store this week's totals
+  report              rebuild the reports from stored history, no API calls
+  weekly              snapshot, then report (this is what the schedule runs)
+  discover "<query>"  find place IDs, for setting a practice up
+  demo                write a worked example report from sample data, no API key
+
+Options
+  --config <path>   default config/practices.json
+  --data <path>     default data/snapshots.json
+  --out <dir>       default reports/
+  --as-of <date>    treat this ISO date as "now" when reporting
+  --weeks <n>       weeks of history to chart, default 12
+  --quiet           print less
+`;
+
+function parseArgs(argv) {
+  const [command = 'help', ...rest] = argv;
+  const options = { command, positional: [] };
+  for (let i = 0; i < rest.length; i += 1) {
+    const arg = rest[i];
+    if (arg.startsWith('--')) {
+      const key = arg.slice(2);
+      if (key === 'quiet') options.quiet = true;
+      else options[key] = rest[++i];
+    } else {
+      options.positional.push(arg);
+    }
+  }
+  return options;
+}
+
+const resolve = (value, fallback) => path.resolve(ROOT, value ?? fallback);
+
+async function writeReports(reports, { outDir, agencyName, quiet }) {
+  await mkdir(outDir, { recursive: true });
+  const written = [];
+  for (const report of reports) {
+    const message = report.row.status === 'ok' ? practiceMessage(report) : null;
+    const file = path.join(outDir, `${report.client.id}.html`);
+    await writeFile(file, renderReport(report, { agencyName, message }), 'utf8');
+    written.push(file);
+    if (message) {
+      const messageFile = path.join(outDir, `${report.client.id}.txt`);
+      await writeFile(messageFile, `${message}\n`, 'utf8');
+      written.push(messageFile);
+    }
+  }
+  if (reports.length > 0) {
+    const indexFile = path.join(outDir, 'index.html');
+    await writeFile(indexFile, renderIndex(reports, { agencyName }), 'utf8');
+    written.push(indexFile);
+    const csvFile = path.join(outDir, 'history.csv');
+    await writeFile(csvFile, toCsv(reports), 'utf8');
+    written.push(csvFile);
+  }
+  if (!quiet) {
+    console.log(`\n  Wrote ${written.length} files to ${path.relative(ROOT, outDir) || '.'}/`);
+  }
+  return written;
+}
+
+async function commandSnapshot(options) {
+  const config = await loadConfig(resolve(options.config, 'config/practices.json'));
+  const dataFile = resolve(options.data, 'data/snapshots.json');
+  const places = allPlaces(config);
+
+  const client = new PlacesClient({
+    apiKey: process.env.GOOGLE_MAPS_API_KEY,
+    regionCode: config.agency?.regionCode ?? 'GB',
+    languageCode: config.agency?.languageCode ?? 'en-GB',
+  });
+
+  if (!options.quiet) console.log(`  Reading ${places.length} Google profiles...`);
+  const results = await fetchAll(client, places, {
+    onResult: (record) => {
+      if (options.quiet) return;
+      const label = record.name ?? record.configName;
+      console.log(
+        record.status === 'ok'
+          ? `    ok    ${label}: ${record.totalReviews} reviews, ${record.rating ?? 'n/a'} stars`
+          : `    FAIL  ${label}: ${record.error}`
+      );
+    },
+  });
+
+  const failures = results.filter((result) => result.status !== 'ok');
+  const history = await loadHistory(dataFile);
+  const { merged } = addSnapshot(history, {
+    takenAt: new Date().toISOString(),
+    places: toPlaceMap(results),
+  });
+  await saveHistory(dataFile, history);
+
+  // A place ID Google has re-issued keeps working for now but will not forever.
+  for (const result of results) {
+    if (result.status === 'ok' && result.currentPlaceId && result.currentPlaceId !== result.placeId) {
+      console.warn(
+        `  Note: Google now returns a different place ID for ${result.name}. Update the config to ${result.currentPlaceId}`
+      );
+    }
+  }
+
+  if (!options.quiet) {
+    console.log(
+      `  ${merged ? 'Merged into' : 'Stored as'} the reading for ${formatDate(history.snapshots.at(-1).takenAt)}. ${failures.length} failed. ${client.callCount} API calls.`
+    );
+  }
+  return { config, history, failures };
+}
+
+async function commandReport(options, preloaded) {
+  const config = preloaded?.config ?? (await loadConfig(resolve(options.config, 'config/practices.json')));
+  const history = preloaded?.history ?? (await loadHistory(resolve(options.data, 'data/snapshots.json')));
+
+  if (history.snapshots.length === 0) {
+    console.error('  No readings stored yet. Run: npm run snapshot');
+    process.exitCode = 1;
+    return;
+  }
+
+  const reports = buildAllReports(config, history, {
+    asOf: options['as-of'],
+    weeks: Number(options.weeks ?? 12),
+  });
+  if (!options.quiet) console.log(terminalSummary(reports));
+  await writeReports(reports, {
+    outDir: resolve(options.out, 'reports'),
+    agencyName: config.agency?.name ?? 'Spring View Marketing',
+    quiet: options.quiet,
+  });
+}
+
+async function commandDiscover(options) {
+  const query = options.positional.join(' ');
+  if (!query) {
+    console.error('  Give it something to search for, e.g. discover "opticians in Hillsborough Sheffield"');
+    process.exitCode = 1;
+    return;
+  }
+  const client = new PlacesClient({ apiKey: process.env.GOOGLE_MAPS_API_KEY });
+  const places = await client.searchText(query);
+  if (places.length === 0) {
+    console.log('  Nothing found. Try the practice name with its town.');
+    return;
+  }
+  console.log(`\n  ${places.length} results for "${query}"\n`);
+  for (const place of places) {
+    console.log(`  ${place.name}`);
+    console.log(`    ${place.address ?? ''}`);
+    console.log(`    ${place.totalReviews} reviews, ${place.rating ?? 'n/a'} stars${place.businessStatus && place.businessStatus !== 'OPERATIONAL' ? `, ${place.businessStatus}` : ''}`);
+    console.log(`    "placeId": "${place.placeId}"`);
+    console.log('');
+  }
+  console.log('  Paste the placeId lines into config/practices.json.\n');
+}
+
+async function commandDemo(options) {
+  const outDir = resolve(options.out, 'reports/demo');
+  const reports = buildAllReports(demoConfig, demoHistory(), { weeks: 12 });
+  if (!options.quiet) console.log(terminalSummary(reports));
+  await writeReports(reports, { outDir, agencyName: 'Spring View Marketing', quiet: options.quiet });
+}
+
+async function main() {
+  loadEnv(ROOT);
+  const options = parseArgs(process.argv.slice(2));
+
+  switch (options.command) {
+    case 'snapshot': {
+      const state = await commandSnapshot(options);
+      if (state.failures.length > 0) process.exitCode = 1;
+      break;
+    }
+    case 'report':
+      await commandReport(options);
+      break;
+    case 'weekly': {
+      const state = await commandSnapshot(options);
+      await commandReport(options, state);
+      if (state.failures.length > 0) process.exitCode = 1;
+      break;
+    }
+    case 'discover':
+      await commandDiscover(options);
+      break;
+    case 'demo':
+      await commandDemo(options);
+      break;
+    default:
+      console.log(USAGE);
+  }
+}
+
+main().catch((error) => {
+  // An expected failure is a config or key problem the user can fix; a stack
+  // trace there is noise. Anything else is a bug and deserves the full trace.
+  if (error.expected) {
+    console.error(`\n  ${error.message}\n`);
+  } else {
+    console.error(error);
+  }
+  process.exitCode = 1;
+});
