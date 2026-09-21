@@ -56,6 +56,43 @@ const BLOCKED_TYPES = new Set([
   'drugstore',
 ]);
 
+/**
+ * National chains and supermarket concessions.
+ *
+ * Size alone cannot keep these out. The ceiling below scales with the client,
+ * so a practice on 100 reviews gets a ceiling of 1,200 and every chain in the
+ * area clears it. A chain is not a chaseable target at any size: it has decades
+ * of footfall behind its total, and its weekly intake swamps the
+ * share-of-new-reviews figure whatever the independent does. So they are
+ * excluded by who they are, not by how big they happen to be.
+ *
+ * Still listed in the output, and `--include-chains` puts them back, because a
+ * large independent may genuinely want to measure itself against one.
+ */
+const KNOWN_CHAINS = [
+  /\bspecsavers\b/i,
+  /\bboots\b/i,
+  /\bvision\s*express\b/i,
+  /\basda\b/i,
+  /\btesco\b/i,
+  /\bsainsbury/i,
+  /\bmorrisons\b/i,
+  /\bscrivens\b/i,
+  /\boptical\s*express\b/i,
+  /\boptegra\b/i,
+  /\bspamedica\b/i,
+  /\bleightons\b/i,
+  /\bbayfields\b/i,
+  /\bduncan\s*(&|and)\s*todd\b/i,
+  /\bvisionexpress\b/i,
+];
+
+/** Whether a result is a national chain or a supermarket concession. */
+export function isChain(place) {
+  const name = place.name ?? '';
+  return KNOWN_CHAINS.some((pattern) => pattern.test(name));
+}
+
 /** Whether a search result is plausibly an opticians practice. */
 export function looksLikeOptician(place) {
   if (place.primaryType && BLOCKED_TYPES.has(place.primaryType)) return false;
@@ -119,6 +156,7 @@ export async function findNearby(client, { center, radiusMetres, queries = DEFAU
         metres,
         miles: Number(metresToMiles(metres).toFixed(1)),
         isOptician: looksLikeOptician(place),
+        isChain: isChain(place),
       });
     }
   }
@@ -133,7 +171,10 @@ export async function findNearby(client, { center, radiusMetres, queries = DEFAU
  * practice with an order of magnitude more reviews is not a target anyone can
  * chase, and leaving it in swamps the share-of-new-reviews figure every week.
  */
-export function shortlist(places, { anchorPlaceId, anchorTotal, maxMultiple = 12, minReviews = 5, limit = 5 }) {
+export function shortlist(
+  places,
+  { anchorPlaceId, anchorTotal, maxMultiple = 12, minReviews = 5, limit = 5, includeChains = false }
+) {
   const rivals = places.filter((place) => place.placeId !== anchorPlaceId);
   const ceiling = Math.max(anchorTotal * maxMultiple, 40);
 
@@ -141,11 +182,15 @@ export function shortlist(places, { anchorPlaceId, anchorTotal, maxMultiple = 12
   const tooBig = [];
   const tooSmall = [];
   const notOpticians = [];
+  const chains = [];
 
   for (const place of rivals) {
-    // Anything that is not an opticians practice is out before size is even
-    // considered. A health centre with 89 reviews is not a rival, at any size.
+    // Order matters. Anything that is not an opticians practice is out before
+    // size is even considered: a health centre with 89 reviews is not a rival
+    // at any size. Chains go next, for the same reason, and because the ceiling
+    // cannot be trusted to hold them back once the client is big enough.
     if (place.isOptician === false) notOpticians.push(place);
+    else if (!includeChains && place.isChain) chains.push(place);
     else if (place.totalReviews < minReviews) tooSmall.push(place);
     else if (place.totalReviews > ceiling) tooBig.push(place);
     else comparable.push(place);
@@ -162,5 +207,5 @@ export function shortlist(places, { anchorPlaceId, anchorTotal, maxMultiple = 12
     })
     .slice(0, limit);
 
-  return { ladder, comparable, tooBig, tooSmall, notOpticians, ceiling };
+  return { ladder, comparable, tooBig, tooSmall, notOpticians, chains, ceiling };
 }

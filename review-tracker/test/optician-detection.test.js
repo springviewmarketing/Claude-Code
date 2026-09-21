@@ -127,3 +127,85 @@ test('the full live result set produces a sensible ladder', () => {
     assert.equal(names.includes(junk), false, `${junk} must never be a competitor`);
   }
 });
+
+// --- chains ---------------------------------------------------------------
+
+import { isChain } from '../src/nearby.js';
+
+test('the chains and supermarket concessions from the live search are recognised', () => {
+  const chains = [
+    'Specsavers Opticians and Audiologists - Doncaster',
+    'Specsavers Opticians and Audiologists - Mexborough',
+    'Boots Opticians',
+    'Vision Express Opticians - Doncaster',
+    'Vision Express Opticians at Tesco - Doncaster, Balby',
+    'ASDA Opticians',
+    'Scrivens Opticians & Hearing Care',
+    'Tesco Extra',
+    'Morrisons',
+    'SpaMedica Doncaster',
+  ];
+  const missed = chains.filter((name) => !isChain({ name }));
+  assert.deepEqual(missed, [], 'these are chains and were not recognised');
+});
+
+test('independents are never mistaken for chains', () => {
+  const independents = [
+    'Murgatroyd Opticians Ltd',
+    'Moorhouse Opticians',
+    'T English Opticians',
+    'Priority Eyecare',
+    'Parkhurst and Co Styling Opticians',
+    'Wickersley Eye Clinic',
+    'Cotler & Bell Opticians',
+    'Edwards & Walker Opticians',
+    'Dudley & Severn Opticians',
+    'Martyn Kemp Opticians',
+    'BRUMPTON OPTICIANS LTD',
+    'Auckland Opticians Ltd',
+    'Staples Opticians & Hearing Care',
+    'Rayner Opticians',
+    'Five Star Optical Co',
+  ];
+  const wrong = independents.filter((name) => isChain({ name }));
+  assert.deepEqual(wrong, [], 'these are independents and were called chains');
+});
+
+test('a chain is excluded however large the client is, which size alone could not do', () => {
+  const build = (anchorTotal) => [
+    { placeId: 'us', name: 'Us', totalReviews: anchorTotal, isOptician: true, isChain: false },
+    { placeId: 'spec', name: 'Specsavers Doncaster', totalReviews: 1195, isOptician: true, isChain: true },
+    { placeId: 'boots', name: 'Boots Opticians', totalReviews: 975, isOptician: true, isChain: true },
+    { placeId: 'indie', name: 'Cotler & Bell Opticians', totalReviews: 101, isOptician: true, isChain: false },
+  ];
+
+  // The bug: on 11 reviews the ceiling hid the problem; on 150 it did not.
+  for (const anchorTotal of [11, 50, 100, 150, 300]) {
+    const { ladder, chains } = shortlist(build(anchorTotal), { anchorPlaceId: 'us', anchorTotal, limit: 5 });
+    assert.equal(
+      ladder.some((p) => p.isChain),
+      false,
+      `a chain reached the ladder for a client on ${anchorTotal} reviews`
+    );
+    assert.equal(chains.length, 2);
+  }
+});
+
+test('the independent still gets through for a larger client', () => {
+  const places = [
+    { placeId: 'us', name: 'Us', totalReviews: 150, isOptician: true, isChain: false },
+    { placeId: 'spec', name: 'Specsavers', totalReviews: 1195, isOptician: true, isChain: true },
+    { placeId: 'indie', name: 'Cotler & Bell Opticians', totalReviews: 200, isOptician: true, isChain: false },
+  ];
+  const { ladder } = shortlist(places, { anchorPlaceId: 'us', anchorTotal: 150, limit: 5 });
+  assert.deepEqual(ladder.map((p) => p.name), ['Cotler & Bell Opticians']);
+});
+
+test('chains can be put back deliberately, for a practice big enough to want them', () => {
+  const places = [
+    { placeId: 'us', name: 'Us', totalReviews: 400, isOptician: true, isChain: false },
+    { placeId: 'spec', name: 'Specsavers', totalReviews: 1195, isOptician: true, isChain: true },
+  ];
+  const { ladder } = shortlist(places, { anchorPlaceId: 'us', anchorTotal: 400, limit: 5, includeChains: true });
+  assert.deepEqual(ladder.map((p) => p.name), ['Specsavers']);
+});

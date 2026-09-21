@@ -36,6 +36,7 @@ Options
   --miles <n>       radius for the nearby search, default 5
   --limit <n>       how many competitors the nearby search shortlists, default 5
   --id <slug>       the client id to write, default taken from the name
+  --include-chains yes   put Specsavers, Boots and the rest back in
   --quiet           print less
 `;
 
@@ -230,17 +231,20 @@ async function commandNearby(options) {
   const places = await findNearby(client, { center: anchor.location, radiusMetres: radius });
   const anchorTotal = places.find((p) => p.placeId === anchor.placeId)?.totalReviews ?? anchor.totalReviews ?? 0;
 
-  const { ladder, tooBig, tooSmall, notOpticians, ceiling } = shortlist(places, {
+  const includeChains = options['include-chains'] === 'yes' || options['include-chains'] === true;
+  const { ladder, tooBig, tooSmall, notOpticians, chains, ceiling } = shortlist(places, {
     anchorPlaceId: anchor.placeId,
     anchorTotal,
     limit: Number(options.limit ?? 5),
+    includeChains,
   });
 
   const chosen = new Set(ladder.map((p) => p.placeId));
   const line = (place, mark) =>
     `  ${mark} ${String(place.miles).padStart(4)}mi  ${String(place.totalReviews).padStart(5)} reviews  ${String(place.rating ?? 'n/a').padStart(3)}*  ${place.name}`;
 
-  const opticians = places.filter((place) => place.isOptician !== false);
+  const excluded = new Set([...chains, ...notOpticians].map((p) => p.placeId));
+  const opticians = places.filter((place) => place.isOptician !== false && !excluded.has(place.placeId));
   console.log(`  ${opticians.length} opticians within ${miles} miles. A + marks the ones shortlisted.\n`);
   for (const place of opticians) {
     const mark = place.placeId === anchor.placeId ? ' *' : chosen.has(place.placeId) ? ' +' : '  ';
@@ -258,6 +262,13 @@ async function commandNearby(options) {
     if (why) console.log(`          ${why}`);
   }
 
+  if (chains.length > 0) {
+    console.log(`\n  Chains and supermarket concessions, left out on purpose:\n`);
+    for (const place of chains) console.log(line(place, '  '));
+    console.log('\n  A chain is not a target anyone can catch, at any size. Add --include-chains if');
+    console.log('  this practice is big enough to genuinely compete with one.');
+  }
+
   // Shown rather than silently dropped: the name test is a judgement call, and
   // a genuine practice with an unusual name would otherwise vanish unnoticed.
   if (notOpticians.length > 0) {
@@ -271,7 +282,9 @@ async function commandNearby(options) {
     return;
   }
 
-  console.log(`\n  Shortlisted ${ladder.length}. Skipped ${tooBig.length} as too far ahead, ${tooSmall.length} as too small, ${notOpticians.length} as not opticians.`);
+  console.log(
+    `\n  Shortlisted ${ladder.length}. Skipped ${chains.length} chains, ${tooBig.length} as too far ahead, ${tooSmall.length} as too small, ${notOpticians.length} as not opticians.`
+  );
   console.log(`\n  Paste this into the "clients" array in config/practices.json:\n`);
   console.log(configBlock(anchor, ladder, options.id ?? slug(anchor.name)));
   console.log(`\n  ${client.callCount} API calls used.\n`);

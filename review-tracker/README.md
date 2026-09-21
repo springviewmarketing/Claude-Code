@@ -7,7 +7,7 @@ No dependencies, no build step, no database. Node 22 or newer.
 
 ```
 npm run demo        # see the output before you have a key or a config
-npm test            # 52 tests, no network
+npm test            # 57 tests, no network
 npm run weekly      # the real thing: read the profiles, write the reports
 ```
 
@@ -165,11 +165,19 @@ A national chain with a decade of reviews is the wrong target. If the client has
 11 reviews and the chain has 1,195, the client is last every week forever, the
 gap never closes, and the chain's weekly intake swamps the share-of-new-reviews
 figure so it never moves either. That is a scoreboard, not a game, and it does
-the opposite of what this tool is for. `npm run nearby` applies that rule
-automatically: anything more than about twelve times the client's total is
-excluded, as is anything with almost no reviews, because neither is a benchmark
-the client can act on. Override it with `--limit`, or by editing the block it
-prints.
+the opposite of what this tool is for.
+
+`npm run nearby` applies three rules, in order. Anything that is not an
+opticians practice goes first, whatever its size. Chains and supermarket
+concessions go next, by name: Specsavers, Boots, Vision Express, Asda, Tesco,
+Scrivens and the rest. Only then does size come into it, excluding anything more
+than about twelve times the client's total, or with almost no reviews.
+
+Chains are excluded by name rather than by size because size cannot do it. The
+ceiling scales with the client, so a practice on 100 reviews gets a ceiling of
+1,200 and every chain in the area clears it. A chain is uncatchable at any size,
+so it is kept out on what it is. `--include-chains yes` puts them back, for a
+practice large enough to genuinely compete with one.
 
 ### 4. Run it
 
@@ -269,7 +277,7 @@ src/
 config/           practices.json lives here
 data/             snapshots.json, the history, commit it
 reports/          generated output
-test/             52 tests, no network
+test/             57 tests, no network
 ```
 
 ## Commands
@@ -281,6 +289,7 @@ test/             52 tests, no network
 | `npm run report` | Rebuild the reports from stored history, no API calls |
 | `npm run discover -- "<query>"` | Find a place ID by name |
 | `npm run nearby -- "<practice>" --miles 5` | Find every optician within a radius, and write the config block |
+| `npm run nearby -- "<practice>" --include-chains yes` | The same, but with the chains left in |
 | `npm run demo` | Write the worked example, no key needed |
 | `npm test` | Run the tests |
 
