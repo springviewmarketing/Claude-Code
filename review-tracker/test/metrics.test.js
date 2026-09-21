@@ -177,3 +177,45 @@ test('an empty history does not throw', () => {
   assert.equal(report.row.newReviews, null);
   assert.equal(buildAnchors([], {}).length, 0);
 });
+
+test('a name the config extended to separate two branches is not collapsed back', () => {
+  // Google returns one name for both branches. The config carries the town to
+  // tell them apart, and the report must keep it or show two identical rows.
+  const history = makeHistory(
+    [
+      { weeksAgo: 1, totals: { us: 10, a: 50, b: 40 } },
+      { weeksAgo: 0, totals: { us: 12, a: 52, b: 41 } },
+    ],
+    { names: { us: 'Us', a: 'David Inman Bespoke Opticians', b: 'David Inman Bespoke Opticians' } }
+  );
+  const report = buildClientReport(
+    {
+      id: 'us',
+      name: 'Us',
+      placeId: 'us',
+      competitors: [
+        { name: 'David Inman Bespoke Opticians (Fulwood)', placeId: 'a' },
+        { name: 'David Inman Bespoke Opticians (Crookes)', placeId: 'b' },
+      ],
+    },
+    history
+  );
+  const names = report.competitors.map((row) => row.name);
+  assert.deepEqual(names, ['David Inman Bespoke Opticians (Fulwood)', 'David Inman Bespoke Opticians (Crookes)']);
+  assert.equal(new Set(names).size, 2, 'the two branches stay distinguishable');
+});
+
+test('a business Google has renamed still takes its new name', () => {
+  const history = makeHistory(
+    [
+      { weeksAgo: 1, totals: { us: 10, a: 50 } },
+      { weeksAgo: 0, totals: { us: 12, a: 52 } },
+    ],
+    { names: { us: 'Us', a: 'Brand New Opticians' } }
+  );
+  const report = buildClientReport(
+    { id: 'us', name: 'Us', placeId: 'us', competitors: [{ name: 'Old Name Opticians', placeId: 'a' }] },
+    history
+  );
+  assert.equal(report.competitors[0].name, 'Brand New Opticians');
+});

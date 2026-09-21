@@ -189,10 +189,17 @@ function buildRow(entry, { snapshots, anchors, asOf, isClient }) {
   const series = placeSeries(anchors, entry.placeId);
   const headline = headlineChange(snapshots, entry.placeId, { asOf });
   const latestRecord = snapshots.at(-1)?.places?.[entry.placeId];
+  // Google's live name normally wins, so a renamed business updates itself.
+  // The exception is a name the config has extended to tell two branches
+  // apart: "David Inman Bespoke Opticians (Fulwood)" must not collapse back
+  // into a second identical row.
+  const configExtendsGoogle =
+    entry.name && latestRecord?.name && entry.name.startsWith(latestRecord.name) && entry.name !== latestRecord.name;
+  const displayName = configExtendsGoogle ? entry.name : latestRecord?.name || entry.name;
   const readable = headline.status === 'ok' || headline.status === 'baseline';
   return {
     placeId: entry.placeId,
-    name: latestRecord?.name || entry.name,
+    name: displayName,
     isClient,
     status: readable ? 'ok' : (latestRecord?.status ?? headline.status),
     lastSeenAt: headline.lastSeenAt ?? null,
