@@ -276,8 +276,10 @@ Both breach Google policy and the DMCCA, and the tests check the copy for it.
 
 ## The Monday briefing
 
-A scheduled Claude routine fires at 08:15 UTC every Monday, an hour and a
-quarter after the tracker runs. It reads the week's reading and reports back:
+A scheduled Claude routine fires at 10:00 UTC every Monday, a good two and a
+half hours after the tracker runs. The gap is deliberately generous: GitHub can
+delay a scheduled workflow under load, and a briefing that reads yesterday's
+numbers is worse than one that arrives late. It reads the week's reading and reports back:
 what each practice gained, where they sit locally, who they are chasing, and a
 draft email per client to rewrite and send. It also checks the tracker actually
 ran, and says so loudly if it did not.
@@ -286,7 +288,7 @@ It never emails a client and never commits anything. It reads and reports.
 
 ## Running it weekly without remembering to
 
-`.github/workflows/review-tracker.yml` runs it every Monday at 07:00 UTC,
+`.github/workflows/review-tracker.yml` runs it every Monday at 07:23 UTC,
 commits the reading and the reports back, and attaches the reports to the run as
 a download. It needs one repository secret, `GOOGLE_MAPS_API_KEY`, under
 Settings, Secrets and variables, Actions.

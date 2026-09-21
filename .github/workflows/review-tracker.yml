@@ -2,9 +2,12 @@ name: Weekly review tracker
 
 on:
   schedule:
-    # 07:00 UTC every Monday, so the reports are waiting first thing.
-    # That is 08:00 in British Summer Time and 07:00 in winter.
-    - cron: '0 7 * * 1'
+    # 07:23 UTC every Monday, so the reports are waiting first thing.
+    #
+    # Deliberately not on the hour. GitHub queues every scheduled workflow in
+    # the world at :00, and its own documentation says runs can be delayed and,
+    # under enough load, dropped outright. An odd minute avoids the crush.
+    - cron: '23 7 * * 1'
   workflow_dispatch:
     inputs:
       send_emails:
