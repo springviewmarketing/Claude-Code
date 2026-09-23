@@ -1,6 +1,7 @@
 ---
 name: optician-review-check
-description: Pull the current Google review figures for one of Spring View Marketing's optician clients and turn them into a line Tom can put straight into an email, a call or a WhatsApp. Use this whenever Tom asks how a practice is doing on reviews, asks for the latest review numbers, stats or data for a named optician, wants to check in with a client about their reviews mid-week, asks who a practice is chasing or whether they have overtaken anyone, asks whether a practice has gone quiet, or wants a figure to drop into a message to a practice. Trigger on the practice names too, not only on the word "reviews": Kemp and Kerrigan, Murgatroyd Holmes, Murgatroyd Opticians, or any practice in the tracker. Also use when he asks to refresh, re-read or re-run the review data.
+description: >-
+  Pull the current Google review figures for one of Spring View Marketing's optician clients and turn them into a line Tom can put straight into an email, a call or a WhatsApp. Use this whenever Tom asks how a practice is doing on reviews, asks for the latest review numbers, stats or data for a named optician, wants to check in with a client mid-week about their reviews, asks who a practice is chasing or whether they have overtaken anyone, asks whether a practice has gone quiet, or wants a figure to drop into a message to a practice. Trigger on the practice names as well, not only on the word reviews, so use it for Kemp and Kerrigan, Murgatroyd Holmes, Murgatroyd Opticians, or any practice in the tracker. Also use it when he asks to refresh, re-read or re-run the review data.
 ---
 
 # Optician review check
