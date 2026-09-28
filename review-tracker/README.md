@@ -60,7 +60,7 @@ terminal, or a copy of this repository on your machine.
    IDs, and commit.
 5. **Run it.** Actions tab, "Weekly review tracker", "Run workflow". It reads
    every profile, commits the reading, and attaches the reports to the run as a
-   download. After that it runs itself every Monday.
+   download. After that it runs itself every Sunday night.
 
 The local route below is faster to iterate on if you do have Node installed, but
 it is optional.
@@ -277,10 +277,12 @@ Both breach Google policy and the DMCCA, and the tests check the copy for it.
 
 ## The Monday briefing
 
-A scheduled Claude routine fires at 10:00 UTC every Monday, a good two and a
-half hours after the tracker runs. The gap is deliberately generous: GitHub can
-delay a scheduled workflow under load, and a briefing that reads yesterday's
-numbers is worse than one that arrives late. It reads the week's reading and reports back:
+A scheduled Claude routine fires at 09:45 UTC every Monday, roughly eleven hours
+after the reading is taken on Sunday night. The gap used to be two and a half
+hours and that turned out to be nowhere near enough: on 28 September 2026 GitHub
+started the workflow eight hours late and the briefing went out saying no reading
+had been taken, when in truth none had been taken yet. Moving the reading to the
+night before buys the whole of Sunday night to go wrong in. It reads the week's reading and reports back:
 what each practice gained, where they sit locally, who they are chasing, and a
 draft email per client to rewrite and send. It also checks the tracker actually
 ran, and says so loudly if it did not.
@@ -289,15 +291,22 @@ It never emails a client and never commits anything. It reads and reports.
 
 ## Running it weekly without remembering to
 
-`.github/workflows/review-tracker.yml` runs it every Monday at 07:23 UTC,
-commits the reading and the reports back, and attaches the reports to the run as
-a download. It needs one repository secret, `GOOGLE_MAPS_API_KEY`, under
+`.github/workflows/review-tracker.yml` takes the reading on Sunday night at
+22:23 UTC, commits the reading and the reports back, and attaches the reports to
+the run as a download.
+
+Four more slots follow it, at 23:23 Sunday and 01:23, 03:23 and 05:23 Monday.
+They are insurance against GitHub's scheduler, which does not promise to start a
+job on time and will drop one entirely under load. The first slot that actually
+runs takes the reading; the rest find it already stored and complete, and read
+nothing, so they cost no API calls. A slot will also re-read any profile an
+earlier one failed on, so a half-read week repairs itself. It needs one repository secret, `GOOGLE_MAPS_API_KEY`, under
 Settings, Secrets and variables, Actions.
 
 You can also trigger it by hand from the Actions tab.
 
-If you would rather run it from your own machine, `npm run weekly` on a Monday
-does exactly the same thing. The only thing that matters is the roughly seven
+If you would rather run it from your own machine, `npm run weekly` on the same
+day each week does exactly the same thing. The only thing that matters is the roughly seven
 day spacing; the tool tolerates a run landing a couple of days either side and
 tells you when it did not.
 

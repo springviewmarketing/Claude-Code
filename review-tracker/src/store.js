@@ -93,3 +93,30 @@ export function toPlaceMap(results) {
   }
   return places;
 }
+
+/**
+ * Is the newest stored reading recent enough, and complete enough, to stand in
+ * for a fresh one?
+ *
+ * This exists for the backup schedule slots. GitHub's scheduler is best effort:
+ * its own documentation warns that runs are delayed under load and dropped
+ * outright, and on 28 September 2026 this workflow started eight hours late,
+ * long after the Monday briefing had gone out and reported no data. The answer
+ * is to schedule the reading several times over and let the first slot that
+ * actually runs do the work. This is what stops the rest from spending thirty
+ * API calls to learn what is already on disk.
+ *
+ * A reading holding any failed place is never fresh, so a partially read week
+ * is retried by the next slot instead of being left half done.
+ */
+export function isReadingFresh(history, { withinHours = 20, now = Date.now() } = {}) {
+  const last = history.snapshots.at(-1);
+  if (!last) return false;
+
+  const at = Date.parse(last.takenAt);
+  if (!Number.isFinite(at)) return false;
+  if (now - at >= withinHours * 3600_000) return false;
+
+  const places = Object.values(last.places ?? {});
+  return places.length > 0 && places.every((place) => place.status === 'ok');
+}

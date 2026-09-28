@@ -29,7 +29,7 @@ https://raw.githubusercontent.com/springviewmarketing/Claude-Code/claude/spring-
 `snapshots.json` is every reading ever taken, oldest first:
 
 ```
-{ "snapshots": [ { "takenAt": "2026-09-21T07:23:00Z",
+{ "snapshots": [ { "takenAt": "2026-09-27T22:23:00Z",
                    "places": { "<placeId>": { "name", "totalReviews", "rating", "status" } } } ] }
 ```
 
@@ -43,12 +43,12 @@ is the quickest way to get ranks and gaps without doing the arithmetic by hand.
 
 ## Say how old the number is, every time
 
-This is the part that matters most. The tracker runs Monday morning, so by
-Wednesday the stored figure is two days old and a review may have landed since.
+This is the part that matters most. The tracker reads on Sunday night, so by
+Wednesday the stored figure is three days old and a review may have landed since.
 Tom is about to put this number in front of a client, and a stale figure
 presented as today's is the one mistake that costs him credibility.
 
-So always lead with the date of the reading: "as of Monday 21 September". If the
+So always lead with the date of the reading: "as of Sunday 27 September". If the
 newest reading is more than eight days old the weekly run has probably failed,
 which is worth saying plainly rather than quietly reporting old numbers.
 
@@ -91,7 +91,7 @@ Keep it to something he can read in twenty seconds and act on:
 
 **Output:**
 ```
-Murgatroyd Opticians, as of Monday 21 September (2 days ago)
+Murgatroyd Opticians, as of Sunday 27 September (3 days ago)
 
   11 reviews, 4.9 stars
   7th of 11 in their local table
