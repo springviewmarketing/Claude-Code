@@ -5,7 +5,7 @@ import { mkdir, writeFile } from 'node:fs/promises';
 
 import { loadConfig, loadEnv, allPlaces } from './config.js';
 import { PlacesClient, fetchAll } from './places.js';
-import { loadHistory, saveHistory, addSnapshot, toPlaceMap } from './store.js';
+import { loadHistory, saveHistory, addSnapshot, toPlaceMap, isReadingFresh } from './store.js';
 import { buildAllReports } from './metrics.js';
 import { renderReport, renderIndex } from './render/html.js';
 import { practiceMessage, terminalSummary, formatDate } from './render/text.js';
@@ -42,6 +42,8 @@ Options
   --include-chains yes   put Specsavers, Boots and the rest back in
   --site <dir>      where to publish the linkable reports, default docs/
   --site-url <url>  the address the site is served from
+  --skip-if-fresh <hours>  read nothing if a complete reading is already
+                    this recent. Used by the backup schedule slots.
   --quiet           print less
   --verbose         list every business the search looked at
 `;
@@ -135,6 +137,21 @@ async function commandSnapshot(options) {
   const config = await loadConfig(resolve(options.config, 'config/practices.json'));
   const dataFile = resolve(options.data, 'data/snapshots.json');
   const places = allPlaces(config);
+  const history = await loadHistory(dataFile);
+
+  // The schedule fires several times over, so that a run GitHub delays or drops
+  // is picked up by a later slot. Once one of them has stored a complete
+  // reading the rest have nothing to do, and saying so costs no API calls.
+  // A manual run never skips: reading afresh is the whole point of the button.
+  const skipIfFresh = Number(options['skip-if-fresh'] ?? 0);
+  if (skipIfFresh > 0 && isReadingFresh(history, { withinHours: skipIfFresh })) {
+    if (!options.quiet) {
+      console.log(
+        `  A complete reading from ${formatDate(history.snapshots.at(-1).takenAt)} is already stored, so this run read nothing.`
+      );
+    }
+    return { config, history, failures: [], skipped: true };
+  }
 
   const client = new PlacesClient({
     apiKey: process.env.GOOGLE_MAPS_API_KEY,
@@ -156,7 +173,6 @@ async function commandSnapshot(options) {
   });
 
   const failures = results.filter((result) => result.status !== 'ok');
-  const history = await loadHistory(dataFile);
   const { merged } = addSnapshot(history, {
     takenAt: new Date().toISOString(),
     places: toPlaceMap(results),

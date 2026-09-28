@@ -2,12 +2,26 @@ name: Weekly review tracker
 
 on:
   schedule:
-    # 07:23 UTC every Monday, so the reports are waiting first thing.
+    # Sunday night, then four backup slots through to Monday before dawn.
     #
-    # Deliberately not on the hour. GitHub queues every scheduled workflow in
-    # the world at :00, and its own documentation says runs can be delayed and,
-    # under enough load, dropped outright. An odd minute avoids the crush.
-    - cron: '23 7 * * 1'
+    # GitHub's scheduler is best effort. Its own documentation says runs can be
+    # delayed under load and, under enough of it, dropped outright. On Monday 28
+    # September 2026 this workflow was due at 07:23 and did not start until
+    # 15:35, by which time the Monday briefing had already gone out and told Tom
+    # no reading had been taken. The data was fine. The clock was not.
+    #
+    # So the reading is taken on Sunday night, when CI load worldwide is at its
+    # lowest and the briefing is eleven hours away rather than two. The slots
+    # after it are insurance: the first one to run stores the reading, and the
+    # rest find it fresh and complete and read nothing, costing no API calls.
+    # A slot also picks up any profile an earlier one failed to read.
+    #
+    # Every slot is deliberately off the hour. The whole world queues at :00.
+    - cron: '23 22 * * 0'
+    - cron: '23 23 * * 0'
+    - cron: '23 1 * * 1'
+    - cron: '23 3 * * 1'
+    - cron: '23 5 * * 1'
   workflow_dispatch:
     inputs:
       send_emails:
@@ -40,11 +54,14 @@ jobs:
         working-directory: review-tracker
         env:
           GOOGLE_MAPS_API_KEY: ${{ secrets.GOOGLE_MAPS_API_KEY }}
+          # Backup slots stand down once a complete reading is stored. A manual
+          # run always reads afresh, which is the point of pressing the button.
+          SKIP_IF_FRESH: ${{ github.event_name == 'schedule' && '20' || '0' }}
         # Keep going on a partial failure: a week's reading for the profiles
         # that did answer is worth more than no reading at all, and the report
         # names the ones that did not.
         continue-on-error: true
-        run: node src/cli.js weekly
+        run: node src/cli.js weekly --skip-if-fresh "$SKIP_IF_FRESH"
 
       # Nothing is ever mailed automatically. The Monday run writes the drafts
       # and stops; they go out by hand, after a person has read them. Ticking

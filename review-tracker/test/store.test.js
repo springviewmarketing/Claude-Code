@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { addSnapshot, toPlaceMap } from '../src/store.js';
+import { addSnapshot, toPlaceMap, isReadingFresh } from '../src/store.js';
 
 const history = () => ({ version: 1, snapshots: [] });
 
@@ -58,4 +58,40 @@ test('a failed read is stored as a failure, never as zero reviews', () => {
   const map = toPlaceMap([{ placeId: 'x', configName: 'X', status: 'not_found', error: '404' }]);
   assert.equal(map.x.status, 'not_found');
   assert.equal(map.x.totalReviews, undefined);
+});
+
+// The backup schedule slots. Each fires a few hours after the last, and stands
+// down if the one before it already stored a complete reading.
+const NOW = Date.parse('2026-10-04T23:30:00.000Z');
+const reading = (takenAt, places) => ({ version: 1, snapshots: [{ takenAt, places }] });
+const COMPLETE = { a: { status: 'ok', totalReviews: 3 }, b: { status: 'ok', totalReviews: 9 } };
+
+test('a complete reading taken an hour ago is fresh', () => {
+  assert.equal(isReadingFresh(reading('2026-10-04T22:23:00.000Z', COMPLETE), { withinHours: 20, now: NOW }), true);
+});
+
+test("last week's reading is stale", () => {
+  assert.equal(isReadingFresh(reading('2026-09-27T22:23:00.000Z', COMPLETE), { withinHours: 20, now: NOW }), false);
+});
+
+test('a reading with a failed profile is stale however recent it is', () => {
+  const partial = { a: { status: 'ok', totalReviews: 3 }, b: { status: 'error', error: 'timeout' } };
+  assert.equal(isReadingFresh(reading('2026-10-04T22:23:00.000Z', partial), { withinHours: 20, now: NOW }), false);
+});
+
+test('an empty history has nothing to stand down for', () => {
+  assert.equal(isReadingFresh({ version: 1, snapshots: [] }, { withinHours: 20, now: NOW }), false);
+  assert.equal(isReadingFresh(reading('2026-10-04T22:23:00.000Z', {}), { withinHours: 20, now: NOW }), false);
+});
+
+test('an unparseable date is not trusted', () => {
+  assert.equal(isReadingFresh(reading('not a date', COMPLETE), { withinHours: 20, now: NOW }), false);
+});
+
+test('the window covers the whole span of backup slots', () => {
+  const lastSlot = Date.parse('2026-10-05T05:23:00.000Z');
+  assert.equal(
+    isReadingFresh(reading('2026-10-04T22:23:00.000Z', COMPLETE), { withinHours: 20, now: lastSlot }),
+    true
+  );
 });

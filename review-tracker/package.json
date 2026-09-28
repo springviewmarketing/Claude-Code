@@ -16,7 +16,7 @@
     "weekly": "node src/cli.js weekly",
     "discover": "node src/cli.js discover",
     "demo": "node src/cli.js demo",
-    "test": "node --test test/",
+    "test": "node --test \"test/*.test.js\"",
     "add-client": "node src/cli.js add-client"
   }
 }

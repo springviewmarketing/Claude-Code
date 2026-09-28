@@ -17,7 +17,7 @@ review generation a habit the practice can see itself keeping, which is what
 feeds the geogrid rankings reported on monthly.
 
 - `review-tracker/`, the tool and its own README
-- `.github/workflows/review-tracker.yml`, the Monday morning schedule
+- `.github/workflows/review-tracker.yml`, the Sunday night schedule
 
 Run `npm run demo` inside `review-tracker/` to see the output without needing a
 Google API key.
