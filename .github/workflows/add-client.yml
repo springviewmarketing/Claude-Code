@@ -91,8 +91,13 @@ jobs:
         env:
           PRACTICE: ${{ inputs.practice }}
         run: |
-          git config user.name  "review-tracker"
-          git config user.email "review-tracker@users.noreply.github.com"
+          # The canonical identity for a commit made by a workflow. Do not put a
+          # bare name here: "review-tracker@users.noreply.github.com" was used
+          # until 29 Sep 2026, and GitHub resolves that form to whoever owns the
+          # matching username, so ten commits were credited to an unrelated
+          # person's account. The numeric prefix is what pins it to the bot.
+          git config user.name  "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           # docs carries the drafts the Monday briefing reads, so it has to
           # be committed here too, not only by the weekly run.
           git add review-tracker/config review-tracker/data review-tracker/reports docs
