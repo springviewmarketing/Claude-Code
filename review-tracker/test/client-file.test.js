@@ -3,7 +3,7 @@ import assert from 'node:assert/strict';
 import { mkdtemp, writeFile, readFile } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
 import path from 'node:path';
-import { readClientFile, upsertClient, writeClientFile, slugify } from '../src/client-file.js';
+import { readClientFile, upsertClient, writeClientFile, slugify, reportPath, reportHref } from '../src/client-file.js';
 
 const client = (id, placeId, name = id) => ({ id, name, placeId, competitors: [] });
 
@@ -75,4 +75,45 @@ test('slugify makes a filename-safe id', () => {
   assert.equal(slugify('Murgatroyd Holmes Opticians'), 'murgatroyd-holmes-opticians');
   assert.equal(slugify('Cotler & Bell Opticians Ltd.'), 'cotler-bell-opticians-ltd');
   assert.equal(slugify('!!!'), 'practice');
+});
+
+// Published addresses. These end up in a client's inbox, so a change here
+// silently breaks a link someone has already been sent.
+test('a report is published at a readable path with no token in it', () => {
+  const client = { id: 'murgatroyd-holmes-opticians', slug: 'murgatroyd/staveley' };
+  assert.equal(reportPath(client), 'murgatroyd/staveley/index.html');
+  assert.equal(reportHref(client), 'murgatroyd/staveley/');
+});
+
+test('a client without a slug still publishes somewhere sensible', () => {
+  assert.equal(reportPath({ id: 'kemp-kerrigan' }), 'kemp-kerrigan/index.html');
+  assert.equal(reportHref({ id: 'kemp-kerrigan' }), 'kemp-kerrigan/');
+});
+
+test('re-adding a client keeps its slug, brand and branch', async () => {
+  const existing = {
+    agency: { name: 'Spring View Marketing' },
+    clients: [
+      {
+        id: 'murgatroyd-opticians-ltd',
+        name: 'Murgatroyd Opticians Ltd',
+        placeId: 'abc',
+        slug: 'murgatroyd/conisbrough',
+        brand: 'murgatroyd',
+        branch: 'Conisbrough',
+        competitors: [],
+      },
+    ],
+  };
+  const { config, replaced } = upsertClient(existing, {
+    id: 'murgatroyd-opticians-ltd',
+    name: 'Murgatroyd Opticians Ltd',
+    placeId: 'abc',
+    competitors: [],
+  });
+  assert.equal(replaced, true);
+  const client = config.clients.find((c) => c.id === 'murgatroyd-opticians-ltd');
+  assert.equal(client.slug, 'murgatroyd/conisbrough', 'a changed slug would break a circulated link');
+  assert.equal(client.brand, 'murgatroyd');
+  assert.equal(client.branch, 'Conisbrough');
 });

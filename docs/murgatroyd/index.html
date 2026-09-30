@@ -1,0 +1,583 @@
+<!doctype html>
+<html lang="en-GB">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>Murgatroyd Opticians, Google reviews to 30 Sept 2026</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --plane: #f9f9f7;
+    --surface: #fcfcfb;
+    --text-primary: #0b0b0b;
+    --text-secondary: #52514e;
+    --muted: #898781;
+    --grid: #e1e0d9;
+    --baseline: #c3c2b7;
+    --border: rgba(11, 11, 11, 0.10);
+    --series-you: #2a78d6;
+    --series-them: #898781;
+    --good-ink: #006300;
+    --warn: #fab219;
+    --critical: #d03b3b;
+    --you-wash: rgba(42, 120, 214, 0.07);
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:where(:not([data-theme="light"])) {
+      --plane: #0d0d0d;
+      --surface: #1a1a19;
+      --text-primary: #ffffff;
+      --text-secondary: #c3c2b7;
+      --muted: #898781;
+      --grid: #2c2c2a;
+      --baseline: #383835;
+      --border: rgba(255, 255, 255, 0.10);
+      --series-you: #3987e5;
+      --series-them: #898781;
+      --good-ink: #0ca30c;
+      --warn: #fab219;
+      --critical: #d03b3b;
+      --you-wash: rgba(57, 135, 229, 0.12);
+    }
+  }
+  :root[data-theme="dark"] {
+    --plane: #0d0d0d;
+    --surface: #1a1a19;
+    --text-primary: #ffffff;
+    --text-secondary: #c3c2b7;
+    --muted: #898781;
+    --grid: #2c2c2a;
+    --baseline: #383835;
+    --border: rgba(255, 255, 255, 0.10);
+    --series-you: #3987e5;
+    --series-them: #898781;
+    --good-ink: #0ca30c;
+    --warn: #fab219;
+    --critical: #d03b3b;
+    --you-wash: rgba(57, 135, 229, 0.12);
+  }
+
+  :root { color-scheme: light dark; }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    padding: 24px 16px 56px;
+    background: var(--plane);
+    color: var(--text-primary);
+    font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
+    font-size: 16px;
+    line-height: 1.5;
+  }
+  .sheet {
+    max-width: 780px;
+    margin: 0 auto;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 32px 28px 28px;
+  }
+  header { border-bottom: 1px solid var(--grid); padding-bottom: 18px; margin-bottom: 26px; }
+  .eyebrow { margin: 0 0 4px; font-size: 12px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); }
+  h1 { margin: 0; font-size: 26px; line-height: 1.2; letter-spacing: -0.01em; }
+  header p.sub { margin: 6px 0 0; color: var(--text-secondary); font-size: 14px; }
+  h2 { font-size: 15px; letter-spacing: 0.04em; text-transform: uppercase; color: var(--muted); margin: 34px 0 12px; font-weight: 600; }
+  h3 { font-size: 16px; margin: 0 0 4px; }
+
+  .hero { margin: 0 0 22px; }
+  .hero-label { margin: 0; font-size: 13px; color: var(--text-secondary); }
+  .hero-figure { margin: 2px 0 2px; font-size: 62px; line-height: 1; font-weight: 600; letter-spacing: -0.03em; }
+  .hero-figure.up { color: var(--good-ink); }
+  .hero-note { margin: 0; color: var(--text-secondary); font-size: 15px; max-width: 46ch; }
+
+  .tiles { display: grid; grid-template-columns: repeat(3, 1fr); background: var(--surface); border: 1px solid var(--grid); border-radius: 10px; overflow: hidden; }
+  .tile { padding: 12px 14px; border-right: 1px solid var(--grid); border-bottom: 1px solid var(--grid); }
+  .tiles .tile:nth-child(3n) { border-right: 0; }
+  .tiles .tile:nth-last-child(-n+3) { border-bottom: 0; }
+  .tile-label { display: block; font-size: 12px; color: var(--muted); }
+  .tile-value { display: block; font-size: 22px; font-weight: 600; margin-top: 2px; letter-spacing: -0.01em; }
+
+  .panel { margin: 26px 0 0; padding: 16px 18px; border: 1px solid var(--grid); border-left: 3px solid var(--series-you); border-radius: 8px; background: var(--surface); }
+  .panel-good { border-left-color: var(--good-ink); }
+  .panel p { margin: 4px 0 0; color: var(--text-secondary); font-size: 15px; }
+  .panel strong { color: var(--text-primary); }
+
+  .chart { margin: 26px 0 0; }
+  .chart figcaption { margin-bottom: 8px; }
+  .scroller { overflow-x: auto; overflow-y: hidden; -webkit-overflow-scrolling: touch; }
+  .chart svg { width: 100%; height: auto; display: block; min-width: 580px; }
+  .chart .scroller { padding: 2px 2px 4px; }
+  .legend { margin: 4px 0 0; font-size: 12px; color: var(--text-secondary); display: flex; gap: 16px; flex-wrap: wrap; }
+  .key { display: inline-flex; align-items: center; gap: 6px; }
+  .swatch { width: 10px; height: 10px; border-radius: 2px; display: inline-block; }
+  .swatch-you { background: var(--series-you); }
+  .swatch-them { background: var(--series-them); }
+  .axis-label { font-size: 12px; fill: var(--text-secondary); }
+  .axis-label.is-you { fill: var(--text-primary); font-weight: 600; }
+  .bar-value { font-size: 12px; font-weight: 600; fill: var(--text-primary); font-variant-numeric: tabular-nums; }
+  .tick { font-size: 11px; fill: var(--muted); font-variant-numeric: tabular-nums; }
+  .bar-row:hover path, .bar-row:hover rect { opacity: 0.82; }
+
+  table.board { width: 100%; border-collapse: collapse; margin-top: 10px; font-size: 14px; min-width: 460px; }
+  table.board caption { text-align: left; font-size: 12px; color: var(--muted); padding-bottom: 8px; }
+  .board th { text-align: left; font-weight: 600; font-size: 12px; letter-spacing: 0.03em; text-transform: uppercase; color: var(--muted); padding: 6px 8px; border-bottom: 1px solid var(--grid); }
+  .board td { padding: 9px 8px; border-bottom: 1px solid var(--grid); }
+  .board .numeric { text-align: right; font-variant-numeric: tabular-nums; }
+  .board .rank { color: var(--muted); font-variant-numeric: tabular-nums; width: 28px; }
+  .board tr.is-you td { background: var(--you-wash); font-weight: 600; }
+  .board .up { color: var(--good-ink); }
+  .you-tag { font-size: 10px; letter-spacing: 0.06em; text-transform: uppercase; color: var(--surface); background: var(--series-you); border-radius: 3px; padding: 2px 5px; vertical-align: 2px; font-weight: 700; }
+
+  .notice { margin-top: 26px; padding: 14px 16px; border: 1px solid var(--grid); border-left: 3px solid var(--warn); border-radius: 8px; }
+  .notice ul { margin: 6px 0 0; padding-left: 18px; color: var(--text-secondary); font-size: 14px; }
+
+  .message { margin-top: 12px; white-space: pre-wrap; font-size: 14px; line-height: 1.6; color: var(--text-secondary); background: var(--you-wash); border: 1px solid var(--grid); border-radius: 8px; padding: 16px 18px; }
+
+  footer { margin-top: 34px; padding-top: 16px; border-top: 1px solid var(--grid); font-size: 12px; line-height: 1.6; color: var(--muted); }
+  footer p { margin: 0 0 8px; }
+  footer strong { color: var(--text-secondary); }
+
+  @media print {
+    body { background: #fff; padding: 0; }
+    .sheet { border: 0; max-width: none; }
+    .bar-row:hover path { opacity: 1; }
+  }
+  @media (max-width: 560px) {
+    .sheet { padding: 22px 16px; }
+    .hero-figure { font-size: 48px; }
+    .tiles { grid-template-columns: repeat(2, 1fr); }
+    .tiles .tile:nth-child(3n) { border-right: 1px solid var(--grid); }
+    .tiles .tile:nth-child(2n) { border-right: 0; }
+    .tiles .tile:nth-last-child(-n+3) { border-bottom: 1px solid var(--grid); }
+    .tiles .tile:nth-last-child(-n+2) { border-bottom: 0; }
+  }
+  @media print {
+    .scroller { overflow: visible; }
+  }
+
+  :root {
+    --brand-primary: #003366;
+    --brand-accent: #33cccc;
+    --brand-on-primary: #ffffff;
+    --series-you: #003366;
+    --you-wash: rgba(0, 51, 102, 0.07);
+    --font-brand: "Montserrat", system-ui, -apple-system, "Segoe UI", sans-serif;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:where(:not([data-theme="light"])) {
+      --series-you: #33cccc;
+      --you-wash: rgba(51, 204, 204, 0.12);
+    }
+  }
+  body { font-family: var(--font-brand); }
+  .brandbar {
+    background: var(--brand-primary);
+    border-radius: 10px 10px 0 0;
+    padding: 20px 24px;
+    display: flex; align-items: center; gap: 18px; flex-wrap: wrap;
+  }
+  .brandbar img { height: 42px; width: auto; display: block; }
+  .brandbar p {
+    margin: 0; color: var(--brand-accent);
+    font-size: 13px; letter-spacing: 0.02em;
+  }
+  .sheet:has(.brandbar) > header { padding-top: 22px; }
+  @media (max-width: 560px) { .brandbar { padding: 16px; gap: 12px; } .brandbar img { height: 34px; } }
+
+  .branches { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 12px; margin: 22px 0 6px; }
+  .branch-tile {
+    display: grid; gap: 2px; padding: 16px 18px; text-decoration: none;
+    background: var(--you-wash); border: 1px solid var(--border); border-radius: 10px;
+    color: var(--text-primary);
+  }
+  .branch-tile:hover { border-color: var(--series-you); }
+  .branch-name { font-size: 13px; text-transform: uppercase; letter-spacing: 0.06em; color: var(--text-secondary); }
+  .branch-total { font-size: 34px; font-weight: 700; line-height: 1.1; color: var(--series-you); }
+  .branch-meta { font-size: 13px; color: var(--text-secondary); }
+  .branch-meta.up { color: var(--good-ink); font-weight: 600; }
+  .branch { margin-top: 34px; padding-top: 20px; border-top: 2px solid var(--border); }
+  .branch:first-of-type { margin-top: 24px; }
+  .branch > h2 { margin-top: 0; }
+  .branch > .sub { margin-top: -6px; }
+</style>
+</head>
+<body>
+<main class="sheet">
+  <div class="brandbar"><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAlgAAACrCAYAAAC6/+JCAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAALEBJREFUeNrsnc9rFNv750+8oiiK/eVCLooXWy44XOFiB93bYWZ2A8btbOz+BybJbnZJdrMZkqwGZpPOalaDkfkuZ7Azi5lNgi0O9wuC2OKHyJWP3P6gKMqVTL2rnkoqnao6p36cqurq9wuK1nR31enz832e85znzBweHipCCCGEEJIfM8yCcO4eHjadF1wt52o41x15Be0Ut+zL68i5nsvrwLmG+zMzQ+Y4IYQQQoFVNzHVEiF1R17bJSSjL4IL4mvgiK4BS4YQQgihwJo0QQURdV9eGxVM5khE1y5eKbgIIYQQCqwqiqoFEVR4bU7gTxiK4HriiK0dVl1CCCGEAqssUdV2Xh6JqGrU6KfBurVDsUUIIYRQYBUlqprOS0eEVdPGM759+6a+fv164m/fv39XX758UefOnXOvIOfPnz/1txwZOte2c/XoLE8IIYRQYOUtrNrOy6LyrFWZgFj6/PmzK5jw748fP7p/91+zcPHiRfXDDz+oy5cvu68XLlw4+lsOwJq16QitPqs2IYQQQoGVRVh1RFi10t4DYurTp0+ugMK/YaEqGli4ILQgvC5duuT+OwND51pzhFaPVZwQQgihwEoqrFZUimVACCiIqdFo5L7CSlU1fCtXo9FwX1MuMVJoEUIIIRRYRsIKS4DrSYUVRBUE1YcPH1wr1aQBi9aPP/7oCq4UYotCixBCCKHAChVWbeVZrNqm34FlyhdVefhPVUlszc7OumIroe9WX4RWn1WfEEIImWKB5QgrhFeAxapj+h1Yqw4ODlxxVcXlv7yAuILIgthK6LPVc65lR2iN2AQIIYSQKRNY4mcFcWUUwwpWqnfv3tXKWmUK/LSuXr3qvhoCcQVr1gabASGEEDIFAktiWW0pw+VAWKrev38/lcJqHPhnXbt2zfXXMqTvXF3G0CKEEEJqLLCSWK2m2WJlIrSazaapRYvWLEIIIaSOAkt8rWC10gYKhY/VcDiksDIAAuv69eumPloIVNqlbxYhhBBSA4HliCsECX2sNKEX4LAO53UsB5JkwBEeS4cGuw4hruYdkTVgrhFCCCETKrBkSXBLO+qPRq7Vqs67Am0DcYVlQ+w8NGCZS4aEEELIBAosR1xBWHXiPgNBBWEFgUXyAQILQsvAmoUDpLvMMUIIIWQCBJb4W2FJsB33OVqt7JHAmoWlwnn6ZRFCCCEVFlgSggHiKvZw5rdv39LXqgAQzuHnn3/WWbMgsrr0yyKEEEIqKLDEmf2pignBgB2Cr169msjzAicV7DC8ceOGbqchnd8JIYSQqgksE3GFsAsQV1wSLB7DJUOKLEIIIaQqAstEXOFAZvhbkXLBciFCOlBkEUIIIRUWWCbiCsIKAotUA/hlwZpFkUUIIYRUUGBRXE0uBqEcKLIIIYSQogWWTlzBz+rly5d0Zq8wcHq/desWRRYhhBBSBYElca4grloUV7UXWUPnmmOcLEIIIcSiwKK4mkqRxWCkhBBCSIAzFu65TnFVL1BeKLeY8Bko7y3mFCGEEGJBYN09PFxSMWcLwqGd4mqyRVYMC075rzKnCCGEkByXCJ3Bta28pcFIccXdgpOPQQiHh/szMzvMKUIIIRRY2cUV/K5eq4gdg+/evVMHBwfM7ZqAQKQISBoB/LDg9D5kThFCCJlW8loifBwlrmC1oriqFziEO8Ya2ZD6QAghhFBgpUX8btph78Fv5+3bt8zlGqLxp2vRH4sQQsg0k2mJUIKJPgt7DzvOfv/9d/Xt2zfmck05d+6cun37dlz4BoRu6DOnCCGETBtZLViRW/Nh4aC4qjcoX80B3Vvin0cIIYRQYJkgS0Ch8a7gozMaMebkNIByRnlH0HSuFeYSIYSQaSPVEmHc0iCsGlgajAlKSWrIr7/+6kZ8j2CO5xUSQgiZJtJasNaj3sCSEcXV9PHmzZtU9YUQQgihwFKu9aqjInYNYqno48ePzNUpBDsKEe8sgrbUG0IIIWQqSLREKA7LWBpsjr/HpUECfvvtN3d3YQhwyrvJA6EJIYRMA2cTfn4pTFwBLg0Svx7cunUr7K2G1J9V5hIhhJBJ5vDwEFqoEzccGluw4o7DwbKg5iDgI1oXL6qFRkPdv3RJNc+fV80Qa8fIEWqDz5/V4MsX9dx57Tv3H5YY8sFP850LF9z0tiKcuZFmpPO5k26kuT+ly6W//PKLajRCozPQikUIIaQOAqutYs5fdugnEViwPIRuuX/x4kVszCuIksWfflKdH39UjeiglLFAvGx/+KB6zjUqwFIGEbU4O+sKq7RpRjp3RiM33VUTW+3Ll90rDauao4+wRIilwgh6jsDqsnkSQgiZeoEVZ72CY3vUcTgYwFeuXk09kEeJlk3nmRt//GFFaEEEPnKuPNPs5rQjsNbevauM0Fq9ds0tmzTM7O9rP3PNuf/V6Pvf5GHQhBBC6iywTHcRLoWJK/hchR3kDIvV419+UU9v3cpdqMCaBGHw+rffXOtSXiCdSO9Ws5l7moP3R76ktYhNEn84AjjGJ2+RzZMQQkid0QossV6FDoiwXo0Pokuzs+rZ7du5ip8ooQWxAkGURbDgu7iHDTEYBvIF4rCIZ5UJ6kVMhPcOj9AhhBAy1QJLeV7yodYrWCl8YLWCSFn/+edCLTRY0sNz0zwTIgdiB/coEqQVaS76uUUTY8XydxQSQgghUyuwtNYrWGVgtSrLKgOH9KQiCz5IaYVZXsByVmeRpbFiPWLzI4QQMpUC6+7h4YKKiHv197//3X3FkmAV/IpMRZa/tJjWwZsiKxlBK+cYTUZ3J4QQMpUCS0VYGT58+OCGZYA4wJJgVfBFVpy4wvu2/cPSiKy6+mTBioX6kqR+EUIIIbUVWHe9KKULUQKrqpYXiCykLUpcRQUJLZs67y6MWSZsSz0jhBBCpkNgRYkr2If+9/XrlV7WQtqCVqqqiys/jWHCsA7gIOiYQ8A7bIaEEEKmSWCFLt/8e6UqLVR8/PANkyCujhStIwrrulTIZUJC7HHIsCeEVI7Qw55l2aYV9t79FA9B9PLdT5/c427Go68jvAPOJMTZhHmKC98iFHd2YBxIJ9KNcwXD0o204mxCvOa5tAfn+zqeYTgajVx/rB9O5xWc3Vv7MzMDNkdCUomrjvI2I60yNwipuMBSEcuDbecylUAQCTiDD2fxmR5pA6ECK87KtWuhh0AnJY0zO9KNo3iQbt3nfLAkmVea/TMC6yayIK4gsn4MX1qGFYsCi5B04mrLudaYG4RUi6glwtBlm39ncMPht2/q4atXav7ly8QHM+Oz+M7NFy/cc/uKBIIGacalE1fj5J3mRzUN2zCKztcFNkVCUosrQsgkCKy45cG25mYb79+rud9/TyxQwlg9OFDd4dD+oO+IOjwHwiqr1chPc9ZDqGERq+OOQn+ZMIQmdxMSQnFFSK0FVpSOahuIlOW3bzOLiyCwDOGetoBvFQRhL9oBu7Q0Vy1WV54iK+onszkSQnFFSJ0F1oMkAguCyl8OtAGsYjb8kZBepBtLmjbunXW58EFNBVZMuIb7bI6EUFwRUmeBFaql7ob8DeIEIgWWIJvk7Y8FAZTHUl4cWC7MIt7qGq4hxoLVZnMkhOKKkLpwYhchtss7L6dMJwguOn5yH0QVxJVNkeIDCxael0csK19cFcGaI7LSBg+FDxZ+r23xWjTwwULg0Yuny7IxzeEaDj0fNAygQUvernPtzDCERV553BYhf0Wd9jOF8n+uvN2sAyfPhxVL+1SJK/m9aAt+BzoMtIcRazPJsa41pF9An3BDnT5/GX3CP9L0DWdNrAh3SxRXPgj5kFVgFSmu/OdlCd/QvnSpdgILfPr0KUxg+fVvkLBxrKuITRnCsm2BIoNBXMDUbScNvRhhhd+wEJEfK85nUGnXou5RYCfUkquh8l3SRae1bLFsHigzH7+FwPdQZzbLzPOE4uqR87mkZWKlbTjpeBr3vvPMec1vXQ+b6MsEZMv5TE/aw7ACZeO3iyjh7k+URlLP+yVOLlY0H9t10rdawnOfOM/dKKHc/H67pRuKx76LercjoiteYAUbw39wlNv/MRBY3TdvChVXoO8MylnAcl2R4soHOyqXZmdTfffG+fO1nDHAD2s2PE8wQCRtaC0Vv7xYhDNbU5OG3YhGviADZ8Pg/hhY0Bl0ixpYEnZCVZuVLshA3Ux5i5bk+YoIkZ0Kiyu/jiT9rbbaRjtlXdsyFMLIkwXnO2tFD8yBSZEv3FtJ8sP5rpLB+UmR4h3Cznn2lqaOtCFec+5fVgzqQ7dgYbXkXIsZ6n9T7qHljPx49/p7ROb/q/HpZglWlbBo6okE1tevpXT02xmc/1sXLtRWYMUMalOBDJyPEzZytNNnIh6sdkLSGf8pIqU1Qfnqp/1xBnE13pk+FktpVcXVpLcFtIGnKtlOYnxn3fnu46KOCYI1Bs9z/vlahEPadrEg4v1P51ot8Jgjk2C0Kznml27i6YrNAieMC4GyKyTPTzi5vwz5AFytr1akIU7iclkWYTgJ5yemAX5Y38I3ACAeVu3PVMs4cDZkwO9YTNtrNYGHcAcGahtpXxLhRnFlp8yyiJWnNkVKQLQnFYEmbRmD/WvbkyYgFjOdmOkc5heT0ESsbRZUz9ZTTGjzE1j7ER+4VaHGuJtxmXDShGEdg436fI7Ok1pbscQnIY+Bc2QhbVvKbMmyqjy1XH8w+CwVUEemQlwJj/MoM1uO79JebU84/EnTVgHWLBNBs5JDvjUN8qxfhE+a9GtLZVTuI4EVFQjhboVaYlnLfGUKwzzON6wiX758mTqBJZ3O4xxu1c/bJ0g6oc6EZ3ERdWfl0OKpA9MkrsSq0M7hVjY3SDwtcMLhPs+yyOoZTM46OaTBRKStFVDHSu3XjnYRHkR8oEoWLBtBQYtg9Ndf6QXW+fMT+7vjgB/W1atXo2ZzdSXKOjRUx6b7lkEe5OoUKlYZm53QSDNzHpZQFsGZc1OZ+2v5yzq5O+YGNj1Mg7hqx1gV+oG81onmng0rSIlCtyUia96GVQ73dO69aSCAUDarKfMO5aZb8hzatl7Bvy1hv4YdtdvqOBzDKHAvfwf1ffltRuPUkcB6GfGBKoW7LHrnYl4Moq01U8v36LKsZUR3ETHtkNnkqe3mga3NYbP7XLenB8JEmAoldD67Y+WlE4UN6dxXy2yG0nmGOtUGdkyaOMBiB9uyhQFwFDOrv6/irT19FbFbtWLCNrhjcDwtp0KRaHZ9Ib+WLaQvjbjyJ0m7IeWWRMBbF1nK26mt20W36Dx/I+Xzlwza0JrlOtZW5kudWA1YjutXJZzJQPrsrkyGFjVt8lhgRe3rqtISYR1jQk0rMT5YdbRg3ZDGGBwYHkbN4OTv/YC/VjPQiee9Ld2kE/IH/l5Uh6uJX+Q+B7GlSgh30JeBu6+b2SNvJcaSzpfLD0yY62/xyz1mNh7Xme+WLGCT1rnm2EQjVLDK37DTbkO+tzQ22chVgIilwlRcjSTtm7pJT8AnyTQ8gJ+Oh3lnvqEVyxe2qwnzrzHW14WK0QJCVGwZlt9ymrSgH3N+60gnsI58sF5yzCcFE7GTsI4+WJ1Ap4pGOW9iHpfPzAUG3VytJgGrjc7yM4d4Q3HPlk7qpooPFLtl038povOcT7IUIb/RZFBrsQWnJiiSINq7unqN9yUYbVcdB+3MdbIh7cHURxLPvok0mViU8RkRwDcTWG8WLG6q2FB6X6zFFL5YHVW+9WpV6S2Gfj9sVegdCawwC9ZddgTEIl8ndNNCRh4miZ4tA8u8shPssm3YCQ1N04rPq+ilp4bKMc6ORhTOpx2A5ffqOt4rbMGZwWaNbsKy6Ukds+HYvqTMlvK6IqxGKerWSITWnDLbCbxiw+ld0q7bUWgyATslygz6FNtW7EeGZWj9CLIzUeKKkLKQMzHryEZax05LEat1+Zx4EJHPxw2aHctWLF9cZe08n2TMO6IfaLsp20LuR85InTQR/908rB5SP3UWX1/k2Apya2TFSpCHHQOBumnzLEnDNGwU5argCqyo5cFr7ASIRT5Fh6+oox9WnANzWcRtKEjtJyGDX9zAYSuoIpab5nLqwPtsoVbZrNiB2ibiajnPJaXAZKSIsAlRz9dZsZoJghrr8nCk8vchHedBlfrhM3FvXmUnQEieg/9ogtLbt/j9OzYSnHS5yWDwIfbYqFh6dKK/b8OKLJYsk3rbsfS7TQSjVnzKrrpmBfrAhQqkwUxgEUJyY3vC0vsm4/fjTppvsjpMNTtVErAiDgqNPTcmsnYMJjSPLD17aCCyTKxYJkuJm5bLsV12GiiwSGX4KzoAa938W0ZFOFQSMiHsViw9umWlfgHLmbqBv2UxwnumQ6BF2OjETa+APNSNG8Oil6VdgfWODZ6UQMxxOXXzwRpMYLqyBnyd2ICxiIUkx7iQ6WgPuoHZuvVZrFjDjOlM+2w8t6f5WDPGQlSJY3EMxo1+0RXLFVhRx+QwTAMhtRZYz2Pea6edMcuOrLgZbdUsGEeiyrlwsO8zVdLhsGwPlRRYRQ3Muue0LT47lRXLoK2DnYIsR7pJ3ZuiKxaXCAmxzz8qmi5dh572LDad9acSA2yEqGqyutqlYv5XTYP0DgtKjk4AXLFYJviNPZ3AC7FimVivNitS3IX3OxRYhEzvQDfUiKzEkaTl9Pq4nTyjEo7LOTGgUlSRALqy7xeYFt2zbPumJrJiBY7/if1Ntg91TkDhwt4VWFEHOvP4HEJqj65ThRh5rJvpi3B5atDhljKbxS4o54Kgem0oqnZYNcgUTrh6mo8FrVhV8b2qLO5hz7ci3mSEd2KTc+fOMRPK71RxqDTERJzVCe8tyOfgPzUYm1XfV2bBQ9GBFxr/SLbgryszK9VQBKDrM+J895A1hEwZmwaTpEc4uN2gzQ8rZL0qT2ARUgbnz5+PeqvP3CmUrggQ3RLEgsoWhX25KP8bcdDfMkivfzba9rQPBoQgnIzTdtAO2jEf8wVYqYc6R0yQKgV9sAhhp+of0mzTCXStKN+rQ+8sy6caceUfmXETEeAprqYW3aDcLjAt7Yxpza2tGnymo0trnscKGfKmQmWpF1hcIiRk6kSWDRGEw1VXCxJXTRFXcda4DRFWqzwSZ+rr/dCwThXBjYwCIq88wWQj64SjDN8rXVleKTpBrsCKOtSZTu7EJhcuXGAmVExkOddD55/LKp8dN7jHQ+eeywX+jMcqeuniKD0UViSAznLbLigdCxnTmSdrGdv9zhSX40mBxUOdSRn88MMPoX/f53JN2ULLtfBk6GSDy2+FdbSHh4erKt5y1S0zRASpLLr+ZrGAumtyHuKgwD6gr9JbsTbLmMDIcWRxz20VaI08FlhR0IJFwmhECKO8BBYpF+mE1hMOLEPlbfGGheifil5+E6f2uPT2Ka5IBLqTBVqGBwlnQdfWBkWfo5dygoU2v1FiWeraeKcUgRV2LA59sEhob3PxYi73uRh+Hx6KXK64WlVerKhOzIy6L2IKHTD8tiCofGfxskSMzgKwzdIlYUid1U0G1i22OdRdnYDbLiFf+iq5FatX8vL7E52QtXhodrTAioJWrHoy+uuvUp8fEwPLuHFKQ2myNHPr6BHWICp4IGbPEFBgXsQUrFT9ivgz3dG8P6x58d1hDc6ELgBuS9pH3m0OS9om9+1VNF+yfr5osdxQ6Y8ASy+wog52PmDDqyWDL19Sf7eVg3N6TAysJBasxxRYuXX0HRVtPoc4mSth23WialnzIupP+e+3zYbB5A6nAazn2Ob8cCI6i0ppViERLKaTk14Jy5hpRN6CWOqLE1g8LoeYciNaHBlz+XJUjTM7GFlmk22WRm7E+YBs12DXXd0FSDONn5AccTT1kxSp3ybWlyX0PVmXmaSsTMQV0rVccvas5fy5IsSyTuit2LBIRgqsWxRYU8Xw69f0I1UOFqyYJcK+pmNqyJlyHZZiYQLkRg1+36MU1oUqYWLZNR74RVhhgIG/XZPV3xVZq4b5jL7nWUpB2xArmIm4At0KTG5M8mSnItYrXyybiFL3fFKbGxjOUmBNqcD69i31d9vR1idjYmJgDaI6JunYVgw7JpKwSsQMtOiIdiu+RIidYHEdJXxoliQEhW4QRD1LvBQkdbRtw9Efg4Zz/6FGDDVl4A+NTC+WKuTRA5XtyKM60zUUP8jLp1ImsHz1JUxAZL0I5Ltp/9WryM5Xk93Em1UqROSbk+9o60sGE0u/HNFmEMx1ZCgqtZOwI4GFIRMBR8d9rvD/jyp6CZFMtshqpjxweaHRUDuj9BOrsB2El72eraO8g0SDlfhOwo6JJGdbRTu4+9YRWIE2KxruwKRDXJfBbiPMKiAz2RVltvTcjBBl7mHRJZVRcOAfHyTarOJGAzPO4nsoIksZ1oN1qQN+PRyNvd9MU5+xkaTs/BBR3tF8rF/Fo6YQUFgs0abtuZN3Gk4c9nxLhTu177N11lNgff2aWmA9yCCwovyvxIqa1HIwovDKpTNadTqj+5qmjvfaMnijQ92Nm7mXMGMdGgxmECjYqr2jjo8euSG/LclAiCU2bLIYivhvFvAzewYCy6fBbjt1XerDCqjS7TbLY2kZ7Wm+ItlhUt/WKlycvlguZcn/RJiGqJ2EXCasJ7ufPqX+LixYaQOORgmsu8lv1VWMm5V3Z2RifWmIqIAYxpIUgNUEIm2hyDgzY5g6AweXm1fk32kEEvJgqSBx5Z+bt8ZqWkhe90TkFO3/hGXBuSpsKgm4ZcSKwSoflC7Hf82pksJcnAmxIJyiz/ZWSwafP6f+LsTV0k8/pfrupUuXsgos92DiivsETeKg4p9FmCYSc1vECqw6f4rz6HoBEbCD6d/JqSP1nWSHFSyjVVVeTKRpaw8Y+uYKmsS5da4Ky4IBlgw+szkhZdmVCWShwtXYgsWo7hRY46xcvZoqqntGC5bb6c3wvMK8Z6tY8lqSHZpLOdyyJfeBZetP2dreLKgjzSJA/PoFkZk0evaOKuCYkBx+IzHP66FYQNYsDs7BOleV/kB39BQYTtIkVyZgNy2XZbTA8qehYeyzrdUOOLlnFVlbN24kWipsNBppxRWsCV2JIj5k6eXXkQa2668rO74K/lLDa7FqWV1CFAGynLATRec7H6xfCaxFffnuw6KWdgIz8ixtYSBtipMVfX6vWhicT9W5CrGk9L6taxNYjqNAWXalDKy12bNhA11Ya9PtgSaTSf/Tp0xnC+K7z27fVg9fvTISaymsV2gAT2JmStsq/rDWIjqufsb3yxJX8CHaUsVuEkDHDUf5eZtiBNYA5xmoM/iND0Q4NsfExUAdO+oPo4QMQlTIPdqBvBpKuW6XJVDEsb8vv3HRUBwPAum2tfRVSz8xqa8YnFel7fh1oml4i+DmkJ2KTxR1ceNGk+yiIWXZ8ydQYl1vShvKqz8czoyHjP+fSl35jyFLBLKF3kvcfnn2rMO7d1N9r//xo5p/WY67PuJGPb11K9V3kWak3RbYRfj6t99yudfG+/dq848/YmNs/eY8KyzI6H9yvv5vjqO4+1vMBzWIIF5JJKzAVolJGMjsneWbX5k2ZIAYHySGcrE92cl3f3Buhogtvy8bTorl3bBvWBNLEInhbFgm3fXU+YmK8lGkd5t5VisghhBuYaGRXbQvzc66F+6364hCWMeCVi3EvoqI4D78tzMzyyyNwjrQdgJxNVTHAfj8gboRsJZciRjUdeDzcIifZ4nkOivvK+5LKjrf/XZRF3ShGVDPNljyBgIr4u9YljllxeIyYT1Zfvs2F4Hlg3uN3w9WuP9+/rz6v+Ff4YBQLCbiqi+z1H5MHzEu3PygfovKbNkES4Ud7gYlpDKTr45B292kJdSMMxF/3+YoOD3AioXlPZtgmfT/RQc1fcJSqFQHuiyOt4maPHx64PvkXL4DqcmsfpGlQkhlMDmzkxOiLAJr33N+PNU5Ypnwn5lntWTt4CDT+YQ6+ioy1Mdov5pHr9SV+7qqkMd2cbFKmcQQahURvoEQop18tZV+karHXdwZBZYQOuj9D+ZZLRl9/+7uBMSrDf6Zs6GqENeBDvN0XJVlhHmlt2S1WCyElM6kH4szUQIrNEIr9g+eS3l+Hak2cEiHP1bevFOxy8vbzPlCaSadVOUgsnTRnimwCCkRw0ORab3KS2DtexkZat7/KeURKaT69D58UN1hvm0oxuo52K/AQcHkiH/Y0u7MWkIqjYkvJCfDeQksIXTm+eOPP6ofUh70SyZHZOWxXAi/q/+WsH6R0rhi6b4NZi0h1UR8IDuaj/UZ8T9ngbXvOaqe2o4JcUUrVv1FFoKcZj1KZ1dFO7crC0tSREtcJ7lg6Zk6x3pauAgpD/pelSGwhEgrFqk3EFcQWVlCOPzX6Ld29hlLpZRijXnPPfA559mxf+hzWtFHCLGERP/v6PoMWq/sCaxe2B/h6E6RVX+wTAjH95svXiQ+sgc7Bw84I6oaOj+KdYmVlUfn3VbHJ2xFiisGLSSkNEwmVHTlsCWwxNk9VGRdu3aNvlhTAmJkwZo19y//4i4fmvhnxVivevvcjVIKcsCvbja65Yijp3KgbRphhdhWWyKudP5XFNqElIBYr3TO7UOetJChvzX50F3PCe512Hvv3r1TBwcHzMkpo+EIa0Rnf9BouK/NsdAdcGz/z9Ffv0mBVWrHivb8TJk5n/vn2z1XxwfXjtOU647yQi40DZOCbd9dlgghpfQDq0rvf9WlwLIssERkYUbaGf/79+/f1YsXL9xXMt1AaIF/7Yiu/zU7G+XcDusVB9XyO1e05a0SkwChNs/lQUJK6wNeayZDI6d9/hNzKj1nEnw21JSPJUIsFRICHy1c/8UR2x8T1iNS8MzKm5VC6JYhcCiuCCl/gtXUfIy+V0UJrDhfrNnZWXXx4kXmJnE3P1y9ejXqbfpeVU9kzatiwyTgrMM5iitCSkW3NIj2ucFsysbZhJ9fVl6snFO+G9evX1cvX75kjk45zWYzrsHSelU9kQVxNScz2hVl7j+VFMQ8Wy7kqI29vXbgf0N17x5Ffb752zxRT+7d61cobS0ZnwZOukYTns+twFib2+8xtV5xEpRD/5r0C3djHOPevn2r3meImUQmG4TtiBFYa/s5HiRM7CA7Bx8p71yyrBHYhyKsNq0Kq729hkz8sCOqFSHuIQI2M4mBvb2nKvq8tmTP8ETg0wy/es15zmqiNN+7N5Pht7elXixE1At/d+q285xBgvsGx5P5zGJtb8/3K+o59+pmvFcwbV3nfr1Cftfe3pLU5WbIJGUzax5hh7DSnzt4M1WbPVmvzepoGW0kvi379KUP23XzPoXAPZP0CzJIhmY8fLF4EPR0Al+8n3/+OW6gpbl5EmZcMzM7zvVQnFuxfLisPNeAvopfSuzLtaY83y500LiWLYsrdJLYEbmlog+N9gXYU7dj9QRZ3gSfsVWbCoG82tt7LANdJ0Z0+wFln8nny0hr0DLTEUtbXqyLRcn2b9hynxVuYVrIKDj82HQ6YcFDnT3aUudRJq9FNCfibMoHd8MKGoMsLBhcKpw+fvnll7iYaMuM2j6RYssXTVUd/P3Oz2ckYvB5YBKIgeq+Ot4B3ZbOcj6RpSVsdnySO+r4qCEM7m80s/ehil4yfxQYYNdiBK3t/IWgeDw22O/IjH4QEJb43IOAwC3r7MnxmE4o89Wc7t0Q8Zy13ugmC51AXd4MlPMDjcBN0qZnJqQLKqqNRH3/jjq25ONaccoIfclDU2tWKoHlDJb9u4eHOyrk7LLLly+7Tu9cKpweUN6XJURDCDgSh2cOkrwHo4UxcYVOciOi4+s5n1+Tz7cDg+XN1H4tYeLJEyR+cNXF2MHd8wtbjfht948GjyxLLNnytyH55Q9iAxlYwiwbO+5v8SxGNv34dOKkdUpw7e1t5OiL5eWJJ7JsTBgfBf79cGwpsC91eH1q2nhRbUT3fW8ity7l35Z28dDk1mcyJCtyizeWirircDpAOceE6RhJPSHExuB/3Behk4wb9NBZ37s3r453QjfEOpPngDBQxweYN8ac7SeN4JIr/JnmtJsFvDzumg4+ObMYYpFoqPwOMPetVi0R5zasdM1AXvZD8neU2a+MpGnX6DPmAnVgQUSXPYElSz6Rha1ZMiI1AOV748aNuHLucmmQWGBJHS+VbCRyPvYGKL+jbFsQQW9qIGBbAWECUbWccEAaFZzeZiC9PbFI+GJwJaenIA/6AZFlw5I0CvymNpt5pUTWUJ00KhnVqywWLCVLP6GdG5zdY3aUkRqgsVRyaZDY4lGItSIJaxH3yoP7gX8Pa5G/1Q93EBzs/MPM/SCZTVlOzoOHAXEOP7u8RdaTwL8fF+JUT5KIrEFA7xjVqzM5PHY5qiNpNBqM8l5T4HeFsAwR+GqfkLytFQ11vJTSTzX437sXFP6tHNMGy1r7qA1MbvytdiCvehNQHxYC9aEv/+4FrA2LuTzLq2sPA/ddMl0qMrx/T53cPPDM3blmZzmSpGM7YjJlR2DJElDkmjuiescMxGQCgXCOCckAuDRIbBEURLsZ7tPPJLC8cA/B6091ctlouQZ53J+AtAaXi7fHxFDvSDDmZQ3yRPN8QGRt5WghU3LvYL6viNBqs+lXgJM7SLV1Kg8LFkTWIK5DodN7fUA5apZ+EZKhz5wiNac9dvmDvOebetJKRuzhL2cOQ6xtwbP0FnN7ojfIBi30WzkKuJFsxlgLiDh0uE8tLEkSy5zJ60bOoLqhIvyx4AR969YtiqwaiCuUY4xT+47UA0KK4EqG72ZddumPXRsy6N6s/LJacXlkl5OBRfuulSd4ee/5k718A496ArobyKd8dxZ6jvpz6qQ1a4kiq/Q6l6iMz+b8eFixWirEdOaLrN9//119+/aNBTVhGOwYHJ/VEZI/8LHZ2/P/187QSWZbBvOsDHWlL3nbcvOquk7uQWf8jjoO0hkF3l/NsS4ivtoddbxM+TTXGFn+cqTn27ceEFmbPF+zNIJ9jtZF4UyeTxa/m+D69KlBmuEbJlNcaSyQrh8e/a5IQRzHJEpnlVgKuRcJHzgWKplCz0KVVGAv5u4wfu+ef5SUEtGe/zFB9+7BOrp24neQsgjmvdYN4EzeT9eJLINlJjJ54mp+n2dXkeII+tYkO/fPE2SLEfciHr3Av9cruovtZNRzb8yJumwEHg2yrE7GVrNxFmXQ9YLhG8oR9Z2AqO+bHJl0xkY6xOk90oTuiyweDD3x4gp0pbwJKQbPx2mYeEDzhMJjdTJIKScGp/N3GBjQk/sX2d7x5onkzpEYhD8Ulo6jr1WVf+DRYH75RoXjGFlp4qvBv4ohGaosrrbGRLWWM7bSI4NuN05k3b59m47vFcWwfLoMJkpKIhiPqCOhEtqaDvJ1YPY/UOmClE4La+rk8TDPtDGfEK4A5eCdx2iToAVy2/A7/ueaOYdVCIqsYKTvZoq7+MfwhH036NzOCW1xwgp1+rE6fTSXURmctZk2Z/Dt3T08VCrCjO9bSF6+fKk+f/7MwqyQuDJYxoW46jG3SCmgg4ND8fHhym3lWbPQ8fWd6x/yyTvqZBgFJe8/nIAI5WXm7yiQvy0RDFuyiw359zzw6fvyGfvWF8/C0zkqx7Az+8LZEGHmH8S9Y7FOPstwl5Y7Edjbw+/yfeEeqJPLgpOyrP1IDmWOy7PyN4t4k4JxGip8KbabZJfwWdtpNxFZv/76qxoOh+rDhw/s2EoGQWERt4ziikyIyJqTvqUdGKCifFRG7uDkLRkRc5GFZbWlwMCzoOJ9mfoWU9VRYYFFzX7LjnzfCzxqaIVIUSe7KqlvoMduoB63VbgTf3eClrWbKp0lr2jaBp9B3VlOmvdni0i9TmS5JdFsupaTt2/fsmMrCRxrhMj7GiiuSJVEADq8eQn0+EjEVbDDxPsYSJ+4nWQ2q1VRSzODytzLy69lNzSAJ6p8a0pj7BlDEQg7CQehYUCQmZTNHfn8KEW8sbXAgN82yJukafPzrCehRB4l+i6E/94eftOi8sNkHH9/RyYHVV8eHKliTgAYFPB9lP/zFHX6iJkic94RWR2dsv/48aN69eqV+v79OwePgoC1CgIXR+BQXBFCCCHZmSn6gY7I8hz5YtbrEYgUIot+WfaB1RCxyTQ7Ov04V33mGCGEEFJBgRUQWfDMb8Z97t27d+rg4IClZInZ2Vndoc2+uJpnKAZCCCGk4gJLRJYXX0UTNA1WLFizeLxOfsBahSXBy5cv6z46EHHF3VaEEELIJAisgNCCT1Yn7jPwx3r//j2tWTkAqxWc2Q0i6feca5niihBCCJlAgSUiCwIL8VVivaxhzfrb3/7mOsKTZMBadf36ddPArhBWG8w1QgghZIIFlogsLBXCmqU9ZwnxsmDN4rKhHliq4GeF+FYGDJXnzE5/K0IIIaQOAktEFixYwaB2kfjLhn/88QdDOkQIq59++sldEjQ8WLunuCRICCGE1E9gBYRWW3nWrCaFlnVh5Z6hxTMFCSGEkJoLLBFZxtYsCq1UwgrAz2qNVitCCCFkSgRWQGi1lecA3zL9Dny0ILamIVApnNYhqgx9rHzgY7XMwKGEEELIlAqsgNDqKIOdhkEgsCC0RqNRraxasFDhWBsIK8NdgT6wVK1xhyAhhBBCgRUUWRBXWDJcTCK0XGXhiCz/mlSxBVGFK6G1ygcHnW5wOZAQQgihwIoTWrBmddJ83xdaiKdV5VAPiLiO+FW+sEpJT3lWqyGrOyGEEEKBZSK0miKyElu0fCCwILT8q0zB5Qsq/9IcwByrIUVYbVJYEUIIIRRYaYVWIyC0mlnuheVD+G59+vRJff361RVc+H+ey4rwoYLvFATU+fPn1aVLl9z/J9j9FwXE1LbiUiAhhBBCgZWz2FpwXh4510Le9w4KLQgwUyCggsLKAohhtc1YVoQQQggFlm2h1RSRBbHVquFPRKgFWKt2uAxICCGEUGBRbFFUEUIIIRRYNRNbDRFb952rrTL6bFkGIqrvXLt4pagihBBCKLAmRXA1RWjdUZ51q11iciCmYKV6TkFFCCGEUGDVTXRBaDVEbF0R4dVQ+SwvQkBhhx/E0xv5/9ARUwPmPCGEEEKBNc0CLKnYGtIaRQghhEyRwDo8PGQuEEIIIYRQYBFCCCGEUGARQgghhFBgEUIIIYQQCixCCCGEEAosQgghhJA68v8FGABJfioIVxluXAAAAABJRU5ErkJggg==" alt="Murgatroyd Opticians"><p>Family eyecare in Conisbrough and Staveley, since 1963</p></div>
+  <header>
+    <p class="eyebrow">Spring View Marketing &middot; weekly review report</p>
+    <h1>Murgatroyd Opticians</h1>
+    <p class="sub">Google reviews, week ending 30 Sept 2026 &middot; 2 branches</p>
+  </header>
+
+  <div class="branches">
+      <a class="branch-tile" href="staveley/">
+        <span class="branch-name">Staveley</span>
+        <span class="branch-total">28</span>
+        <span class="branch-meta">reviews &middot; 5.0 stars</span>
+        <span class="branch-meta up">+2 this week &middot; 4 of 7 locally</span>
+      </a>
+      <a class="branch-tile" href="conisbrough/">
+        <span class="branch-name">Conisbrough</span>
+        <span class="branch-total">11</span>
+        <span class="branch-meta">reviews &middot; 4.9 stars</span>
+        <span class="branch-meta ">0 this week &middot; 7 of 11 locally</span>
+      </a></div>
+
+  
+  <section class="branch">
+    <h2>Staveley</h2>
+    <p class="sub">Murgatroyd Holmes Opticians &middot; 33 High St, Staveley, Chesterfield S43 3UU</p>
+    <div class="hero">
+    <p class="hero-label">Reviews gained this week</p>
+    <p class="hero-figure up">+2</p>
+    <p class="hero-note">new reviews on Google, taking Murgatroyd Holmes Opticians to 28 in total at 5.0 stars.</p>
+  </div>
+    <div class="tiles"><div class="tile"><span class="tile-label">Reviews in total</span><span class="tile-value">28</span></div><div class="tile"><span class="tile-label">Star rating</span><span class="tile-value">5.0</span></div><div class="tile"><span class="tile-label">Position locally</span><span class="tile-value">4 of 7</span></div><div class="tile"><span class="tile-label">Share of the area&#39;s new reviews</span><span class="tile-value">33%</span></div><div class="tile"><span class="tile-label">Weeks in a row</span><span class="tile-value">1</span></div><div class="tile"><span class="tile-label">Your recent pace</span><span class="tile-value">2/wk</span></div></div>
+    <section class="panel">
+    <h3>Next one to catch: Elliott &amp; Heath Opticians and Audiologists</h3>
+    <p><strong>7 reviews</strong> behind, on 35 to your 28. At the pace of the last month you overtake them in about 4 weeks.</p>
+  </section>
+    
+  <figure class="chart">
+    <figcaption>
+      <h3>Reviews gained this week</h3>
+      <p class="legend">
+        <span class="key"><span class="swatch swatch-you"></span>Murgatroyd Holmes Opticians</span>
+        <span class="key"><span class="swatch swatch-them"></span>Other opticians nearby</span>
+      </p>
+    </figcaption>
+    <div class="scroller"><svg viewBox="-10 -2 720 268" role="img" aria-label="Reviews gained this period by practice. Every value is listed in the table below.">
+      <line x1="196" y1="2" x2="196" y2="242" stroke="var(--baseline)" stroke-width="1" />
+      
+      <g class="bar-row">
+        <title>Parker Opticians: +4 this period, 80 reviews in total</title>
+        <text class="axis-label" x="186" y="23" text-anchor="end">Parker Opticians</text>
+        <path d="M196,8 H650 A4,4 0 0 1 654,12 V26 A4,4 0 0 1 650,30 H196 Z" fill="var(--series-them)" />
+        <text class="bar-value" x="662" y="23" text-anchor="start">+4</text>
+      </g>
+      <g class="bar-row">
+        <title>Murgatroyd Holmes Opticians: +2 this period, 28 reviews in total</title>
+        <text class="axis-label is-you" x="186" y="57" text-anchor="end">Murgatroyd Holmes Opticians</text>
+        <path d="M196,42 H421 A4,4 0 0 1 425,46 V60 A4,4 0 0 1 421,64 H196 Z" fill="var(--series-you)" />
+        <text class="bar-value" x="433" y="57" text-anchor="start">+2</text>
+      </g>
+      <g class="bar-row">
+        <title>Insight Opticians: 0 this period, 108 reviews in total</title>
+        <text class="axis-label" x="186" y="91" text-anchor="end">Insight Opticians</text>
+        <rect x="195" y="76" width="2" height="22" fill="var(--baseline)" />
+        <text class="bar-value" x="204" y="91" text-anchor="start">0</text>
+      </g>
+      <g class="bar-row">
+        <title>Elliott &amp; Heath Opticians and Audiologists: 0 this period, 35 reviews in total</title>
+        <text class="axis-label" x="186" y="125" text-anchor="end">Elliott &amp; Heath Opticians and…</text>
+        <rect x="195" y="110" width="2" height="22" fill="var(--baseline)" />
+        <text class="bar-value" x="204" y="125" text-anchor="start">0</text>
+      </g>
+      <g class="bar-row">
+        <title>Oculi Opticians: 0 this period, 23 reviews in total</title>
+        <text class="axis-label" x="186" y="159" text-anchor="end">Oculi Opticians</text>
+        <rect x="195" y="144" width="2" height="22" fill="var(--baseline)" />
+        <text class="bar-value" x="204" y="159" text-anchor="start">0</text>
+      </g>
+      <g class="bar-row">
+        <title>Watson &amp; Jenkins Opticians Ltd: 0 this period, 21 reviews in total</title>
+        <text class="axis-label" x="186" y="193" text-anchor="end">Watson &amp; Jenkins Opticians Ltd</text>
+        <rect x="195" y="178" width="2" height="22" fill="var(--baseline)" />
+        <text class="bar-value" x="204" y="193" text-anchor="start">0</text>
+      </g>
+      <g class="bar-row">
+        <title>Portland Optical Group (Clowne): 0 this period, 8 reviews in total</title>
+        <text class="axis-label" x="186" y="227" text-anchor="end">Portland Optical Group (Clown…</text>
+        <rect x="195" y="212" width="2" height="22" fill="var(--baseline)" />
+        <text class="bar-value" x="204" y="227" text-anchor="start">0</text>
+      </g>
+    </svg></div>
+  </figure>
+    
+    <h3>The local table</h3>
+    
+  <div class="scroller"><table class="board">
+    <caption>Every tracked practice, ranked on total reviews</caption>
+    <thead>
+      <tr>
+        <th scope="col">#</th>
+        <th scope="col">Practice</th>
+        <th scope="col" class="numeric">Reviews</th>
+        <th scope="col" class="numeric">Rating</th>
+        <th scope="col" class="numeric">This week</th>
+        <th scope="col" class="numeric">Per week</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td class="rank">1</td>
+        <td>Insight Opticians</td>
+        <td class="numeric">108</td>
+        <td class="numeric">5.0</td>
+        <td class="numeric ">0</td>
+        <td class="numeric">0.0</td>
+      </tr>
+      <tr>
+        <td class="rank">2</td>
+        <td>Parker Opticians</td>
+        <td class="numeric">80</td>
+        <td class="numeric">4.9</td>
+        <td class="numeric up">+4</td>
+        <td class="numeric">4.0</td>
+      </tr>
+      <tr>
+        <td class="rank">3</td>
+        <td>Elliott &amp; Heath Opticians and Audiologists</td>
+        <td class="numeric">35</td>
+        <td class="numeric">4.7</td>
+        <td class="numeric ">0</td>
+        <td class="numeric">0.0</td>
+      </tr>
+      <tr class="is-you">
+        <td class="rank">4</td>
+        <td>Murgatroyd Holmes Opticians <span class="you-tag">you</span></td>
+        <td class="numeric">28</td>
+        <td class="numeric">5.0</td>
+        <td class="numeric up">+2</td>
+        <td class="numeric">2.0</td>
+      </tr>
+      <tr>
+        <td class="rank">5</td>
+        <td>Oculi Opticians</td>
+        <td class="numeric">23</td>
+        <td class="numeric">5.0</td>
+        <td class="numeric ">0</td>
+        <td class="numeric">0.0</td>
+      </tr>
+      <tr>
+        <td class="rank">6</td>
+        <td>Watson &amp; Jenkins Opticians Ltd</td>
+        <td class="numeric">21</td>
+        <td class="numeric">4.6</td>
+        <td class="numeric ">0</td>
+        <td class="numeric">0.0</td>
+      </tr>
+      <tr>
+        <td class="rank">7</td>
+        <td>Portland Optical Group (Clowne)</td>
+        <td class="numeric">8</td>
+        <td class="numeric">5.0</td>
+        <td class="numeric ">0</td>
+        <td class="numeric">0.0</td>
+      </tr></tbody>
+  </table></div>
+    
+  </section>
+  <section class="branch">
+    <h2>Conisbrough</h2>
+    <p class="sub">Murgatroyd Opticians Ltd &middot; The Old Surgery, March St, Conisbrough, Doncaster DN12 2LY</p>
+    <div class="hero">
+    <p class="hero-label">Reviews gained this week</p>
+    <p class="hero-figure ">0</p>
+    <p class="hero-note">new reviews on Google, taking Murgatroyd Opticians Ltd to 11 in total at 4.9 stars.</p>
+  </div>
+    <div class="tiles"><div class="tile"><span class="tile-label">Reviews in total</span><span class="tile-value">11</span></div><div class="tile"><span class="tile-label">Star rating</span><span class="tile-value">4.9</span></div><div class="tile"><span class="tile-label">Position locally</span><span class="tile-value">7 of 11</span></div><div class="tile"><span class="tile-label">Share of the area&#39;s new reviews</span><span class="tile-value">n/a</span></div><div class="tile"><span class="tile-label">Weeks in a row</span><span class="tile-value">0</span></div><div class="tile"><span class="tile-label">Your recent pace</span><span class="tile-value">0/wk</span></div></div>
+    <section class="panel">
+    <h3>Next one to catch: Priority Eyecare</h3>
+    <p><strong>5 reviews</strong> behind, on 16 to your 11. They are gaining reviews faster than you at the moment, so the gap is widening rather than closing.</p>
+  </section>
+    
+  <figure class="chart">
+    <figcaption>
+      <h3>Reviews gained this week</h3>
+      <p class="legend">
+        <span class="key"><span class="swatch swatch-you"></span>Murgatroyd Opticians Ltd</span>
+        <span class="key"><span class="swatch swatch-them"></span>Other opticians nearby</span>
+      </p>
+    </figcaption>
+    <div class="scroller"><svg viewBox="-10 -2 720 404" role="img" aria-label="Reviews gained this period by practice. Every value is listed in the table below.">
+      <line x1="196" y1="2" x2="196" y2="378" stroke="var(--baseline)" stroke-width="1" />
+      
+      <g class="bar-row">
+        <title>Cotler &amp; Bell Opticians: 0 this period, 101 reviews in total</title>
+        <text class="axis-label" x="186" y="23" text-anchor="end">Cotler &amp; Bell Opticians</text>
+        <rect x="195" y="8" width="2" height="22" fill="var(--baseline)" />
+        <text class="bar-value" x="204" y="23" text-anchor="start">0</text>
+      </g>
+      <g class="bar-row">
+        <title>Staples Opticians &amp; Hearing Care: 0 this period, 91 reviews in total</title>
+        <text class="axis-label" x="186" y="57" text-anchor="end">Staples Opticians &amp; Hearing C…</text>
+        <rect x="195" y="42" width="2" height="22" fill="var(--baseline)" />
+        <text class="bar-value" x="204" y="57" text-anchor="start">0</text>
+      </g>
+      <g class="bar-row">
+        <title>Wickersley Eye Clinic: 0 this period, 47 reviews in total</title>
+        <text class="axis-label" x="186" y="91" text-anchor="end">Wickersley Eye Clinic</text>
+        <rect x="195" y="76" width="2" height="22" fill="var(--baseline)" />
+        <text class="bar-value" x="204" y="91" text-anchor="start">0</text>
+      </g>
+      <g class="bar-row">
+        <title>Moorhouse Opticians: 0 this period, 39 reviews in total</title>
+        <text class="axis-label" x="186" y="125" text-anchor="end">Moorhouse Opticians</text>
+        <rect x="195" y="110" width="2" height="22" fill="var(--baseline)" />
+        <text class="bar-value" x="204" y="125" text-anchor="start">0</text>
+      </g>
+      <g class="bar-row">
+        <title>Parkhurst and Co Styling Opticians (Mexborough): 0 this period, 21 reviews in total</title>
+        <text class="axis-label" x="186" y="159" text-anchor="end">Parkhurst and Co Styling Opti…</text>
+        <rect x="195" y="144" width="2" height="22" fill="var(--baseline)" />
+        <text class="bar-value" x="204" y="159" text-anchor="start">0</text>
+      </g>
+      <g class="bar-row">
+        <title>Priority Eyecare: 0 this period, 16 reviews in total</title>
+        <text class="axis-label" x="186" y="193" text-anchor="end">Priority Eyecare</text>
+        <rect x="195" y="178" width="2" height="22" fill="var(--baseline)" />
+        <text class="bar-value" x="204" y="193" text-anchor="start">0</text>
+      </g>
+      <g class="bar-row">
+        <title>Murgatroyd Opticians Ltd: 0 this period, 11 reviews in total</title>
+        <text class="axis-label is-you" x="186" y="227" text-anchor="end">Murgatroyd Opticians Ltd</text>
+        <rect x="195" y="212" width="2" height="22" fill="var(--baseline)" />
+        <text class="bar-value" x="204" y="227" text-anchor="start">0</text>
+      </g>
+      <g class="bar-row">
+        <title>T English Opticians: 0 this period, 11 reviews in total</title>
+        <text class="axis-label" x="186" y="261" text-anchor="end">T English Opticians</text>
+        <rect x="195" y="246" width="2" height="22" fill="var(--baseline)" />
+        <text class="bar-value" x="204" y="261" text-anchor="start">0</text>
+      </g>
+      <g class="bar-row">
+        <title>Dudley &amp; Severn Opticians: 0 this period, 10 reviews in total</title>
+        <text class="axis-label" x="186" y="295" text-anchor="end">Dudley &amp; Severn Opticians</text>
+        <rect x="195" y="280" width="2" height="22" fill="var(--baseline)" />
+        <text class="bar-value" x="204" y="295" text-anchor="start">0</text>
+      </g>
+      <g class="bar-row">
+        <title>Martyn Kemp Opticians: 0 this period, 9 reviews in total</title>
+        <text class="axis-label" x="186" y="329" text-anchor="end">Martyn Kemp Opticians</text>
+        <rect x="195" y="314" width="2" height="22" fill="var(--baseline)" />
+        <text class="bar-value" x="204" y="329" text-anchor="start">0</text>
+      </g>
+      <g class="bar-row">
+        <title>BRUMPTON OPTICIANS LTD: 0 this period, 9 reviews in total</title>
+        <text class="axis-label" x="186" y="363" text-anchor="end">BRUMPTON OPTICIANS LTD</text>
+        <rect x="195" y="348" width="2" height="22" fill="var(--baseline)" />
+        <text class="bar-value" x="204" y="363" text-anchor="start">0</text>
+      </g>
+    </svg></div>
+  </figure>
+    
+    <h3>The local table</h3>
+    
+  <div class="scroller"><table class="board">
+    <caption>Every tracked practice, ranked on total reviews</caption>
+    <thead>
+      <tr>
+        <th scope="col">#</th>
+        <th scope="col">Practice</th>
+        <th scope="col" class="numeric">Reviews</th>
+        <th scope="col" class="numeric">Rating</th>
+        <th scope="col" class="numeric">This week</th>
+        <th scope="col" class="numeric">Per week</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td class="rank">1</td>
+        <td>Cotler &amp; Bell Opticians</td>
+        <td class="numeric">101</td>
+        <td class="numeric">4.8</td>
+        <td class="numeric ">0</td>
+        <td class="numeric">0.0</td>
+      </tr>
+      <tr>
+        <td class="rank">2</td>
+        <td>Staples Opticians &amp; Hearing Care</td>
+        <td class="numeric">91</td>
+        <td class="numeric">4.9</td>
+        <td class="numeric ">0</td>
+        <td class="numeric">0.0</td>
+      </tr>
+      <tr>
+        <td class="rank">3</td>
+        <td>Wickersley Eye Clinic</td>
+        <td class="numeric">47</td>
+        <td class="numeric">4.9</td>
+        <td class="numeric ">0</td>
+        <td class="numeric">0.0</td>
+      </tr>
+      <tr>
+        <td class="rank">4</td>
+        <td>Moorhouse Opticians</td>
+        <td class="numeric">39</td>
+        <td class="numeric">5.0</td>
+        <td class="numeric ">0</td>
+        <td class="numeric">0.0</td>
+      </tr>
+      <tr>
+        <td class="rank">5</td>
+        <td>Parkhurst and Co Styling Opticians (Mexborough)</td>
+        <td class="numeric">21</td>
+        <td class="numeric">4.8</td>
+        <td class="numeric ">0</td>
+        <td class="numeric">0.0</td>
+      </tr>
+      <tr>
+        <td class="rank">6</td>
+        <td>Priority Eyecare</td>
+        <td class="numeric">16</td>
+        <td class="numeric">5.0</td>
+        <td class="numeric ">0</td>
+        <td class="numeric">0.0</td>
+      </tr>
+      <tr class="is-you">
+        <td class="rank">7</td>
+        <td>Murgatroyd Opticians Ltd <span class="you-tag">you</span></td>
+        <td class="numeric">11</td>
+        <td class="numeric">4.9</td>
+        <td class="numeric ">0</td>
+        <td class="numeric">0.0</td>
+      </tr>
+      <tr>
+        <td class="rank">8</td>
+        <td>T English Opticians</td>
+        <td class="numeric">11</td>
+        <td class="numeric">4.2</td>
+        <td class="numeric ">0</td>
+        <td class="numeric">0.0</td>
+      </tr>
+      <tr>
+        <td class="rank">9</td>
+        <td>Dudley &amp; Severn Opticians</td>
+        <td class="numeric">10</td>
+        <td class="numeric">4.9</td>
+        <td class="numeric ">0</td>
+        <td class="numeric">0.0</td>
+      </tr>
+      <tr>
+        <td class="rank">10</td>
+        <td>Martyn Kemp Opticians</td>
+        <td class="numeric">9</td>
+        <td class="numeric">4.6</td>
+        <td class="numeric ">0</td>
+        <td class="numeric">0.0</td>
+      </tr>
+      <tr>
+        <td class="rank">11</td>
+        <td>BRUMPTON OPTICIANS LTD</td>
+        <td class="numeric">9</td>
+        <td class="numeric">4.4</td>
+        <td class="numeric ">0</td>
+        <td class="numeric">0.0</td>
+      </tr></tbody>
+  </table></div>
+    
+  </section>
+
+  <footer>
+    <p><strong>Why the branches are not added together.</strong> Each one competes in its own town against its own set of practices, so a combined total would not correspond to any league table either branch is actually in. The figures are kept apart for the same reason they are worth having at all.</p>
+    <p><strong>How these numbers are produced.</strong> Totals come from the Google Places API, read once a week. Google publishes a live review count rather than a dated list, so a weekly figure is the difference between two readings. It is a net figure: if Google removes a review it judges to be spam in the same week one arrives, the two cancel out. The count includes star-only ratings left without written text.</p>
+    <p><strong>A note on asking.</strong> Ask every patient, in person, at the point they say they are happy. Never offer anything in return for a review and never filter who gets asked based on how pleased they seem. Both breach Google's policies and UK consumer law, and both are enforced. A spread of ratings reads as more credible than an unbroken wall of fives.</p>
+    <p>Prepared by Spring View Marketing. For the practice's own use, not for publication.</p>
+  </footer>
+</main>
+</body>
+</html>
