@@ -2,7 +2,8 @@
   "agency": {
     "name": "Spring View Marketing",
     "regionCode": "GB",
-    "languageCode": "en-GB"
+    "languageCode": "en-GB",
+    "siteUrl": "https://springviewmarketing.github.io/Claude-Code"
   },
   "clients": [
     {
