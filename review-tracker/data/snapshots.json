@@ -460,7 +460,7 @@
       }
     },
     {
-      "takenAt": "2026-09-29T21:33:49.597Z",
+      "takenAt": "2026-09-30T16:27:34.126Z",
       "places": {
         "ChIJ1ZvvVgCBeUgRqcCb0rHUDLI": {
           "name": "Kemp & Kerrigan Opticians",
@@ -520,7 +520,7 @@
         },
         "ChIJh_iRSAuCeUgR5wP9mZLoP4E": {
           "name": "David Inman Bespoke Opticians",
-          "totalReviews": 60,
+          "totalReviews": 61,
           "rating": 4.9,
           "businessStatus": "OPERATIONAL",
           "status": "ok"
@@ -541,7 +541,7 @@
         },
         "ChIJHbD_FLubeUgRvos7zInLEm0": {
           "name": "Murgatroyd Holmes Opticians",
-          "totalReviews": 26,
+          "totalReviews": 28,
           "rating": 5,
           "businessStatus": "OPERATIONAL",
           "status": "ok"
