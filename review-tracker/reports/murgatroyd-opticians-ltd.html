@@ -114,6 +114,7 @@
   .axis-label { font-size: 12px; fill: var(--text-secondary); }
   .axis-label.is-you { fill: var(--text-primary); font-weight: 600; }
   .bar-value { font-size: 12px; font-weight: 600; fill: var(--text-primary); font-variant-numeric: tabular-nums; }
+  .bar-value .gain { fill: var(--good-ink); }
   .tick { font-size: 11px; fill: var(--muted); font-variant-numeric: tabular-nums; }
   .bar-row:hover path, .bar-row:hover rect { opacity: 0.82; }
 
@@ -169,7 +170,7 @@
     <p class="hero-figure ">0</p>
     <p class="hero-note">new reviews on Google, taking Murgatroyd Opticians Ltd to 11 in total at 4.9 stars.</p>
   </div>
-  <div class="tiles"><div class="tile"><span class="tile-label">Reviews in total</span><span class="tile-value">11</span></div><div class="tile"><span class="tile-label">Star rating</span><span class="tile-value">4.9</span></div><div class="tile"><span class="tile-label">Position locally</span><span class="tile-value">7 of 11</span></div><div class="tile"><span class="tile-label">Share of the area&#39;s new reviews</span><span class="tile-value">n/a</span></div><div class="tile"><span class="tile-label">Weeks in a row</span><span class="tile-value">0</span></div><div class="tile"><span class="tile-label">Your recent pace</span><span class="tile-value">0/wk</span></div></div>
+  <div class="tiles"><div class="tile"><span class="tile-label">Reviews in total</span><span class="tile-value">11</span></div><div class="tile"><span class="tile-label">Star rating</span><span class="tile-value">4.9</span></div><div class="tile"><span class="tile-label">Position locally</span><span class="tile-value">7th (out of 11)</span></div><div class="tile"><span class="tile-label">Share of the area&#39;s new reviews</span><span class="tile-value">n/a</span></div><div class="tile"><span class="tile-label">Weeks in a row</span><span class="tile-value">0</span></div><div class="tile"><span class="tile-label">Your recent pace</span><span class="tile-value">0/wk</span></div></div>
   <section class="panel">
     <h3>Next one to catch: Priority Eyecare</h3>
     <p><strong>5 reviews</strong> behind, on 16 to your 11. They are gaining reviews faster than you at the moment, so the gap is widening rather than closing.</p>
@@ -177,80 +178,81 @@
   
   <figure class="chart">
     <figcaption>
-      <h3>Reviews gained this week</h3>
+      <h3>Total reviews, every practice nearby</h3>
       <p class="legend">
         <span class="key"><span class="swatch swatch-you"></span>Murgatroyd Opticians Ltd</span>
         <span class="key"><span class="swatch swatch-them"></span>Other opticians nearby</span>
+        <span class="key">A green figure is what they added this week.</span>
       </p>
     </figcaption>
-    <div class="scroller"><svg viewBox="-10 -2 720 404" role="img" aria-label="Reviews gained this period by practice. Every value is listed in the table below.">
+    <div class="scroller"><svg viewBox="-26 -2 740 404" role="img" aria-label="Total Google reviews for every practice nearby, ranked. Every value is listed in the table below.">
       <line x1="196" y1="2" x2="196" y2="378" stroke="var(--baseline)" stroke-width="1" />
       
       <g class="bar-row">
-        <title>Cotler &amp; Bell Opticians: 0 this period, 101 reviews in total</title>
+        <title>Cotler &amp; Bell Opticians: 101 reviews in total</title>
         <text class="axis-label" x="186" y="23" text-anchor="end">Cotler &amp; Bell Opticians</text>
-        <rect x="195" y="8" width="2" height="22" fill="var(--baseline)" />
-        <text class="bar-value" x="204" y="23" text-anchor="start">0</text>
+        <path d="M196,8 H632 A4,4 0 0 1 636,12 V26 A4,4 0 0 1 632,30 H196 Z" fill="var(--series-them)" />
+        <text class="bar-value" x="644" y="23" text-anchor="start">101</text>
       </g>
       <g class="bar-row">
-        <title>Staples Opticians &amp; Hearing Care: 0 this period, 91 reviews in total</title>
-        <text class="axis-label" x="186" y="57" text-anchor="end">Staples Opticians &amp; Hearing C…</text>
-        <rect x="195" y="42" width="2" height="22" fill="var(--baseline)" />
-        <text class="bar-value" x="204" y="57" text-anchor="start">0</text>
+        <title>Staples Opticians &amp; Hearing Care: 91 reviews in total</title>
+        <text class="axis-label" x="186" y="57" text-anchor="end">Staples Opticians &amp; Heari…</text>
+        <path d="M196,42 H588.4356435643565 A4,4 0 0 1 592.4356435643565,46 V60 A4,4 0 0 1 588.4356435643565,64 H196 Z" fill="var(--series-them)" />
+        <text class="bar-value" x="600.4356435643565" y="57" text-anchor="start">91</text>
       </g>
       <g class="bar-row">
-        <title>Wickersley Eye Clinic: 0 this period, 47 reviews in total</title>
+        <title>Wickersley Eye Clinic: 47 reviews in total</title>
         <text class="axis-label" x="186" y="91" text-anchor="end">Wickersley Eye Clinic</text>
-        <rect x="195" y="76" width="2" height="22" fill="var(--baseline)" />
-        <text class="bar-value" x="204" y="91" text-anchor="start">0</text>
+        <path d="M196,76 H396.7524752475248 A4,4 0 0 1 400.7524752475248,80 V94 A4,4 0 0 1 396.7524752475248,98 H196 Z" fill="var(--series-them)" />
+        <text class="bar-value" x="408.7524752475248" y="91" text-anchor="start">47</text>
       </g>
       <g class="bar-row">
-        <title>Moorhouse Opticians: 0 this period, 39 reviews in total</title>
+        <title>Moorhouse Opticians: 39 reviews in total</title>
         <text class="axis-label" x="186" y="125" text-anchor="end">Moorhouse Opticians</text>
-        <rect x="195" y="110" width="2" height="22" fill="var(--baseline)" />
-        <text class="bar-value" x="204" y="125" text-anchor="start">0</text>
+        <path d="M196,110 H361.9009900990099 A4,4 0 0 1 365.9009900990099,114 V128 A4,4 0 0 1 361.9009900990099,132 H196 Z" fill="var(--series-them)" />
+        <text class="bar-value" x="373.9009900990099" y="125" text-anchor="start">39</text>
       </g>
       <g class="bar-row">
-        <title>Parkhurst and Co Styling Opticians (Mexborough): 0 this period, 21 reviews in total</title>
-        <text class="axis-label" x="186" y="159" text-anchor="end">Parkhurst and Co Styling Opti…</text>
-        <rect x="195" y="144" width="2" height="22" fill="var(--baseline)" />
-        <text class="bar-value" x="204" y="159" text-anchor="start">0</text>
+        <title>Parkhurst and Co Styling Opticians (Mexborough): 21 reviews in total</title>
+        <text class="axis-label" x="186" y="159" text-anchor="end">Parkhurst and Co Styling …</text>
+        <path d="M196,144 H283.48514851485146 A4,4 0 0 1 287.48514851485146,148 V162 A4,4 0 0 1 283.48514851485146,166 H196 Z" fill="var(--series-them)" />
+        <text class="bar-value" x="295.48514851485146" y="159" text-anchor="start">21</text>
       </g>
       <g class="bar-row">
-        <title>Priority Eyecare: 0 this period, 16 reviews in total</title>
+        <title>Priority Eyecare: 16 reviews in total</title>
         <text class="axis-label" x="186" y="193" text-anchor="end">Priority Eyecare</text>
-        <rect x="195" y="178" width="2" height="22" fill="var(--baseline)" />
-        <text class="bar-value" x="204" y="193" text-anchor="start">0</text>
+        <path d="M196,178 H261.7029702970297 A4,4 0 0 1 265.7029702970297,182 V196 A4,4 0 0 1 261.7029702970297,200 H196 Z" fill="var(--series-them)" />
+        <text class="bar-value" x="273.7029702970297" y="193" text-anchor="start">16</text>
       </g>
       <g class="bar-row">
-        <title>Murgatroyd Opticians Ltd: 0 this period, 11 reviews in total</title>
+        <title>Murgatroyd Opticians Ltd: 11 reviews in total</title>
         <text class="axis-label is-you" x="186" y="227" text-anchor="end">Murgatroyd Opticians Ltd</text>
-        <rect x="195" y="212" width="2" height="22" fill="var(--baseline)" />
-        <text class="bar-value" x="204" y="227" text-anchor="start">0</text>
+        <path d="M196,212 H239.92079207920793 A4,4 0 0 1 243.92079207920793,216 V230 A4,4 0 0 1 239.92079207920793,234 H196 Z" fill="var(--series-you)" />
+        <text class="bar-value" x="251.92079207920793" y="227" text-anchor="start">11</text>
       </g>
       <g class="bar-row">
-        <title>T English Opticians: 0 this period, 11 reviews in total</title>
+        <title>T English Opticians: 11 reviews in total</title>
         <text class="axis-label" x="186" y="261" text-anchor="end">T English Opticians</text>
-        <rect x="195" y="246" width="2" height="22" fill="var(--baseline)" />
-        <text class="bar-value" x="204" y="261" text-anchor="start">0</text>
+        <path d="M196,246 H239.92079207920793 A4,4 0 0 1 243.92079207920793,250 V264 A4,4 0 0 1 239.92079207920793,268 H196 Z" fill="var(--series-them)" />
+        <text class="bar-value" x="251.92079207920793" y="261" text-anchor="start">11</text>
       </g>
       <g class="bar-row">
-        <title>Dudley &amp; Severn Opticians: 0 this period, 10 reviews in total</title>
+        <title>Dudley &amp; Severn Opticians: 10 reviews in total</title>
         <text class="axis-label" x="186" y="295" text-anchor="end">Dudley &amp; Severn Opticians</text>
-        <rect x="195" y="280" width="2" height="22" fill="var(--baseline)" />
-        <text class="bar-value" x="204" y="295" text-anchor="start">0</text>
+        <path d="M196,280 H235.56435643564356 A4,4 0 0 1 239.56435643564356,284 V298 A4,4 0 0 1 235.56435643564356,302 H196 Z" fill="var(--series-them)" />
+        <text class="bar-value" x="247.56435643564356" y="295" text-anchor="start">10</text>
       </g>
       <g class="bar-row">
-        <title>Martyn Kemp Opticians: 0 this period, 9 reviews in total</title>
+        <title>Martyn Kemp Opticians: 9 reviews in total</title>
         <text class="axis-label" x="186" y="329" text-anchor="end">Martyn Kemp Opticians</text>
-        <rect x="195" y="314" width="2" height="22" fill="var(--baseline)" />
-        <text class="bar-value" x="204" y="329" text-anchor="start">0</text>
+        <path d="M196,314 H231.20792079207922 A4,4 0 0 1 235.20792079207922,318 V332 A4,4 0 0 1 231.20792079207922,336 H196 Z" fill="var(--series-them)" />
+        <text class="bar-value" x="243.20792079207922" y="329" text-anchor="start">9</text>
       </g>
       <g class="bar-row">
-        <title>BRUMPTON OPTICIANS LTD: 0 this period, 9 reviews in total</title>
+        <title>BRUMPTON OPTICIANS LTD: 9 reviews in total</title>
         <text class="axis-label" x="186" y="363" text-anchor="end">BRUMPTON OPTICIANS LTD</text>
-        <rect x="195" y="348" width="2" height="22" fill="var(--baseline)" />
-        <text class="bar-value" x="204" y="363" text-anchor="start">0</text>
+        <path d="M196,348 H231.20792079207922 A4,4 0 0 1 235.20792079207922,352 V366 A4,4 0 0 1 231.20792079207922,370 H196 Z" fill="var(--series-them)" />
+        <text class="bar-value" x="243.20792079207922" y="363" text-anchor="start">9</text>
       </g>
     </svg></div>
   </figure>

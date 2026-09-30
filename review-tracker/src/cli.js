@@ -112,29 +112,25 @@ async function publishSite(reports, config, { siteDir, siteUrl, agencyName, send
     await writeFile(path.join(siteDir, relative), html, 'utf8');
   };
 
-  // One page per branch.
-  for (const report of reports) {
-    const client = byId.get(report.client.id);
-    if (!client) continue;
-    // The combined page needs the branch's short name and its address relative
-    // to the parent page; neither is the report builder's concern, so both are
-    // attached here where the config is in hand.
-    report.client.branch = client.branch ?? null;
-    report.client.branchHref = `${reportHref(client).split('/').at(-2)}/`;
-    await write(
-      reportPath(client),
-      renderReport(report, { agencyName, message: null, brand: brands[client.brand] })
-    );
-  }
-
-  // One combined page per brand that has more than one branch.
+  // Which brands have more than one branch, and so get a combined page.
   const grouped = new Map();
   for (const report of reports) {
     const client = byId.get(report.client.id);
     if (!client?.brand) continue;
+    // The combined page needs the branch's short name and the anchor its
+    // summary tile jumps to; neither is the report builder's concern, so both
+    // are attached here where the config is in hand.
+    report.client.branch = client.branch ?? null;
+    report.client.anchor = reportHref(client).split('/').at(-2);
     if (!grouped.has(client.brand)) grouped.set(client.brand, []);
     grouped.get(client.brand).push(report);
   }
+
+  // A branch of a multi-branch practice gets no page of its own. Everything it
+  // would have held is already a section of the combined page, so a second copy
+  // behind a second link was a page to maintain, a link to get wrong, and a
+  // dead end to navigate back out of, for nothing the owner could not already
+  // see. The summary tiles jump down the page instead.
   const combinedHref = new Map();
   for (const [key, members] of grouped) {
     const brand = brands[key];
@@ -142,6 +138,16 @@ async function publishSite(reports, config, { siteDir, siteUrl, agencyName, send
     const href = `${brand.slug ?? key}/`;
     await write(`${href}index.html`, renderGroupReport(members, { agencyName, brand }));
     for (const report of members) combinedHref.set(report.client.id, href);
+  }
+
+  // Everyone else gets their own page.
+  for (const report of reports) {
+    const client = byId.get(report.client.id);
+    if (!client || combinedHref.has(client.id)) continue;
+    await write(
+      reportPath(client),
+      renderReport(report, { agencyName, message: null, brand: brands[client.brand] })
+    );
   }
 
   const published = [];
