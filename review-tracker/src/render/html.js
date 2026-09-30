@@ -24,6 +24,14 @@ const esc = (value) =>
 const signed = (n) => (n > 0 ? `+${n}` : `${n}`);
 const pct = (v) => (v === null ? 'n/a' : `${Math.round(v * 100)}%`);
 const num = (n) => (typeof n === 'number' ? n.toLocaleString('en-GB') : 'n/a');
+// 1st, 2nd, 3rd, 4th. The teens are the exception that catches everyone out:
+// 11th, 12th and 13th, not 11st, 12nd and 13rd.
+const ordinal = (n) => {
+  if (typeof n !== 'number') return 'n/a';
+  const tens = n % 100;
+  if (tens >= 11 && tens <= 13) return `${n}th`;
+  return `${n}${['th', 'st', 'nd', 'rd'][n % 10] ?? 'th'}`;
+};
 
 /**
  * A horizontal bar: square where it meets the baseline at `baseX`, rounded at
@@ -51,44 +59,58 @@ function columnPath(x, width, topY, baseY, radius = 4) {
 }
 
 /** Horizontal bars: reviews gained this period, one row per practice. */
+/**
+ * Every practice in the area, ranked on total reviews.
+ *
+ * This used to chart reviews gained in the week, which was the wrong measure to
+ * lead with. In a normal week most of a small town's practices gain nothing, so
+ * the chart was a row of empty bars that said little and repeated the following
+ * week. Totals are what the practice is actually trying to move and what the
+ * gap to the next one up is measured in, so that is what gets the space.
+ *
+ * Bars run from zero rather than from the smallest value. An area can run from
+ * eight reviews to a hundred and eight, and cropping the axis to flatter the
+ * client would misrepresent exactly the distance they are trying to close.
+ *
+ * The week's movement is not lost. It rides as a "+2" beside the total, in the
+ * gain colour, so a practice that is climbing is still visible without the
+ * whole chart being given over to a column of zeroes.
+ */
 function packChart(report) {
-  const rows = report.table.filter((row) => row.newReviews !== null);
+  const rows = report.table.filter((row) => typeof row.total === 'number');
   if (rows.length === 0) return '';
 
-  const ordered = rows.slice().sort((a, b) => b.newReviews - a.newReviews);
+  const ordered = rows.slice().sort((a, b) => b.total - a.total);
   const rowHeight = 34;
   const barHeight = 22; // capped under 24px; the band's leftover is air
   const labelWidth = 186;
-  const valueWidth = 46;
+  const valueWidth = 64; // room for "108 +3"
   const width = 700;
   const height = ordered.length * rowHeight + 26;
   const plotLeft = labelWidth + 10;
   const plotRight = width - valueWidth;
 
-  const values = ordered.map((row) => row.newReviews);
-  const max = Math.max(1, ...values);
-  const min = Math.min(0, ...values);
-  const span = max - min || 1;
-  const scale = (v) => plotLeft + ((v - min) / span) * (plotRight - plotLeft);
-  const zero = scale(0);
+  const max = Math.max(1, ...ordered.map((row) => row.total));
+  const scale = (v) => plotLeft + (v / max) * (plotRight - plotLeft);
 
   const bars = ordered
     .map((row, index) => {
       const y = index * rowHeight + 4;
       const barY = y + (rowHeight - barHeight) / 2 - 2;
-      const value = row.newReviews;
-      const x = scale(value);
-      const path = hBarPath(zero, x, barY, barHeight);
+      const path = hBarPath(plotLeft, scale(row.total), barY, barHeight);
       const fill = row.isClient ? 'var(--series-you)' : 'var(--series-them)';
-      const labelX = value < 0 ? x - 8 : Math.max(x, zero) + 8;
-      const anchor = value < 0 ? 'end' : 'start';
-      const name = row.name.length > 30 ? `${row.name.slice(0, 29)}…` : row.name;
+      // The client's own row is bold, so it sets the widest the label can get.
+      // Truncation plus the viewBox gutter below has to cover that, or the
+      // practice reading the page finds its own name clipped.
+      const name = row.name.length > 26 ? `${row.name.slice(0, 25)}…` : row.name;
+      const gained = row.newReviews > 0 ? row.newReviews : null;
+      const midY = barY + barHeight / 2 + 4;
       return `
       <g class="bar-row">
-        <title>${esc(row.name)}: ${signed(value)} this period, ${num(row.total)} reviews in total</title>
-        <text class="axis-label${row.isClient ? ' is-you' : ''}" x="${labelWidth}" y="${barY + barHeight / 2 + 4}" text-anchor="end">${esc(name)}</text>
-        ${path ? `<path d="${path}" fill="${fill}" />` : `<rect x="${zero - 1}" y="${barY}" width="2" height="${barHeight}" fill="var(--baseline)" />`}
-        <text class="bar-value" x="${labelX}" y="${barY + barHeight / 2 + 4}" text-anchor="${anchor}">${signed(value)}</text>
+        <title>${esc(row.name)}: ${num(row.total)} reviews in total${gained ? `, ${signed(row.newReviews)} this week` : ''}</title>
+        <text class="axis-label${row.isClient ? ' is-you' : ''}" x="${labelWidth}" y="${midY}" text-anchor="end">${esc(name)}</text>
+        ${path ? `<path d="${path}" fill="${fill}" />` : `<rect x="${plotLeft - 1}" y="${barY}" width="2" height="${barHeight}" fill="var(--baseline)" />`}
+        <text class="bar-value" x="${scale(row.total) + 8}" y="${midY}" text-anchor="start">${num(row.total)}${gained ? `<tspan class="gain"> +${gained}</tspan>` : ''}</text>
       </g>`;
     })
     .join('');
@@ -96,14 +118,15 @@ function packChart(report) {
   return `
   <figure class="chart">
     <figcaption>
-      <h3>Reviews gained ${esc(report.row.exactWeek === false && report.row.days ? `over the last ${report.row.days} days` : 'this week')}</h3>
+      <h3>Total reviews, every practice nearby</h3>
       <p class="legend">
         <span class="key"><span class="swatch swatch-you"></span>${esc(report.client.name)}</span>
         <span class="key"><span class="swatch swatch-them"></span>Other opticians nearby</span>
+        <span class="key">A green figure is what they added this week.</span>
       </p>
     </figcaption>
-    <div class="scroller"><svg viewBox="-10 -2 ${width + 20} ${height + 4}" role="img" aria-label="Reviews gained this period by practice. Every value is listed in the table below.">
-      <line x1="${zero}" y1="2" x2="${zero}" y2="${height - 22}" stroke="var(--baseline)" stroke-width="1" />
+    <div class="scroller"><svg viewBox="-26 -2 ${width + 40} ${height + 4}" role="img" aria-label="Total Google reviews for every practice nearby, ranked. Every value is listed in the table below.">
+      <line x1="${plotLeft}" y1="2" x2="${plotLeft}" y2="${height - 22}" stroke="var(--baseline)" stroke-width="1" />
       ${bars}
     </svg></div>
   </figure>`;
@@ -189,7 +212,7 @@ function statTiles(report) {
     { label: 'Star rating', value: row.rating === null ? 'n/a' : row.rating.toFixed(1) },
     {
       label: 'Position locally',
-      value: row.rank ? `${row.rank} of ${group.size}` : 'n/a',
+      value: row.rank ? `${ordinal(row.rank)} (out of ${group.size})` : 'n/a',
     },
     {
       label: "Share of the area's new reviews",
@@ -361,6 +384,7 @@ const STYLE = `
   .axis-label { font-size: 12px; fill: var(--text-secondary); }
   .axis-label.is-you { fill: var(--text-primary); font-weight: 600; }
   .bar-value { font-size: 12px; font-weight: 600; fill: var(--text-primary); font-variant-numeric: tabular-nums; }
+  .bar-value .gain { fill: var(--good-ink); }
   .tick { font-size: 11px; fill: var(--muted); font-variant-numeric: tabular-nums; }
   .bar-row:hover path, .bar-row:hover rect { opacity: 0.82; }
 
@@ -652,11 +676,11 @@ export function renderGroupReport(reports, { agencyName = 'Spring View Marketing
             ? 'first reading'
             : `${signed(row.newReviews)} this week`;
       return `
-      <a class="branch-tile" href="${esc(report.client.branchHref ?? '#')}">
+      <a class="branch-tile" href="#${esc(report.client.anchor)}">
         <span class="branch-name">${esc(label)}</span>
         <span class="branch-total">${num(row.total)}</span>
         <span class="branch-meta">reviews &middot; ${row.rating === null ? 'n/a' : row.rating.toFixed(1)} stars</span>
-        <span class="branch-meta ${row.newReviews > 0 ? 'up' : ''}">${esc(change)} &middot; ${row.rank ?? 'n/a'} of ${report.group.size} locally</span>
+        <span class="branch-meta ${row.newReviews > 0 ? 'up' : ''}">${esc(change)}</span>
       </a>`;
     })
     .join('');
@@ -664,7 +688,7 @@ export function renderGroupReport(reports, { agencyName = 'Spring View Marketing
   const sections = reports
     .map(
       (report) => `
-  <section class="branch">
+  <section class="branch" id="${esc(report.client.anchor)}">
     <h2>${esc(report.client.branch ?? report.client.name)}</h2>
     <p class="sub">${esc(report.client.name)}${report.client.area ? ` &middot; ${esc(report.client.area)}` : ''}</p>
     ${headline(report)}
@@ -699,7 +723,9 @@ ${brandFontLink(brand)}
   .branch-total { font-size: 34px; font-weight: 700; line-height: 1.1; color: var(--series-you); }
   .branch-meta { font-size: 13px; color: var(--text-secondary); }
   .branch-meta.up { color: var(--good-ink); font-weight: 600; }
-  .branch { margin-top: 34px; padding-top: 20px; border-top: 2px solid var(--border); }
+  html { scroll-behavior: smooth; }
+  @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
+  .branch { scroll-margin-top: 18px; margin-top: 34px; padding-top: 20px; border-top: 2px solid var(--border); }
   .branch:first-of-type { margin-top: 24px; }
   .branch > h2 { margin-top: 0; }
   .branch > .sub { margin-top: -6px; }

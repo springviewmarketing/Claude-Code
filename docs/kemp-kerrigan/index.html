@@ -114,6 +114,7 @@
   .axis-label { font-size: 12px; fill: var(--text-secondary); }
   .axis-label.is-you { fill: var(--text-primary); font-weight: 600; }
   .bar-value { font-size: 12px; font-weight: 600; fill: var(--text-primary); font-variant-numeric: tabular-nums; }
+  .bar-value .gain { fill: var(--good-ink); }
   .tick { font-size: 11px; fill: var(--muted); font-variant-numeric: tabular-nums; }
   .bar-row:hover path, .bar-row:hover rect { opacity: 0.82; }
 
@@ -169,7 +170,7 @@
     <p class="hero-figure ">0</p>
     <p class="hero-note">new reviews on Google, taking Kemp &amp; Kerrigan Opticians to 23 in total at 5.0 stars.</p>
   </div>
-  <div class="tiles"><div class="tile"><span class="tile-label">Reviews in total</span><span class="tile-value">23</span></div><div class="tile"><span class="tile-label">Star rating</span><span class="tile-value">5.0</span></div><div class="tile"><span class="tile-label">Position locally</span><span class="tile-value">11 of 11</span></div><div class="tile"><span class="tile-label">Share of the area&#39;s new reviews</span><span class="tile-value">0%</span></div><div class="tile"><span class="tile-label">Weeks in a row</span><span class="tile-value">0</span></div><div class="tile"><span class="tile-label">Your recent pace</span><span class="tile-value">0/wk</span></div></div>
+  <div class="tiles"><div class="tile"><span class="tile-label">Reviews in total</span><span class="tile-value">23</span></div><div class="tile"><span class="tile-label">Star rating</span><span class="tile-value">5.0</span></div><div class="tile"><span class="tile-label">Position locally</span><span class="tile-value">11th (out of 11)</span></div><div class="tile"><span class="tile-label">Share of the area&#39;s new reviews</span><span class="tile-value">0%</span></div><div class="tile"><span class="tile-label">Weeks in a row</span><span class="tile-value">0</span></div><div class="tile"><span class="tile-label">Your recent pace</span><span class="tile-value">0/wk</span></div></div>
   <section class="panel">
     <h3>Next one to catch: Martyn Kemp Opticians (4.5mi)</h3>
     <p><strong>2 reviews</strong> behind, on 25 to your 23. They are gaining reviews faster than you at the moment, so the gap is widening rather than closing.</p>
@@ -177,80 +178,81 @@
   
   <figure class="chart">
     <figcaption>
-      <h3>Reviews gained this week</h3>
+      <h3>Total reviews, every practice nearby</h3>
       <p class="legend">
         <span class="key"><span class="swatch swatch-you"></span>Kemp &amp; Kerrigan Opticians</span>
         <span class="key"><span class="swatch swatch-them"></span>Other opticians nearby</span>
+        <span class="key">A green figure is what they added this week.</span>
       </p>
     </figcaption>
-    <div class="scroller"><svg viewBox="-10 -2 720 404" role="img" aria-label="Reviews gained this period by practice. Every value is listed in the table below.">
+    <div class="scroller"><svg viewBox="-26 -2 740 404" role="img" aria-label="Total Google reviews for every practice nearby, ranked. Every value is listed in the table below.">
       <line x1="196" y1="2" x2="196" y2="378" stroke="var(--baseline)" stroke-width="1" />
       
       <g class="bar-row">
-        <title>Martin Johnson Opticians Ltd: +7 this period, 41 reviews in total</title>
-        <text class="axis-label" x="186" y="23" text-anchor="end">Martin Johnson Opticians Ltd</text>
-        <path d="M196,8 H650 A4,4 0 0 1 654,12 V26 A4,4 0 0 1 650,30 H196 Z" fill="var(--series-them)" />
-        <text class="bar-value" x="662" y="23" text-anchor="start">+7</text>
+        <title>Lorraine Bonete Opticians: 79 reviews in total, +1 this week</title>
+        <text class="axis-label" x="186" y="23" text-anchor="end">Lorraine Bonete Opticians</text>
+        <path d="M196,8 H632 A4,4 0 0 1 636,12 V26 A4,4 0 0 1 632,30 H196 Z" fill="var(--series-them)" />
+        <text class="bar-value" x="644" y="23" text-anchor="start">79<tspan class="gain"> +1</tspan></text>
       </g>
       <g class="bar-row">
-        <title>David Inman Bespoke Opticians (2mi): +4 this period, 61 reviews in total</title>
-        <text class="axis-label" x="186" y="57" text-anchor="end">David Inman Bespoke Opticians…</text>
-        <path d="M196,42 H453.7142857142857 A4,4 0 0 1 457.7142857142857,46 V60 A4,4 0 0 1 453.7142857142857,64 H196 Z" fill="var(--series-them)" />
-        <text class="bar-value" x="465.7142857142857" y="57" text-anchor="start">+4</text>
+        <title>Bird Opticians: 64 reviews in total, +1 this week</title>
+        <text class="axis-label" x="186" y="57" text-anchor="end">Bird Opticians</text>
+        <path d="M196,42 H548.4556962025316 A4,4 0 0 1 552.4556962025316,46 V60 A4,4 0 0 1 548.4556962025316,64 H196 Z" fill="var(--series-them)" />
+        <text class="bar-value" x="560.4556962025316" y="57" text-anchor="start">64<tspan class="gain"> +1</tspan></text>
       </g>
       <g class="bar-row">
-        <title>Lorraine Bonete Opticians: +1 this period, 79 reviews in total</title>
-        <text class="axis-label" x="186" y="91" text-anchor="end">Lorraine Bonete Opticians</text>
-        <path d="M196,76 H257.42857142857144 A4,4 0 0 1 261.42857142857144,80 V94 A4,4 0 0 1 257.42857142857144,98 H196 Z" fill="var(--series-them)" />
-        <text class="bar-value" x="269.42857142857144" y="91" text-anchor="start">+1</text>
+        <title>David Inman Bespoke Opticians (2mi): 61 reviews in total, +4 this week</title>
+        <text class="axis-label" x="186" y="91" text-anchor="end">David Inman Bespoke Optic…</text>
+        <path d="M196,76 H531.746835443038 A4,4 0 0 1 535.746835443038,80 V94 A4,4 0 0 1 531.746835443038,98 H196 Z" fill="var(--series-them)" />
+        <text class="bar-value" x="543.746835443038" y="91" text-anchor="start">61<tspan class="gain"> +4</tspan></text>
       </g>
       <g class="bar-row">
-        <title>Bird Opticians: +1 this period, 64 reviews in total</title>
-        <text class="axis-label" x="186" y="125" text-anchor="end">Bird Opticians</text>
-        <path d="M196,110 H257.42857142857144 A4,4 0 0 1 261.42857142857144,114 V128 A4,4 0 0 1 257.42857142857144,132 H196 Z" fill="var(--series-them)" />
-        <text class="bar-value" x="269.42857142857144" y="125" text-anchor="start">+1</text>
+        <title>David Inman Bespoke Opticians (1.6mi): 57 reviews in total, +1 this week</title>
+        <text class="axis-label" x="186" y="125" text-anchor="end">David Inman Bespoke Optic…</text>
+        <path d="M196,110 H509.4683544303798 A4,4 0 0 1 513.4683544303798,114 V128 A4,4 0 0 1 509.4683544303798,132 H196 Z" fill="var(--series-them)" />
+        <text class="bar-value" x="521.4683544303798" y="125" text-anchor="start">57<tspan class="gain"> +1</tspan></text>
       </g>
       <g class="bar-row">
-        <title>David Inman Bespoke Opticians (1.6mi): +1 this period, 57 reviews in total</title>
-        <text class="axis-label" x="186" y="159" text-anchor="end">David Inman Bespoke Opticians…</text>
-        <path d="M196,144 H257.42857142857144 A4,4 0 0 1 261.42857142857144,148 V162 A4,4 0 0 1 257.42857142857144,166 H196 Z" fill="var(--series-them)" />
-        <text class="bar-value" x="269.42857142857144" y="159" text-anchor="start">+1</text>
+        <title>Alex Gage Family Optometrist (Sheffield): 54 reviews in total</title>
+        <text class="axis-label" x="186" y="159" text-anchor="end">Alex Gage Family Optometr…</text>
+        <path d="M196,144 H492.75949367088606 A4,4 0 0 1 496.75949367088606,148 V162 A4,4 0 0 1 492.75949367088606,166 H196 Z" fill="var(--series-them)" />
+        <text class="bar-value" x="504.75949367088606" y="159" text-anchor="start">54</text>
       </g>
       <g class="bar-row">
-        <title>Premier Eyecare Opticians Sheffield: +1 this period, 28 reviews in total</title>
-        <text class="axis-label" x="186" y="193" text-anchor="end">Premier Eyecare Opticians She…</text>
-        <path d="M196,178 H257.42857142857144 A4,4 0 0 1 261.42857142857144,182 V196 A4,4 0 0 1 257.42857142857144,200 H196 Z" fill="var(--series-them)" />
-        <text class="bar-value" x="269.42857142857144" y="193" text-anchor="start">+1</text>
+        <title>Martin Johnson Opticians Ltd: 41 reviews in total, +7 this week</title>
+        <text class="axis-label" x="186" y="193" text-anchor="end">Martin Johnson Opticians …</text>
+        <path d="M196,178 H420.3544303797469 A4,4 0 0 1 424.3544303797469,182 V196 A4,4 0 0 1 420.3544303797469,200 H196 Z" fill="var(--series-them)" />
+        <text class="bar-value" x="432.3544303797469" y="193" text-anchor="start">41<tspan class="gain"> +7</tspan></text>
       </g>
       <g class="bar-row">
-        <title>Sheffield Vision Centre: +1 this period, 28 reviews in total</title>
-        <text class="axis-label" x="186" y="227" text-anchor="end">Sheffield Vision Centre</text>
-        <path d="M196,212 H257.42857142857144 A4,4 0 0 1 261.42857142857144,216 V230 A4,4 0 0 1 257.42857142857144,234 H196 Z" fill="var(--series-them)" />
-        <text class="bar-value" x="269.42857142857144" y="227" text-anchor="start">+1</text>
+        <title>Premier Eyecare Opticians Sheffield: 28 reviews in total, +1 this week</title>
+        <text class="axis-label" x="186" y="227" text-anchor="end">Premier Eyecare Opticians…</text>
+        <path d="M196,212 H347.9493670886076 A4,4 0 0 1 351.9493670886076,216 V230 A4,4 0 0 1 347.9493670886076,234 H196 Z" fill="var(--series-them)" />
+        <text class="bar-value" x="359.9493670886076" y="227" text-anchor="start">28<tspan class="gain"> +1</tspan></text>
       </g>
       <g class="bar-row">
-        <title>Alex Gage Family Optometrist (Sheffield): 0 this period, 54 reviews in total</title>
-        <text class="axis-label" x="186" y="261" text-anchor="end">Alex Gage Family Optometrist …</text>
-        <rect x="195" y="246" width="2" height="22" fill="var(--baseline)" />
-        <text class="bar-value" x="204" y="261" text-anchor="start">0</text>
+        <title>Sheffield Vision Centre: 28 reviews in total, +1 this week</title>
+        <text class="axis-label" x="186" y="261" text-anchor="end">Sheffield Vision Centre</text>
+        <path d="M196,246 H347.9493670886076 A4,4 0 0 1 351.9493670886076,250 V264 A4,4 0 0 1 347.9493670886076,268 H196 Z" fill="var(--series-them)" />
+        <text class="bar-value" x="359.9493670886076" y="261" text-anchor="start">28<tspan class="gain"> +1</tspan></text>
       </g>
       <g class="bar-row">
-        <title>Harveys Opticians: 0 this period, 28 reviews in total</title>
+        <title>Harveys Opticians: 28 reviews in total</title>
         <text class="axis-label" x="186" y="295" text-anchor="end">Harveys Opticians</text>
-        <rect x="195" y="280" width="2" height="22" fill="var(--baseline)" />
-        <text class="bar-value" x="204" y="295" text-anchor="start">0</text>
+        <path d="M196,280 H347.9493670886076 A4,4 0 0 1 351.9493670886076,284 V298 A4,4 0 0 1 347.9493670886076,302 H196 Z" fill="var(--series-them)" />
+        <text class="bar-value" x="359.9493670886076" y="295" text-anchor="start">28</text>
       </g>
       <g class="bar-row">
-        <title>Martyn Kemp Opticians (4.5mi): 0 this period, 25 reviews in total</title>
-        <text class="axis-label" x="186" y="329" text-anchor="end">Martyn Kemp Opticians (4.5mi)</text>
-        <rect x="195" y="314" width="2" height="22" fill="var(--baseline)" />
-        <text class="bar-value" x="204" y="329" text-anchor="start">0</text>
+        <title>Martyn Kemp Opticians (4.5mi): 25 reviews in total</title>
+        <text class="axis-label" x="186" y="329" text-anchor="end">Martyn Kemp Opticians (4.…</text>
+        <path d="M196,314 H331.24050632911394 A4,4 0 0 1 335.24050632911394,318 V332 A4,4 0 0 1 331.24050632911394,336 H196 Z" fill="var(--series-them)" />
+        <text class="bar-value" x="343.24050632911394" y="329" text-anchor="start">25</text>
       </g>
       <g class="bar-row">
-        <title>Kemp &amp; Kerrigan Opticians: 0 this period, 23 reviews in total</title>
+        <title>Kemp &amp; Kerrigan Opticians: 23 reviews in total</title>
         <text class="axis-label is-you" x="186" y="363" text-anchor="end">Kemp &amp; Kerrigan Opticians</text>
-        <rect x="195" y="348" width="2" height="22" fill="var(--baseline)" />
-        <text class="bar-value" x="204" y="363" text-anchor="start">0</text>
+        <path d="M196,348 H320.1012658227848 A4,4 0 0 1 324.1012658227848,352 V366 A4,4 0 0 1 320.1012658227848,370 H196 Z" fill="var(--series-you)" />
+        <text class="bar-value" x="332.1012658227848" y="363" text-anchor="start">23</text>
       </g>
     </svg></div>
   </figure>
