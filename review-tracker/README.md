@@ -233,7 +233,7 @@ Three things have to be in place.
 `practices.json`. A client without one still gets a report, just no email.
 
 **The site URL.** Add `siteUrl` to the `agency` block, for example
-`https://springviewmarketing.github.io/Claude-Code`. Without it the emails go
+`https://springviewmarketing.github.io/Google-Reviews`. Without it the emails go
 out with no link rather than a broken one.
 
 **Four repository secrets**, under Settings, Secrets and variables, Actions:

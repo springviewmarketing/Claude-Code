@@ -16,13 +16,13 @@ and wording he can cut about. Not a finished email, and not a data dump.
 
 ## Where the data is
 
-Everything is in `springviewmarketing/Claude-Code`, on the default branch
+Everything is in `springviewmarketing/Google-Reviews`, on the default branch
 `claude/spring-view-landing-page-3sf82c` (there is no `main`). The repository is
 public, so these fetch without any credentials:
 
 ```
-https://raw.githubusercontent.com/springviewmarketing/Claude-Code/claude/spring-view-landing-page-3sf82c/review-tracker/data/snapshots.json
-https://raw.githubusercontent.com/springviewmarketing/Claude-Code/claude/spring-view-landing-page-3sf82c/review-tracker/config/practices.json
+https://raw.githubusercontent.com/springviewmarketing/Google-Reviews/claude/spring-view-landing-page-3sf82c/review-tracker/data/snapshots.json
+https://raw.githubusercontent.com/springviewmarketing/Google-Reviews/claude/spring-view-landing-page-3sf82c/review-tracker/config/practices.json
 ```
 
 `practices.json` says who is tracked and who counts as their competitors.
