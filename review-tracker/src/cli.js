@@ -1,18 +1,18 @@
 #!/usr/bin/env node
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { mkdir, writeFile } from 'node:fs/promises';
+import { mkdir, readFile, writeFile } from 'node:fs/promises';
 
 import { loadConfig, loadEnv, allPlaces } from './config.js';
 import { PlacesClient, fetchAll } from './places.js';
 import { loadHistory, saveHistory, addSnapshot, toPlaceMap, isReadingFresh } from './store.js';
 import { buildAllReports } from './metrics.js';
-import { renderReport, renderIndex } from './render/html.js';
+import { renderReport, renderIndex, renderGroupReport } from './render/html.js';
 import { practiceMessage, terminalSummary, formatDate } from './render/text.js';
 import { toCsv } from './render/csv.js';
 import { demoConfig, demoHistory } from './demo-data.js';
 import { resolveAnchor, findNearby, shortlist, disambiguateNames } from './nearby.js';
-import { readClientFile, upsertClient, writeClientFile, slugify, reportPath } from './client-file.js';
+import { readClientFile, upsertClient, writeClientFile, slugify, reportPath, reportHref } from './client-file.js';
 import { buildEmail } from './render/email.js';
 import { milesToMetres } from './geo.js';
 
@@ -71,22 +71,85 @@ const resolve = (value, fallback) => path.resolve(ROOT, value ?? fallback);
  * write the email that links to it. Both are skipped without a site URL, since
  * a link to nowhere is worse than no link.
  */
-async function publishSite(reports, config, { siteDir, siteUrl, agencyName, senderName }) {
-  await mkdir(path.join(siteDir, 'r'), { recursive: true });
-  const byId = new Map(config.clients.map((client) => [client.id, client]));
-  const published = [];
+/**
+ * Read each brand's assets once. The logo is inlined as a data URI so a report
+ * still renders with its branding when opened from disk or forwarded as a file,
+ * which a link to the practice's own web server would not survive.
+ */
+async function loadBrands(config) {
+  const brands = {};
+  for (const [key, brand] of Object.entries(config.brands ?? {})) {
+    let logoDataUri = null;
+    if (brand.logo) {
+      try {
+        const bytes = await readFile(path.resolve(ROOT, brand.logo));
+        logoDataUri = `data:image/png;base64,${bytes.toString('base64')}`;
+      } catch {
+        // A missing logo is a cosmetic problem. It must never stop a reading.
+        console.warn(`  Note: brand logo not found at ${brand.logo}, falling back to the name.`);
+      }
+    }
+    brands[key] = { ...brand, logoDataUri };
+  }
+  return brands;
+}
 
+/**
+ * Publish each report to the site folder, and write the email that links to it.
+ * Both are skipped without a site URL, since a link to nowhere is worse than
+ * no link.
+ *
+ * A practice with more than one branch also gets a single combined page, and
+ * its emails link there rather than to either branch, so the owner keeps one
+ * address for the whole business.
+ */
+async function publishSite(reports, config, { siteDir, siteUrl, agencyName, senderName, brands }) {
+  const byId = new Map(config.clients.map((client) => [client.id, client]));
+  const absolute = (href) => (siteUrl ? `${siteUrl.replace(/\/$/, '')}/${href}` : null);
+
+  const write = async (relative, html) => {
+    await mkdir(path.join(siteDir, path.dirname(relative)), { recursive: true });
+    await writeFile(path.join(siteDir, relative), html, 'utf8');
+  };
+
+  // One page per branch.
   for (const report of reports) {
     const client = byId.get(report.client.id);
-    if (!client?.token) continue;
-    const relative = reportPath(client);
-    await writeFile(
-      path.join(siteDir, relative),
-      renderReport(report, { agencyName, message: null }),
-      'utf8'
+    if (!client) continue;
+    // The combined page needs the branch's short name and its address relative
+    // to the parent page; neither is the report builder's concern, so both are
+    // attached here where the config is in hand.
+    report.client.branch = client.branch ?? null;
+    report.client.branchHref = `${reportHref(client).split('/').at(-2)}/`;
+    await write(
+      reportPath(client),
+      renderReport(report, { agencyName, message: null, brand: brands[client.brand] })
     );
+  }
 
-    const url = siteUrl ? `${siteUrl.replace(/\/$/, '')}/${relative}` : null;
+  // One combined page per brand that has more than one branch.
+  const grouped = new Map();
+  for (const report of reports) {
+    const client = byId.get(report.client.id);
+    if (!client?.brand) continue;
+    if (!grouped.has(client.brand)) grouped.set(client.brand, []);
+    grouped.get(client.brand).push(report);
+  }
+  const combinedHref = new Map();
+  for (const [key, members] of grouped) {
+    const brand = brands[key];
+    if (!brand || members.length < 2) continue;
+    const href = `${brand.slug ?? key}/`;
+    await write(`${href}index.html`, renderGroupReport(members, { agencyName, brand }));
+    for (const report of members) combinedHref.set(report.client.id, href);
+  }
+
+  const published = [];
+  for (const report of reports) {
+    const client = byId.get(report.client.id);
+    if (!client) continue;
+    const href = combinedHref.get(client.id) ?? reportHref(client);
+    const url = absolute(href);
     const email = buildEmail(report, { reportUrl: url, agencyName, senderName });
     published.push({ id: client.id, name: client.name, to: client.contactEmail ?? null, url, email });
   }
@@ -218,7 +281,9 @@ async function commandReport(options, preloaded) {
   });
 
   const siteUrl = options['site-url'] ?? config.agency?.siteUrl ?? null;
+  const brands = await loadBrands(config);
   const published = await publishSite(reports, config, {
+    brands,
     siteDir: resolve(options.site, '../docs'),
     siteUrl,
     agencyName: config.agency?.name ?? 'Spring View Marketing',

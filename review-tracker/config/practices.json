@@ -2,7 +2,8 @@
   "agency": {
     "name": "Spring View Marketing",
     "regionCode": "GB",
-    "languageCode": "en-GB"
+    "languageCode": "en-GB",
+    "siteUrl": "https://springviewmarketing.github.io/Claude-Code"
   },
   "clients": [
     {
@@ -53,7 +54,7 @@
           "placeId": "ChIJjzLae4uDeUgRljOwiL8z3QU"
         }
       ],
-      "token": "1tSua9a17CtN"
+      "slug": "kemp-kerrigan"
     },
     {
       "id": "murgatroyd-holmes-opticians",
@@ -87,7 +88,9 @@
           "placeId": "ChIJu6_iO-CYeUgRyrqYua_esYE"
         }
       ],
-      "token": "cbkgrqDNQMQy"
+      "slug": "murgatroyd/staveley",
+      "brand": "murgatroyd",
+      "branch": "Staveley"
     },
     {
       "id": "murgatroyd-opticians-ltd",
@@ -137,7 +140,21 @@
           "placeId": "ChIJTw4EG7J2eUgRrxaHKXorEDg"
         }
       ],
-      "token": "PnbiEAIl7xcY"
+      "slug": "murgatroyd/conisbrough",
+      "brand": "murgatroyd",
+      "branch": "Conisbrough"
     }
-  ]
+  ],
+  "brands": {
+    "murgatroyd": {
+      "name": "Murgatroyd Opticians",
+      "slug": "murgatroyd",
+      "tagline": "Family eyecare in Conisbrough and Staveley, since 1963",
+      "logo": "brand/murgatroyd.png",
+      "primary": "#003366",
+      "accent": "#33cccc",
+      "onPrimary": "#ffffff",
+      "font": "Montserrat"
+    }
+  }
 }

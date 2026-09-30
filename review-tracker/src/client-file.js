@@ -8,7 +8,6 @@
 
 import { readFile, writeFile, mkdir } from 'node:fs/promises';
 import path from 'node:path';
-import { randomBytes } from 'node:crypto';
 import { validateConfig } from './config.js';
 
 const DEFAULT_AGENCY = { name: 'Spring View Marketing', regionCode: 'GB', languageCode: 'en-GB' };
@@ -24,14 +23,21 @@ export function slugify(name) {
 }
 
 /**
- * A short random tag for the published report's filename. The repository is
- * private, so this is the only thing standing between a competitor and a page
- * naming them; it needs to be unguessable, not merely untidy.
+ * Where a client's report is published, relative to the site root.
+ *
+ * A plain readable path. Reports used to carry a random token in the filename,
+ * back when the repository was going to be private and the URL was the only
+ * thing keeping a page away from the competitors it named. The repository is
+ * public, so the token was protecting nothing while making every link ugly
+ * enough that Tom did not want to send it.
+ *
+ * Published as a directory index so the address ends at the practice name with
+ * no .html hanging off it.
  */
-export const newToken = () => randomBytes(9).toString('base64url');
+export const reportPath = (client) => `${client.slug ?? client.id}/index.html`;
 
-/** Where a client's report is published, relative to the site root. */
-export const reportPath = (client) => `r/${client.id}-${client.token}.html`;
+/** The address a person types or clicks, which is the path without index.html. */
+export const reportHref = (client) => `${client.slug ?? client.id}/`;
 
 export async function readClientFile(file) {
   try {
@@ -64,7 +70,9 @@ export function upsertClient(config, client) {
   // circulated link would break and the address would have to be typed again.
   clients.push({
     ...client,
-    token: client.token ?? previous?.token ?? newToken(),
+    slug: client.slug ?? previous?.slug ?? slugify(client.name),
+    ...(previous?.brand && !client.brand ? { brand: previous.brand } : {}),
+    ...(previous?.branch && !client.branch ? { branch: previous.branch } : {}),
     ...(previous?.contactEmail && !client.contactEmail ? { contactEmail: previous.contactEmail } : {}),
   });
   clients.sort((a, b) => a.name.localeCompare(b.name));

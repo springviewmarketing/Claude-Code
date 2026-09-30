@@ -455,7 +455,78 @@ const TOKENS = `
   }
 `;
 
-export function renderReport(report, { agencyName = 'Spring View Marketing', message = null } = {}) {
+
+/**
+ * Paint a client's own brand over the report's tokens.
+ *
+ * Only the tokens that carry identity move: the practice's own series colour,
+ * its wash, and the typeface. Everything the eye needs to read a chart, the
+ * gridlines, the baseline, the text greys, is left alone, because a brand
+ * palette chosen for a shopfront is not chosen for legibility at 11px.
+ *
+ * The two brand colours are used in opposite roles per theme. Murgatroyd's
+ * navy is the readable one on a pale background and their turquoise is the
+ * readable one on a dark background, so each takes the series colour in the
+ * theme where it has the contrast to earn it.
+ */
+function brandTokens(brand) {
+  if (!brand) return '';
+  const wash = (hex, alpha) => {
+    const h = hex.replace('#', '');
+    const n = parseInt(h.length === 3 ? h.split('').map((c) => c + c).join('') : h, 16);
+    return `rgba(${(n >> 16) & 255}, ${(n >> 8) & 255}, ${n & 255}, ${alpha})`;
+  };
+  return `
+  :root {
+    --brand-primary: ${brand.primary};
+    --brand-accent: ${brand.accent};
+    --brand-on-primary: ${brand.onPrimary ?? '#ffffff'};
+    --series-you: ${brand.primary};
+    --you-wash: ${wash(brand.primary, 0.07)};
+    --font-brand: ${brand.font ? `"${brand.font}", ` : ''}system-ui, -apple-system, "Segoe UI", sans-serif;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:where(:not([data-theme="light"])) {
+      --series-you: ${brand.accent};
+      --you-wash: ${wash(brand.accent, 0.12)};
+    }
+  }
+  body { font-family: var(--font-brand); }
+  .brandbar {
+    background: var(--brand-primary);
+    border-radius: 10px 10px 0 0;
+    padding: 20px 24px;
+    display: flex; align-items: center; gap: 18px; flex-wrap: wrap;
+  }
+  .brandbar img { height: 42px; width: auto; display: block; }
+  .brandbar p {
+    margin: 0; color: var(--brand-accent);
+    font-size: 13px; letter-spacing: 0.02em;
+  }
+  .sheet:has(.brandbar) > header { padding-top: 22px; }
+  @media (max-width: 560px) { .brandbar { padding: 16px; gap: 12px; } .brandbar img { height: 34px; } }
+`;
+}
+
+/** The navy band carrying the practice's logo. Nothing here is load bearing. */
+function brandBar(brand) {
+  if (!brand) return '';
+  const logo = brand.logoDataUri
+    ? `<img src="${brand.logoDataUri}" alt="${esc(brand.name)}">`
+    : `<strong style="color:var(--brand-on-primary);font-size:19px">${esc(brand.name)}</strong>`;
+  return `<div class="brandbar">${logo}${brand.tagline ? `<p>${esc(brand.tagline)}</p>` : ''}</div>`;
+}
+
+/** The fonts a brand asks for, fetched only when one is named. */
+function brandFontLink(brand) {
+  if (!brand?.font) return '';
+  const family = brand.font.replace(/ /g, '+');
+  return `<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=${family}:wght@400;600;700&display=swap" rel="stylesheet">`;
+}
+
+export function renderReport(report, { agencyName = 'Spring View Marketing', message = null, brand = null } = {}) {
   const week = formatDate(report.weekEnding);
   const title = `${report.client.name}, Google reviews to ${week}`;
   return `<!doctype html>
@@ -464,10 +535,12 @@ export function renderReport(report, { agencyName = 'Spring View Marketing', mes
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>${esc(title)}</title>
-<style>${TOKENS}${STYLE}</style>
+${brandFontLink(brand)}
+<style>${TOKENS}${STYLE}${brandTokens(brand)}</style>
 </head>
 <body>
 <main class="sheet">
+  ${brandBar(brand)}
   <header>
     <p class="eyebrow">${esc(agencyName)} &middot; weekly review report</p>
     <h1>${esc(report.client.name)}</h1>
@@ -545,6 +618,112 @@ export function renderIndex(reports, { agencyName = 'Spring View Marketing' } = 
     <tbody>${rows}</tbody>
   </table></div>
   <footer><p>Totals read from the Google Places API. Weekly figures are the net difference between two readings.</p></footer>
+</main>
+</body>
+</html>
+`;
+}
+
+/**
+ * One page covering every branch of a single practice.
+ *
+ * Built for the owner of a two-shop business who wants one link, not two. The
+ * branches are deliberately kept in separate sections with their own table and
+ * chart rather than merged into a combined total, because they compete in
+ * different towns against different practices: adding Conisbrough's eleven to
+ * Staveley's twenty eight would produce a number that means nothing to anyone
+ * and would hide whichever branch had stopped asking.
+ *
+ * The strip at the top is the only place the two are seen together, and it
+ * compares them only on the things that are genuinely comparable.
+ */
+export function renderGroupReport(reports, { agencyName = 'Spring View Marketing', brand = null } = {}) {
+  const week = formatDate(reports[0]?.weekEnding);
+  const title = `${brand?.name ?? 'Practice'}, Google reviews to ${week}`;
+
+  const summary = reports
+    .map((report) => {
+      const { row } = report;
+      const label = report.client.branch ?? report.client.name;
+      const change =
+        row.status !== 'ok'
+          ? 'no reading'
+          : row.newReviews === null
+            ? 'first reading'
+            : `${signed(row.newReviews)} this week`;
+      return `
+      <a class="branch-tile" href="${esc(report.client.branchHref ?? '#')}">
+        <span class="branch-name">${esc(label)}</span>
+        <span class="branch-total">${num(row.total)}</span>
+        <span class="branch-meta">reviews &middot; ${row.rating === null ? 'n/a' : row.rating.toFixed(1)} stars</span>
+        <span class="branch-meta ${row.newReviews > 0 ? 'up' : ''}">${esc(change)} &middot; ${row.rank ?? 'n/a'} of ${report.group.size} locally</span>
+      </a>`;
+    })
+    .join('');
+
+  const sections = reports
+    .map(
+      (report) => `
+  <section class="branch">
+    <h2>${esc(report.client.branch ?? report.client.name)}</h2>
+    <p class="sub">${esc(report.client.name)}${report.client.area ? ` &middot; ${esc(report.client.area)}` : ''}</p>
+    ${headline(report)}
+    ${statTiles(report)}
+    ${chasePanel(report)}
+    ${packChart(report)}
+    ${trendChart(report)}
+    <h3>The local table</h3>
+    ${leaderboard(report)}
+    ${problems(report)}
+  </section>`
+    )
+    .join('');
+
+  return `<!doctype html>
+<html lang="en-GB">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>${esc(title)}</title>
+${brandFontLink(brand)}
+<style>${TOKENS}${STYLE}${brandTokens(brand)}
+  .branches { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 12px; margin: 22px 0 6px; }
+  .branch-tile {
+    display: grid; gap: 2px; padding: 16px 18px; text-decoration: none;
+    background: var(--you-wash); border: 1px solid var(--border); border-radius: 10px;
+    color: var(--text-primary);
+  }
+  .branch-tile:hover { border-color: var(--series-you); }
+  .branch-name { font-size: 13px; text-transform: uppercase; letter-spacing: 0.06em; color: var(--text-secondary); }
+  .branch-total { font-size: 34px; font-weight: 700; line-height: 1.1; color: var(--series-you); }
+  .branch-meta { font-size: 13px; color: var(--text-secondary); }
+  .branch-meta.up { color: var(--good-ink); font-weight: 600; }
+  .branch { margin-top: 34px; padding-top: 20px; border-top: 2px solid var(--border); }
+  .branch:first-of-type { margin-top: 24px; }
+  .branch > h2 { margin-top: 0; }
+  .branch > .sub { margin-top: -6px; }
+</style>
+</head>
+<body>
+<main class="sheet">
+  ${brandBar(brand)}
+  <header>
+    <p class="eyebrow">${esc(agencyName)} &middot; weekly review report</p>
+    <h1>${esc(brand?.name ?? 'Your practice')}</h1>
+    <p class="sub">Google reviews, week ending ${esc(week)} &middot; ${reports.length} ${reports.length === 1 ? 'branch' : 'branches'}</p>
+  </header>
+
+  <div class="branches">${summary}</div>
+
+  ${sections}
+
+  <footer>
+    <p><strong>Why the branches are not added together.</strong> Each one competes in its own town against its own set of practices, so a combined total would not correspond to any league table either branch is actually in. The figures are kept apart for the same reason they are worth having at all.</p>
+    <p><strong>How these numbers are produced.</strong> Totals come from the Google Places API, read once a week. Google publishes a live review count rather than a dated list, so a weekly figure is the difference between two readings. It is a net figure: if Google removes a review it judges to be spam in the same week one arrives, the two cancel out. The count includes star-only ratings left without written text.</p>
+    <p><strong>A note on asking.</strong> Ask every patient, in person, at the point they say they are happy. Never offer anything in return for a review and never filter who gets asked based on how pleased they seem. Both breach Google's policies and UK consumer law, and both are enforced. A spread of ratings reads as more credible than an unbroken wall of fives.</p>
+    <p>Prepared by ${esc(agencyName)}. For the practice's own use, not for publication.</p>
+  </footer>
 </main>
 </body>
 </html>

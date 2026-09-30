@@ -254,16 +254,51 @@ so one bad address does not stop the others.
 That switch exists for later, when the client list is long enough that writing
 each one by hand stops being worth it. Until then the draft is the deliverable.
 
-### Why the links are ugly
+### Where the reports live
 
-Each report is published at `r/<client-id>-<token>.html`, where the token is
-random. A Pages site is public even when its repository is private, so that
-token is the only thing keeping a report away from the competitors it names.
-`robots.txt` and a noindex keep search engines out, which stops the report being
-found, not someone who has the link.
+Each report is published at `<slug>/index.html`, so the address a client clicks
+ends at the practice name with nothing hanging off it:
 
-The token is generated once per client and kept through later runs, so a link
-already sitting in a client's inbox keeps working.
+    /kemp-kerrigan/
+    /murgatroyd/                 both branches on one page
+    /murgatroyd/staveley/
+    /murgatroyd/conisbrough/
+
+Reports used to carry a random token in the filename. That was for a private
+repository, where the URL would have been the only thing keeping a page away
+from the competitors it names. The repository is public, so the token protected
+nothing while making every link too ugly to send. It is gone.
+
+`robots.txt` and a noindex are still there. They are not about secrecy: they
+stop a page comparing named local businesses turning up when a patient searches
+for the practice.
+
+A slug is set once per client and kept through later runs, so a link already
+sitting in a client's inbox keeps working.
+
+### A practice with more than one branch
+
+Give its clients the same `brand` key and a `branch` name, and they get a single
+combined page at the brand's slug as well as their own. The emails for both
+branches link to the combined page, so the owner keeps one address.
+
+The branches are never added together. Each competes in its own town against its
+own practices, so a combined total would not match any league table either
+branch is actually in.
+
+### Brands
+
+A `brands` block in the config paints a client's own colours and logo onto their
+page. Only the tokens carrying identity move: the practice's series colour, its
+wash and the typeface. The greys, gridlines and baselines stay, because a
+palette chosen for a shopfront is not chosen for legibility at 11px.
+
+Where a brand gives two colours, each takes the series role in the theme where
+it has the contrast to earn it. Murgatroyd's navy reads on a pale background,
+their turquoise on a dark one.
+
+The logo is inlined as a data URI, so a report keeps its branding when opened
+from disk or forwarded as a file.
 
 ### What the email says
 
